@@ -1,4 +1,4 @@
-package pp2016.team16.server.map;
+package pp2016.sweetsixteen.server.map;
 
 /**
 * @author <Noll , Markus , 5812500 > */
@@ -123,3 +123,244 @@ public class AlleLevel {
 					level[r][c - 2] = Felder.BODEN;
 					level[r][c - 1] = Felder.BODEN;
 					floodfill(r, c - 2);
+				}
+
+			}
+		}
+	}
+	/**
+	* <Methode zufallsPositionx() gibt eine zufaellige Zahl innerhalb der Hoehe des Arrays wieder. Die erste und letzte Zeile
+	* sind nicht inbegriffen.  >
+	* @author <Noll , Markus , 5812500 > */
+	public int zufallsPositionx() {
+		Random roll = new Random();
+		int number = Math.abs(roll.nextInt(hoehe - 2) + 1);
+		return number;
+	}
+	/**
+	* <Methode zufallsPositiony() gibt eine zufaellige Zahl innerhalb der Breite des Arrays wieder. Die erste und letzte Spalte
+	* sind nicht inbegriffen.  >
+	* @author <Noll , Markus , 5812500 > */
+	public int zufallsPositiony() {
+		Random roll = new Random();
+		int number = Math.abs(roll.nextInt(breite - 2) + 1);
+		return number;
+	}
+	/**
+	* <Methode setzeTrank() setzt zufaellig vier Traenke in unser erzeugtes Labyrinth. Dabei wird zunaechst ueberprüft, ob die
+	* gewaehlte Position begehbar ist.  >
+	* @author <Noll , Markus , 5812500 > */
+	public int[][] setzeTrank() {
+		int maxTrank = 0;
+		while (maxTrank < 4) {
+			int x = zufallsPositionx();
+			int y = zufallsPositiony();
+			if (level[x][y] == Felder.BODEN) {
+				level[x][y] = Felder.TRANK;
+				maxTrank++;
+			}
+		}
+		return level;
+	}
+	/**
+	* <Methode setzeStart() setzt zufaellig eine Startposition in unsere obere Aussenwand.  >
+	* @author <Noll , Markus , 5812500 > */
+	public int[][] setzeStart() {
+
+		int y = zufallsPositiony();
+		int x = 0;
+		if (level[x][y] == Felder.WAND && level[x + 1][y] == Felder.BODEN) {
+			level[x][y] = Felder.START;
+		} else {
+			setzeStart();
+		}
+
+		return level;
+	}
+	/**
+	* <Methode setzeExit() setzt zufaellig eine Zielposition in unsere untere Aussenwand.  >
+	* @author <Noll , Markus , 5812500 > */
+	public int[][] setzeExit() {
+
+		int y = zufallsPositiony();
+		int x = hoehe-1;
+		if (level[x][y] == Felder.WAND && level[x - 1][y] == Felder.BODEN) {
+			level[x][y] = Felder.ZIEL;
+		} else {
+			setzeExit();
+		}
+		return level;
+	}
+	/**
+	* <Methode setzeMonster() setzt zufaellig drei Monster in das erzeugte Labyrinth. Auch hier wird zunaechst ueberprueft,
+	* ob die zufaellig gewaehlte Position begehbar ist.  >
+	* @author <Noll , Markus , 5812500 > */
+	public int[][] setzeMonster() {
+		int maxMonster = 0;
+		while (maxMonster < 3) {
+			int x = zufallsPositionx();
+			int y = zufallsPositiony();
+			if (level[x][y] == Felder.BODEN) {
+				level[x][y] = Felder.MONSTER;
+				maxMonster++;
+			}
+		}
+		return level;
+	}
+	/**
+	* <Methode setzeMonsterMitSchluessel() setzt zufaellig das Monster mit dem Schluessel in das erzeugte Labyrinth. Auch hier wird zunaechst ueberprueft,
+	* ob die zufaellig gewaehlte Position begehbar ist.  >
+	* @author <Noll , Markus , 5812500 > */
+	public int[][] setzeMonsterMitSchluessel() {
+		int y = zufallsPositiony();
+		int x = zufallsPositionx();
+		if (level[x][y] == Felder.BODEN) {
+			level[x][y] = Felder.MONSTERMITSCHLUESSEL;
+
+		} else {
+			setzeMonsterMitSchluessel();
+		}
+		return level;
+	}
+	/**
+	* <Methode setzeMonster2k() setzt zufaellig vier Monster in das erzeugte Labyrinth. Auch hier wird zunaechst ueberprueft,
+	* ob die zufaellig gewaehlte Position begehbar ist.  >
+	* @author <Noll , Markus , 5812500 > */
+	public int[][] setzeMonster2() {
+		int maxMonster = 0;
+		while (maxMonster < 4) {
+			int x = zufallsPositionx();
+			int y = zufallsPositiony();
+			if (level[x][y] == Felder.BODEN) {
+				level[x][y] = Felder.MONSTER;
+				maxMonster++;
+			}
+		}
+		return level;
+	}
+	/**
+	* <Methode setzeMonster3() setzt zufaellig fuenf Monster in das erzeugte Labyrinth. Auch hier wird zunaechst ueberprueft,
+	* ob die zufaellig gewaehlte Position begehbar ist.  >
+	* @author <Noll , Markus , 5812500 > */
+	public int[][] setzeMonster3() {
+		int maxMonster = 0;
+		while (maxMonster < 5) {
+			int x = zufallsPositionx();
+			int y = zufallsPositiony();
+			if (level[x][y] == Felder.BODEN) {
+				level[x][y] = Felder.MONSTER;
+				maxMonster++;
+			}
+		}
+		return level;
+	}
+	/**
+	* <Methode setzeMonster4() setzt zufaellig sechs Monster in das erzeugte Labyrinth. Auch hier wird zunaechst ueberprueft,
+	* ob die zufaellig gewaehlte Position begehbar ist.  >
+	* @author <Noll , Markus , 5812500 > */
+	public int[][] setzeMonster4() {
+		int maxMonster = 0;
+		while (maxMonster < 6) {
+			int x = zufallsPositionx();
+			int y = zufallsPositiony();
+			if (level[x][y] == Felder.BODEN) {
+				level[x][y] = Felder.MONSTER;
+				maxMonster++;
+			}
+		}
+		return level;
+	}
+	/**
+	* <Methode setzeMonster5() setzt zufaellig sieben Monster in das erzeugte Labyrinth. Auch hier wird zunaechst ueberprueft,
+	* ob die zufaellig gewaehlte Position begehbar ist.  >
+	* @author <Noll , Markus , 5812500 > */
+	public int[][] setzeMonster5() {
+		int maxMonster = 0;
+		while (maxMonster < 7) {
+			int x = zufallsPositionx();
+			int y = zufallsPositiony();
+			if (level[x][y] == Felder.BODEN) {
+				level[x][y] = Felder.MONSTER;
+				maxMonster++;
+			}
+		}
+		return level;
+	}
+	/**
+	* <Methode zeichneLevel() zeigt den eigentlichen Test der Komponente als Code. Man sieht, dass das
+	* Labyrinth richtig mit FloodFill erzeugt und per Zufall mit Items und Monstern besetzt wird.  >
+	* @author <Noll , Markus , 5812500 > */
+	public void zeichneLevel(){
+		for (int x = 0; x < level.length; x++) {
+			for (int y = 0; y < level[x].length; y++) {
+				System.out.print(level[x][y]);
+			}
+			System.out.println("");
+		}
+	}
+	/**
+	* <Methode setzeInhalt() fasst alle zur Erzeugung notwendigen Methoden in einer Methode zusammen.  >
+	* @author <Noll , Markus , 5812500 > */
+	public int[][] setzeInhalt(){
+		erzeugeLabyrinth();
+		setzeStart();
+		setzeExit();
+		setzeTrank();
+		setzeMonster();
+		setzeMonsterMitSchluessel();
+		zeichneLevel();
+		return level;
+	}
+	/**
+	* <Methode setzeInhalt2() fasst alle zur Erzeugung notwendigen Methoden in einer Methode zusammen.  >
+	* @author <Noll , Markus , 5812500 > */
+	public int[][] setzeInhalt2(){
+		erzeugeLabyrinth();
+		setzeStart();
+		setzeExit();
+		setzeTrank();
+		setzeMonster2();
+		setzeMonsterMitSchluessel();
+		zeichneLevel();
+		return level;
+	}
+	/**
+	* <Methode setzeInhalt3() fasst alle zur Erzeugung notwendigen Methoden in einer Methode zusammen.  >
+	* @author <Noll , Markus , 5812500 > */
+	public int[][] setzeInhalt3(){
+		erzeugeLabyrinth();
+		setzeStart();
+		setzeExit();
+		setzeTrank();
+		setzeMonster3();
+		setzeMonsterMitSchluessel();
+		zeichneLevel();
+		return level;
+	}
+	/**
+	* <Methode setzeInhalt4() fasst alle zur Erzeugung notwendigen Methoden in einer Methode zusammen.  >
+	* @author <Noll , Markus , 5812500 > */
+	public int[][] setzeInhalt4(){
+		erzeugeLabyrinth();
+		setzeStart();
+		setzeExit();
+		setzeTrank();
+		setzeMonster4();
+		setzeMonsterMitSchluessel();
+		zeichneLevel();
+		return level;
+	}
+	/**
+	* <Methode setzeInhalt5() fasst alle zur Erzeugung notwendigen Methoden in einer Methode zusammen.  >
+	* @author <Noll , Markus , 5812500 > */
+	public int[][] setzeInhalt5(){
+		erzeugeLabyrinth();
+		setzeStart();
+		setzeExit();
+		setzeTrank();
+		setzeMonster5();
+		setzeMonsterMitSchluessel();
+		zeichneLevel();
+		return level;
+	}
+}

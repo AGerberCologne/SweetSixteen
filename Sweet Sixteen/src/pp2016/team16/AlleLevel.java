@@ -1,7 +1,6 @@
 package pp2016.sweetsixteen.server.map;
 
 /**
-
 * @author <Noll , Markus , 5812500 > */
 
 import java.util.ArrayList;
@@ -365,4 +364,3 @@ public class AlleLevel {
 		return level;
 	}
 }
-

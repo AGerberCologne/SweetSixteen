@@ -1,4 +1,4 @@
-package pp2016.sweetsixteen.server.map;
+package pp2016.team16.server.map;
 
 /**
 * @author <Noll , Markus , 5812500 > */

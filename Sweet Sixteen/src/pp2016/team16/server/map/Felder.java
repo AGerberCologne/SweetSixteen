@@ -10,4 +10,5 @@ public class Felder {
 	public static final int TRANK = 5;
 	public static final int ZIEL = 6;
 	
+	
 }

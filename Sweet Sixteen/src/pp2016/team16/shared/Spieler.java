@@ -6,10 +6,13 @@ import gui.LoginDialog;
 import java.io.File;
 import java.io.IOException;
 
-
+import pp2016.team16.server.engine.*;
 
 
 import javax.imageio.ImageIO;
+
+import astern.Astern;
+import astern.Wegpunkt;
 
 public class Spieler extends Figur {
 
@@ -19,6 +22,8 @@ public class Spieler extends Figur {
 	public int anzahlHeiltraenke;
 	private int heiltrankWirkung;
 	
+	public int zielX = 0;
+	public int zielY = 0;
 	
 	private HindiBones fenster;
 	
@@ -108,6 +113,28 @@ public class Spieler extends Figur {
 		return null;
 	}
 	
-
+	public int geheZumZiel() {                                                                     // Spieler JAGEN (Angriffszustand)
+		Astern  astern= new Astern(getYPos(), getXPos(), this.zielX, this.zielY , fenster);
+		Wegpunkt test = astern.starten();
+		System.out.println("Spieler:"+this.getXPos()+","+this.getYPos());
+		System.out.println("SZiel:"+this.zielX+","+this.zielY);
+		if (test.x<getXPos()&&test.y==getYPos()) {
+			links();
+			return 3;
+		}
+    	if (test.x>getXPos()&&test.y==getYPos()) {
+    		rechts();
+    		return 1;
+		}
+		if (test.x==getXPos()&&test.y<getYPos()) {
+			hoch();
+			return 0;
+		}
+		if (test.x==getXPos()&&test.y>getYPos()) {
+			runter();
+			return 2;
+		}
+		return -1;
+	}
 	
 }

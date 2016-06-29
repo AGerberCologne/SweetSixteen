@@ -43,8 +43,8 @@ public class Astern {
 		    
 
 		    
-		    
-		    //erzeuge ein zufälliges feld
+		    //Hallo welt
+		    //erzeuge ein zufaelliges feld
 		    this.field = new boolean[ZELLEN][ZELLEN];
 		    
 		    for (int i = 0; i < ZELLEN; i++) {
@@ -55,7 +55,7 @@ public class Astern {
 		      }
 		    }
 		    
-		    //räume start und endposition frei von steinen
+		    //rï¿½ume start und endposition frei von steinen
 		    this.field[this.zielX][this.zielY] = true;
 		    this.field[this.monsterX][this.monsterY] = true;
 		    
@@ -69,7 +69,7 @@ public class Astern {
 	        
 	    Wegpunkt bestWegpunkt;
 	    
-	      //untersuche die vier nachbarn wenn möglich
+	      //untersuche die vier nachbarn wenn mï¿½glich
 	      //also nicht wenn dort ein stein liegt
 	      //und nicht wenn der punkt bereits in der closed list ist
 	      bestWegpunkt = openList.get(this.getFirstBestListEntry(openList));
@@ -100,8 +100,8 @@ public class Astern {
 	    return bestWegpunkt;
 	  }
 	  
-	  // überprüft ob das Feld schon untersucht wurde, 
-	  //prüft auch ob da das Feld begehbar ist und obs schon in der openlist ist
+	  // ï¿½berprï¿½ft ob das Feld schon untersucht wurde, 
+	  //prï¿½ft auch ob da das Feld begehbar ist und obs schon in der openlist ist
 	  private void openListAddHelper(int x, int y, LinkedList<Wegpunkt> openList, LinkedList<Wegpunkt> closedList, Wegpunkt vorher){
 		    if (x < 0 || y < 0 || x >= this.ZELLEN || y >= this.ZELLEN) {
 		      //nichts
@@ -116,7 +116,7 @@ public class Astern {
 
 	  
 	  
-	  //Schätzt den Abstand zum Ziel,wenn keine hindernisse im Weg wären
+	  //Schï¿½tzt den Abstand zum Ziel,wenn keine hindernisse im Weg wï¿½ren
 	  private int abstandSchaetzen(int x, int y) {                                      //SCHAETZFUNKTION des A*-Algo
 		    int dx = x - this.zielX;
 		    if (dx < 0) {
@@ -130,7 +130,7 @@ public class Astern {
 		    
 		    return dx + dy;
 		  }
-//sucht das für uns beste Element aus der Liste
+//sucht das fï¿½r uns beste Element aus der Liste
 	  private int getFirstBestListEntry(LinkedList<Wegpunkt> list) {
 		    int best = list.get(0).getGesamtkosten();
 		    
@@ -172,9 +172,11 @@ public class Astern {
               wegpunkt = null;
 		    if (this.finish != null) {
 		      	wegpunkt = this.finish;
-			while(wegpunkt.vorgaenger.vorgaenger != null) {
-				wegpunkt = wegpunkt.vorgaenger;
-			}
+		      	if(wegpunkt.vorgaenger!=null) {
+		      		while(wegpunkt.vorgaenger.vorgaenger != null) {
+		      			wegpunkt = wegpunkt.vorgaenger;
+		      		}
+		      	}
 		      	this.suche = false;
 		    } else if (this.openList.isEmpty() == false && this.suche == true){
 		      wegpunkt = this.aStern();

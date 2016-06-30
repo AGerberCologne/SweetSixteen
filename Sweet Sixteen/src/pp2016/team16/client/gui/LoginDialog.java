@@ -141,7 +141,7 @@ public class LoginDialog extends JDialog {
         bp.add(btnLogin);
         bp.add(btnCancel1);
         bp.add(btnAnmelden);
-        
+ 
         getContentPane().add(panel, BorderLayout.CENTER);
         getContentPane().add(bp, BorderLayout.PAGE_END);
  
@@ -198,6 +198,6 @@ public class LoginDialog extends JDialog {
     }
      
 	
-    
+    int a = 5;
  
 }

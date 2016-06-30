@@ -22,8 +22,7 @@ public class LoginDialog extends JDialog {
     private JButton btnCancel1;
     public static boolean succeeded;
     public static boolean test;
-    
- 
+
     public LoginDialog(Frame parent) {
         super(parent, "Login", true);
         //

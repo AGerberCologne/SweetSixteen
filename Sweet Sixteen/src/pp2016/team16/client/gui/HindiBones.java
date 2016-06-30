@@ -27,12 +27,13 @@ public class HindiBones extends JFrame implements KeyListener {
 	private Highscore highscore;
 	private MenuLeiste menuLeiste;
 	private Steuerung steuerung;
+	private LoginDialog dialog;
 //	public boolean test;
 	
 	public LinkedList<Monster> monsterListe;
 	public Spieler spieler;
 	public Spielelement[][] level;
-
+	public ClientEngine engine;
 	public int currentLevel = 0;
 	public boolean spielende = false;
 	public boolean verloren = false;
@@ -40,7 +41,6 @@ public class HindiBones extends JFrame implements KeyListener {
 	public int benoetigteZeit;
 	public boolean nebelAn = true;
 	public static JFrame frame;
-	public ClientEngine engine;
 	private boolean spielerInHighscore = false;
 	public boolean highscoreAngezeigt = false;
 	
@@ -104,12 +104,12 @@ public class HindiBones extends JFrame implements KeyListener {
 	
     public void zeigeLogin() {
                     	
-         LoginDialog loginDlg = new LoginDialog(frame);
+        LoginDialog loginDlg = new LoginDialog(frame);
          loginDlg.setVisible(true);
            if(loginDlg.isSucceeded()){
                   spielZuruecksetzen();
                   spieler.setName(LoginDialog.getUsername());
-                      
+                
            }
                       
     }

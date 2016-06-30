@@ -73,8 +73,7 @@ public class ClientEngine extends Thread // entweder extends Thread oder impleme
 	}
 
 	// Methoden für GUI
-
-	void login(String n, String p) throws Exception {
+		void login(String n, String p) throws Exception {
 		LoginMessage anfrage = new LoginMessage(n, p);
 		this.datenBeimServerAnfragen(anfrage);
 	}

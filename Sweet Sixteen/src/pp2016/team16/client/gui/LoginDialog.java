@@ -6,12 +6,17 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 import javax.swing.border.*;
+
+import pp2016.team16.client.engine.ClientEngine;
+import pp2016.team16.client.gui.HindiBones;
  
 public class LoginDialog extends JDialog {
  
 	public static ArrayList<String> User = new ArrayList<String>();
 	public static ArrayList<String> Passwort = new ArrayList<String>();
   
+	
+	private HindiBones fenster;
 	private static final long serialVersionUID = 1L;
 	private static JTextField tfUsername;
     private JPasswordField pfPassword;
@@ -22,10 +27,15 @@ public class LoginDialog extends JDialog {
     private JButton btnCancel1;
     public static boolean succeeded;
     public static boolean test;
-
+    private String benutzername ="";
+    private String passwort = "";
+    		
+    
     public LoginDialog(Frame parent) {
         super(parent, "Login", true);
-        //
+        
+    
+
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints cs = new GridBagConstraints();
  
@@ -97,7 +107,7 @@ public class LoginDialog extends JDialog {
         btnAnmelden = new JButton("Neu Anmelden");
         btnAnmelden.addActionListener(new ActionListener(){
         	
-        	public void actionPerformed(ActionEvent e) {   
+       	public void actionPerformed(ActionEvent e) {   
         		if(User.contains(getUsername())){
         			JOptionPane.showMessageDialog(LoginDialog.this,
                             "Der Benutzername ist bereits vergeben!",
@@ -126,7 +136,7 @@ public class LoginDialog extends JDialog {
         		
         	}
         });
-        
+       
         JPanel bp = new JPanel();
         bp.add(btnLogin);
         bp.add(btnCancel1);
@@ -180,8 +190,14 @@ public class LoginDialog extends JDialog {
             	if(c==true && d==true && c==d){
             		return true;}
             	else
-            		return false;
-            	
+            		return false;    			
+	
+
+        }
+
     }
-    }
+     
+	
+    
+ 
 }

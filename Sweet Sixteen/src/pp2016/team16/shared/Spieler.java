@@ -11,8 +11,8 @@ import pp2016.team16.server.engine.*;
 
 import javax.imageio.ImageIO;
 
-import astern.Astern;
-import astern.Wegpunkt;
+//import astern.Astern;
+//import astern.Wegpunkt;
 
 public class Spieler extends Figur {
 

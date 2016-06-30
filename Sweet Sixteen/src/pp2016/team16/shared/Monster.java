@@ -9,8 +9,8 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 
-import astern.Astern;
-import astern.Wegpunkt;
+//import astern.Astern;
+//import astern.Wegpunkt;
 /* Team16: Sweet sixteen
  * Goekdag, Enes, 5615399
  * 
@@ -186,7 +186,7 @@ public class Monster extends Figur {
 	 * Goekdag, Enes, 5615399
 	 * 
 	 * */
-	public void jagen() {                                                                      // Spieler JAGEN (Angriffszustand)
+/*	public void jagen() {                                                                      // Spieler JAGEN (Angriffszustand)
 		Astern  astern= new Astern(getYPos(), getXPos(), spieler.getXPos(),spieler.getYPos() , fenster);
 		Wegpunkt test = astern.starten();
 		System.out.println("Monster:"+this.getXPos()+","+this.getYPos());
@@ -207,13 +207,12 @@ public class Monster extends Figur {
 			dir=02;
 			move();
 		}
-		
 	
 	
 		    
 		
 		
-	}
+	}*/
 	/* Team16: Sweet sixteen
 	 * Goekdag, Enes, 5615399
 	 * 

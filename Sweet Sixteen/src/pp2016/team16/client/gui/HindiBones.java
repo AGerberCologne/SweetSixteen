@@ -303,8 +303,8 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 	public void nextLevel() {
 		currentLevel++;
 
-		Leser leser = new Leser("lvl//level" + currentLevel + ".txt", this);
-		level = leser.getLevel();
+		
+		
 
 	}
 

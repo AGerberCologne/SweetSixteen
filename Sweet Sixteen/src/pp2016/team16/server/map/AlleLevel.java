@@ -6,17 +6,19 @@ package pp2016.team16.server.map;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
+
+import pp2016.team16.shared.Spielelement;
 public class AlleLevel {
 	public int hoehe, breite; // deklariere oeffentliche Variabeln hoehe und breite
-	public int[][] level; // deklariere zweidimensionales Array level
+	public  int[][] level; // deklariere zweidimensionales Array level
 
 
 /**
 * <Zweidimensionales Array stellt die Grundlage des jeweiligen Levels dar >
 * @author <Noll , Markus , 5812500 > */
 	public AlleLevel() { // Konstruktor
-		hoehe = 21; // initialisiere hoehe und breite
-		breite = 21;
+		hoehe = 17; // initialisiere hoehe und breite
+		breite = 17;
 		level = new int[hoehe][breite]; // weise hoehe und breite dem Array zu
 	}
 
@@ -287,6 +289,12 @@ public class AlleLevel {
 		setzeMonsterMitSchluessel();
 		return level;
 		
+	}
+
+	public int[][] getlevel() {
+		// TODO Auto-generated method stub
+		
+		return level;
 	}
 	
 	

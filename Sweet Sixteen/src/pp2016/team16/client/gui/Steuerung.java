@@ -18,7 +18,7 @@ public class Steuerung extends JPanel {
 		Image img = null, boden = null;
 				
 		try{
-			img = ImageIO.read(new File("img//steuerung.png"));
+			img = ImageIO.read(new File("img//Steuerung2.png"));
 			boden = ImageIO.read(new File("img//status.png"));
 		}catch(IOException e){ }
 		

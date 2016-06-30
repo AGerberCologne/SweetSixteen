@@ -1,4 +1,4 @@
-package gui;
+package pp2016.team16.client.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -10,13 +10,13 @@ import javax.swing.JFrame;
 
 import pp2016.team16.client.engine.ClientEngine;
 import pp2016.team16.shared.Boden;
-import datenstruktur.Heiltrank;
-import datenstruktur.Monster;
-import datenstruktur.Schluessel;
-import datenstruktur.Spielelement;
-import datenstruktur.Spieler;
-import datenstruktur.Tuer;
-import datenstruktur.Wand;
+import pp2016.team16.shared.Heiltrank;
+import pp2016.team16.shared.Monster;
+import pp2016.team16.shared.Schluessel;
+import pp2016.team16.shared.Spielelement;
+import pp2016.team16.shared.Spieler;
+import pp2016.team16.shared.Tuer;
+import pp2016.team16.shared.Wand;
 
 public class HindiBones extends JFrame implements KeyListener {
 	

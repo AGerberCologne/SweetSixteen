@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.LinkedList;
 
 import javax.swing.JFrame;
@@ -19,7 +21,7 @@ import pp2016.team16.shared.Spieler;
 import pp2016.team16.shared.Tuer;
 import pp2016.team16.shared.Wand;
 
-public class HindiBones extends JFrame implements KeyListener {
+public class HindiBones extends JFrame implements KeyListener, MouseListener {
 	
 	private static final long serialVersionUID = 1L;
 
@@ -223,8 +225,23 @@ public class HindiBones extends JFrame implements KeyListener {
 		}
 
 	}
-
-		
+// int aktuelleXPos = fenster.engine.spieler.getX();
+// int aktuelleYPos = fenster.engine.spieler.getY();	
+	
+	public void mouseClicked(MouseEvent e) {
+		// Linke Taste: Den Drachen auf die Reise schicken.
+		if (e.getButton() == MouseEvent.BUTTON1) {
+			// Es war die linke Maustaste
+		int	zielX = e.getX() / 32; // Koordinaten des Klicks ...
+		int	zielY = e.getY() / 32; // auslesen und als Ziel setzen
+		}
+	}
+	
+	
+	public void mouseEntered(MouseEvent arg0) {}
+	public void mouseExited(MouseEvent arg0) {}
+	public void mousePressed(MouseEvent arg0) {}
+	public void mouseReleased(MouseEvent arg0) {}
 	
 
 	

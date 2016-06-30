@@ -1,7 +1,6 @@
 package test;
 
 import pp2016.team16.client.gui.HindiBones;
-import pp2016.team16.server.map.AlleLevel;
 
 
 public class HindiBonesMain {

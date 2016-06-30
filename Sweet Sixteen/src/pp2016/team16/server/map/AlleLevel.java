@@ -269,7 +269,7 @@ public class AlleLevel {
 		}
 	}*/
 	/**
-	* <Methode setzeInhalt() fasst alle zur Erzeugung eines Levels notwendigen Methoden in einer Methode zusammen.  >
+	* <Methode setzeInhalt() fasst alle zur Erzeugung des Levels notwendigen Methoden in einer Methode zusammen.  >
 	* @author <Noll , Markus , 5812500 > */
 	public int[][] setzeInhalt(int levelzahl){
 		erzeugeLabyrinth();

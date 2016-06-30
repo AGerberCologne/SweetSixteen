@@ -12,7 +12,7 @@ public class MenuLeiste extends JMenuBar implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
 
-	private Minimap mini;
+	private MiniMap mini;
 	private boolean anzeigen=false;
 	
     private JMenu spiel;
@@ -126,7 +126,7 @@ public class MenuLeiste extends JMenuBar implements ActionListener {
 			fenster.zeigeSteuerung();
 		}else if(e.getSource() == minimapzeigen && anzeigen==false){
 			anzeigen=true;
-			mini=new Minimap(fenster);
+			mini=new MiniMap(fenster);
 				
 			}else if(e.getSource() == minimapverstecken && anzeigen==true){
 			anzeigen=false;

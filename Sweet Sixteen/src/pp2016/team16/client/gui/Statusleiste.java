@@ -9,10 +9,10 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-import datenstruktur.Heiltrank;
-import datenstruktur.Schluessel;
-import datenstruktur.Spielelement;
-import datenstruktur.Tuer;
+import pp2016.team16.shared.Heiltrank;
+import pp2016.team16.shared.Schluessel;
+import pp2016.team16.shared.Spielelement;
+import pp2016.team16.shared.Tuer;
 
 public class Statusleiste extends JPanel {
 

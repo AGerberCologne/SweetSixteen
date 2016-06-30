@@ -13,7 +13,7 @@ import java.util.LinkedList;
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import gui.LoginDialog;
+import pp2016.team16.client.gui.LoginDialog;
 public class Highscore extends JPanel {
 
 	private static final long serialVersionUID = 1L;

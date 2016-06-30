@@ -1,6 +1,6 @@
-package datenstruktur;
+package pp2016.team16.shared;
 
-import gui.HindiBones;
+import pp2016.team16.client.gui.HindiBones;
 
 import java.io.File;
 import java.io.IOException;

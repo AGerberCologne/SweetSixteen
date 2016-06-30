@@ -1,6 +1,6 @@
 package pp2016.team16.shared;
 
-public class Tuer {
+public class Tuer extends Spielelement {
 private boolean offen;
 	
 	public Tuer(boolean offen){

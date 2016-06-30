@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
 import pp2016.team16.shared.*;
 import pp2016.team16.shared.Character;
 
-class ClientEngine extends Thread // entweder extends Thread oder implements
+public class ClientEngine extends Thread // entweder extends Thread oder implements
 // Runnable sind notwendig um mehrere
 // Threads gleichzeitig laufen zu lassen.
 // Dies ist notwendig, da Server um Client

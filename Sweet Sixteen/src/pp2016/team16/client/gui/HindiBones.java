@@ -8,7 +8,8 @@ import java.util.LinkedList;
 
 import javax.swing.JFrame;
 
-import datenstruktur.Boden;
+import pp2016.team16.client.engine.ClientEngine;
+import pp2016.team16.shared.Boden;
 import datenstruktur.Heiltrank;
 import datenstruktur.Monster;
 import datenstruktur.Schluessel;
@@ -39,7 +40,7 @@ public class HindiBones extends JFrame implements KeyListener {
 	public int benoetigteZeit;
 	public boolean nebelAn = true;
 	public static JFrame frame;
-	
+	public ClientEngine engine;
 	private boolean spielerInHighscore = false;
 	public boolean highscoreAngezeigt = false;
 	

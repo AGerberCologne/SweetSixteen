@@ -272,6 +272,7 @@ public class AlleLevel {
 	* <Methode setzeInhalt() fasst alle zur Erzeugung des Levels notwendigen Methoden in einer Methode zusammen.  >
 	* @author <Noll , Markus , 5812500 > */
 	public int[][] setzeInhalt(int levelzahl){
+	
 		erzeugeLabyrinth();
 		setzeStart();
 		setzeExit();
@@ -285,6 +286,10 @@ public class AlleLevel {
 		}
 		setzeMonsterMitSchluessel();
 		return level;
+		
 	}
+	
+	
+	
 	
 }

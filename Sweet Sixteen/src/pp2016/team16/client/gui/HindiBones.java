@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import javax.swing.JFrame;
 
 import pp2016.team16.client.engine.ClientEngine;
+import pp2016.team16.server.map.AlleLevel;
 import pp2016.team16.shared.Boden;
 import pp2016.team16.shared.Heiltrank;
 import pp2016.team16.shared.Monster;
@@ -27,9 +28,8 @@ public class HindiBones extends JFrame implements KeyListener {
 	private Highscore highscore;
 	private MenuLeiste menuLeiste;
 	private Steuerung steuerung;
-	private LoginDialog dialog;
 //	public boolean test;
-	
+
 	public LinkedList<Monster> monsterListe;
 	public Spieler spieler;
 	public Spielelement[][] level;
@@ -237,7 +237,8 @@ public class HindiBones extends JFrame implements KeyListener {
 		spieler = new Spieler("img//spieler.png", this);
 		monsterListe = new LinkedList<Monster>();
 		level = new Spielelement[WIDTH][HEIGHT];
-
+		
+		
 		currentLevel = 0;
 		spielende = false;
 		verloren = false;

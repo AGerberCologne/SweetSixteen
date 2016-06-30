@@ -198,6 +198,5 @@ public class LoginDialog extends JDialog {
     }
      
 	
-    int a = 5;
  
 }

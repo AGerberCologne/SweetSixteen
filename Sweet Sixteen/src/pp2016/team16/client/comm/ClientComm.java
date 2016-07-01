@@ -11,10 +11,10 @@ import pp2016.team16.shared.LogoutMessage;
 import pp2016.team16.shared.MessageObject;
 
 public class ClientComm {
-	LinkedList<MessageObject> EmpfangeVomServer = new LinkedList<MessageObject>();
-	LinkedList<MessageObject> SendeAnServer=new LinkedList<MessageObject>();
-	ObjectInputStream OIS=null;
-	ObjectOutputStream OOS=null;
+	LinkedList<MessageObject> empfangeVomServer = new LinkedList<MessageObject>();
+	LinkedList<MessageObject> sendeAnServer=new LinkedList<MessageObject>();
+	ObjectInputStream ois=null;
+	ObjectOutputStream oos=null;
 	Socket c;
 	public boolean clientOpen;
 
@@ -32,11 +32,11 @@ public class ClientComm {
 		
 		try{
 			
-			MessageObject msg = SendeAnServer.removeFirst();
-			OOS = new ObjectOutputStream(c.getOutputStream());
-			OOS.writeObject(msg);
-			OOS.flush();
-			OIS=new ObjectInputStream(c.getInputStream());
+			MessageObject msg = sendeAnServer.removeFirst();
+			oos = new ObjectOutputStream(c.getOutputStream());
+			oos.writeObject(msg);
+			oos.flush();
+			ois=new ObjectInputStream(c.getInputStream());
 			empfangeVomServer();
 			if(msg instanceof LogoutMessage)
 				beende();
@@ -48,23 +48,22 @@ public class ClientComm {
 		
 	}
 	public void empfangeVomServer() throws IOException, ClassNotFoundException{
-		OOS=new ObjectOutputStream(c.getOutputStream());
-		OOS.flush();
-		OIS=new ObjectInputStream(c.getInputStream());
-		MessageObject bmsg = (MessageObject)OIS.readObject();
-		EmpfangeVomServer.addLast(bmsg);
+		oos=new ObjectOutputStream(c.getOutputStream());
+		oos.flush();
+		ois=new ObjectInputStream(c.getInputStream());
+		MessageObject bmsg = (MessageObject)ois.readObject();
+		empfangeVomServer.addLast(bmsg);
 	}
 	
-	public void BekommeVonClient(MessageObject cmsg) throws ClassNotFoundException{
-		SendeAnServer.addLast(cmsg);
-		System.out.println("enque");
+	public void bekommeVonClient(MessageObject cmsg) throws ClassNotFoundException{
+		sendeAnServer.addLast(cmsg);
 		sendeAnServer();
 	}
 	
 	public MessageObject gebeWeiterAnClient(){
 	MessageObject j;
-	if (EmpfangeVomServer.isEmpty()!=false){
-	j=EmpfangeVomServer.removeFirst();
+	if (empfangeVomServer.isEmpty()!=false){
+	j=empfangeVomServer.removeFirst();
 	return j;}
 	else {
 		return null;
@@ -73,8 +72,8 @@ public class ClientComm {
 	
 	public void beende() throws IOException{
 		clientOpen=false;
-		OIS.close();
-		OOS.close();
+		ois.close();
+		oos.close();
 		c.close();
 		
 	}

@@ -3,7 +3,11 @@ import java.io.*;
 import java.net.*;
 import java.util.LinkedList;
 
-import pp2016.team16.client.comm.Message;
+import pp2016.team16.shared.IchBinDa;
+import pp2016.team16.shared.LogoutMessage;
+import pp2016.team16.shared.MessageObject;
+
+
 //Gruppe 16 Kommunikation; Ann-Catherine Hartmann
 
 
@@ -14,9 +18,8 @@ public class ServerComm {
 	boolean ServerOpen;
 	ObjectOutputStream OST=null;
 	ObjectInputStream IN=null;
-	OutputStreamWriter OSW=null;
-	InputStreamReader ISR=null;
-	LinkedList<Message> ServerList = new LinkedList<Message>();
+	LinkedList<MessageObject> EmpfangeVomClient = new LinkedList<MessageObject>();
+	LinkedList<MessageObject> SendeAnClient = new LinkedList<MessageObject>();
 	
 public ServerComm(int port){
 		
@@ -43,43 +46,51 @@ public ServerComm(int port){
 		
 		public void verarbeiteNachricht(){
 			try {
-				OST = new ObjectOutputStream(S.getOutputStream());
-				Message n = new Message();
-				System.out.println("neue Nachricht wird erzeugt");
+				//OST = new ObjectOutputStream(S.getOutputStream());
 				IN = new ObjectInputStream(S.getInputStream());
-				System.out.println("Server empfängt vom Client und versucht zu empfangen");
-				System.out.println("Server versucht Nachricht vom Client zu verarbeiten");
-				n = (Message)IN.readObject();
-				ServerList.add(n);
-				System.out.println("Der Server hat die Nachricht bekommen und schickt Nachricht zurück");
-				Message j=new Message("Der Server reagiert auf den Client");
-				OST.writeObject(j);
-				OST.flush();
-				System.out.println("Server hat eine Nachricht zurückgeschickt");
-				//GebeWeiterAnServer(); Dies teste ich noch nicht, da ich noch keinen Client und Server habe
-				//SendeAnClient(j);
+				MessageObject n = new MessageObject();
+				n = (MessageObject)IN.readObject();
+				if (n instanceof IchBinDa);
+				else if (n instanceof LogoutMessage){
+					Schließe();
+				}
+				else{
+					EmpfangeVomClient.addLast(n);
+					GebeWeiterAnServer();
+				}
 			} catch (IOException | ClassNotFoundException e) {
 			}
 			
 		}
 		
-		/*public Message GebeWeiterAnServer(){  
-			Message r= new Message();
-			r=ServerList.removeFirst();
+		public MessageObject GebeWeiterAnServer(){  
+			MessageObject r= new MessageObject();
+			r=EmpfangeVomClient.removeFirst();
 			return r;
 		}
-		public void SendeAnClient(Message m){
+		
+		
+		public void SendeAnClient(){
 			try {
+				MessageObject m = SendeAnClient.removeFirst();
 				OST=new ObjectOutputStream(S.getOutputStream());
 				OST.writeObject(m);
 				OST.flush();
-				System.out.println("Server hat eine Nachricht zurückgeschickt");
 			} catch (IOException e) {
 				
 			}
 			
 			
-		}*/ 
+		}
+		public void Schließe() throws IOException{
+			ServerOpen = false;
+			OST.close();
+			IN.close();
+			ServerS.close();
+			S.close();
+			
+			
+		}
 		
 		
 }

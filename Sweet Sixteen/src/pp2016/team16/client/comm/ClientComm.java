@@ -2,20 +2,17 @@ package pp2016.team16.client.comm;
 //Gruppe 16 Kommunikation; Ann-Catherine Hartmann
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.net.Socket;
 import java.util.LinkedList;
 
+import pp2016.team16.shared.LogoutMessage;
 import pp2016.team16.shared.MessageObject;
 
 public class ClientComm {
 	LinkedList<MessageObject> EmpfangeVomServer = new LinkedList<MessageObject>();
 	LinkedList<MessageObject> SendeAnServer=new LinkedList<MessageObject>();
-	InputStream IS;
-	OutputStream OS;
 	ObjectInputStream OIS=null;
 	ObjectOutputStream OOS=null;
 	Socket c;
@@ -31,10 +28,14 @@ public class ClientComm {
 	public void SendeAnServer(){
 		
 		try{
+			
 			MessageObject msg = SendeAnServer.removeFirst();
 			OOS = new ObjectOutputStream(c.getOutputStream());
 			OOS.writeObject(msg);
 			OOS.flush();
+			if(msg instanceof LogoutMessage)
+				Beende();
+			
 			//OIS=new ObjectInputStream(c.getInputStream());
 		}catch(IOException e){
 			
@@ -57,4 +58,10 @@ public class ClientComm {
 	j=EmpfangeVomServer.removeFirst();
 	return j;
 }
+	
+	public void Beende() throws IOException{
+		OIS.close();
+		OOS.close();
+		c.close();
+	}
 }

@@ -6,8 +6,13 @@ import java.util.*;
 public class MessageObject implements Serializable	//Datenstruktur 
 {	
 	
-    
- void ueberschreibe(MessageObject message){
+   
+ /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+void ueberschreibe(MessageObject message){
 	 
  }
     

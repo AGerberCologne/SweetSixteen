@@ -16,8 +16,8 @@ public class HindiBonesMain {
 		 //*new HindiBones(BOX*WIDTH, BOX*HEIGHT, "Hindi");
 		ClientComm com = new ClientComm("localhost", 10000);
 		 ServerComm serv = new ServerComm(10000);
-		 System.out.println("Starte Server");ClientEngine client = new ClientEngine();
-		 System.out.println("Starte Client");
+		 System.out.println("Starte Server");
+		 ClientEngine client = new ClientEngine();
 		 client.levelzaehler = 1;
 		 try {
 			client.changeLevel();
@@ -25,7 +25,6 @@ public class HindiBonesMain {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		 serv.run(); 
 		
 	}
 

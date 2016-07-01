@@ -12,7 +12,6 @@ import pp2016.team16.shared.MessageObject;
 
 
 public class ServerComm {
-	
 	public ServerSocket serverS;
 	public Socket s;
 	boolean serverOpen;
@@ -22,35 +21,32 @@ public class ServerComm {
 	LinkedList<MessageObject> sendeAnClient = new LinkedList<MessageObject>();
 	
 public ServerComm(int port){
-		
-		while (true){
-			try {
+		try {
 			serverS = new ServerSocket(port);
-			serverS.setSoTimeout(60000);
-			s = serverS.accept();
-			run();
-			
 		}catch(IOException e){}
 		}
-}
 
 		
 		public void run() {
-			this.serverOpen = true;
-		
-			while (this.serverOpen) {
+			serverOpen=true;
+			while (serverOpen){
+				try {
+				//serverS.setSoTimeout(60000);
+				s = serverS.accept();
 				verarbeiteNachricht();
+			}catch(IOException e){}
 			}
 		}
 		
 		public void verarbeiteNachricht(){
 			try {
-				//OST = new ObjectOutputStream(S.getOutputStream());
+				ost = new ObjectOutputStream(s.getOutputStream());
+				ost.flush();
 				in = new ObjectInputStream(s.getInputStream());
-				MessageObject n = new MessageObject();
+				MessageObject n;
 				n = (MessageObject)in.readObject();
-				if (n instanceof IchBinDa);
-				else if (n instanceof LogoutMessage){
+				if (n instanceof IchBinDa);else 
+				if (n instanceof LogoutMessage){
 					schlieﬂe();
 				}
 				else{
@@ -63,7 +59,7 @@ public ServerComm(int port){
 		}
 		
 		public MessageObject gebeWeiterAnServer(){  
-			MessageObject r= new MessageObject();
+			MessageObject r;
 			r=empfangeVomClient.removeFirst();
 			return r;
 		}
@@ -98,3 +94,4 @@ public ServerComm(int port){
 		
 		
 }
+

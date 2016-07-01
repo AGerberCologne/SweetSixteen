@@ -28,7 +28,7 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 	public int posY;
 	Character c;
 
-	ClientEngine() throws InterruptedException {
+	 public ClientEngine()  {
 		System.out.println("Starte Client");
 
 	}
@@ -68,6 +68,7 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 		} else */ if (daten instanceof ChangeLevelMessage) {
 			map = ((ChangeLevelMessage) daten).map;
 			levelzaehler = ((ChangeLevelMessage) daten).levelzaehler;
+			System.out.println("Neues Level gespeichert");
 
 		} /*else if (daten instanceof MoveMessage) {
 			if (((MoveMessage) daten).validerZug == true) {

@@ -63,6 +63,7 @@ class ServerEngine extends Thread   // entweder extends Thread oder implements
 			System.out.println("Server Shutdown");
 			break; // Aufforderung zum runterfahren
 		} else */if (eingehendeNachricht instanceof ChangeLevelMessage) {
+			System.out.println("sERVER HAT lEVEL-nACHRICHT empfangen");
 			this.levelzaehler = ((ChangeLevelMessage) eingehendeNachricht).levelzaehler;
 			AlleLevel levelObject = new AlleLevel();
 			map =levelObject.setzeInhalt(levelzaehler);

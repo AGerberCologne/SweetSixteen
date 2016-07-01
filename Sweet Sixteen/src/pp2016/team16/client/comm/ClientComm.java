@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.util.LinkedList;
 
 import pp2016.team16.shared.LogoutMessage;
+
 import pp2016.team16.shared.MessageObject;
 
 public class ClientComm {
@@ -26,7 +27,9 @@ public class ClientComm {
 			
 		}
 	}
+
 	public void SendeAnServer(){
+
 		
 		try{
 			

@@ -7,8 +7,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
+import pp2016.team16.server.engine.IServerEngine;
 import pp2016.team16.shared.Spielelement;
-public class AlleLevel {
+public class AlleLevel implements IServerEngine {
 	public int hoehe, breite; // deklariere oeffentliche Variabeln hoehe und breite
 	public  int[][] level; // deklariere zweidimensionales Array level
 

@@ -10,7 +10,8 @@ import java.util.*;
 import javax.swing.JOptionPane;
 
 import pp2016.team16.shared.*;
-import pp2016.team16.shared.Character;
+import pp2016.team16.shared.MessageObject;
+import pp2016.team16.client.comm.ClientComm;
 
 public class ClientEngine extends Thread // entweder extends Thread oder implements
 // Runnable sind notwendig um mehrere
@@ -80,7 +81,7 @@ public class ClientEngine extends Thread // entweder extends Thread oder impleme
 
 	void logout() throws Exception {
 		LogoutMessage exitNachricht = new LogoutMessage();
-		this.datenBeimServerAnfragen(exitNachricht);
+		(exitNachricht);
 	}
 
 	// Diese Methode wird entweder eine Liste/Array etc. zurückgeben, in dem der
@@ -96,14 +97,14 @@ public class ClientEngine extends Thread // entweder extends Thread oder impleme
 		move.posNeu[x] = y;
 		System.out.println("Der Character will sich" + " zu Position [" + x
 				+ ", " + y + "] bewegen");
-		this.datenBeimServerAnfragen(move);
+		SendeAnServer(move);
 	}
 
 	void changeLevel() throws Exception {
 		System.out.println("Der Client fragt ein neues Level an");
 		ChangeLevelMessage level = new ChangeLevelMessage();
 		level.login = false;
-		this.datenBeimServerAnfragen(level);
+		SendeAnServer(level);
 	}
 
 	void benutzeItem() {

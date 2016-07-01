@@ -8,8 +8,11 @@ import java.net.*;
 import java.util.*;
 
 import pp2016.team16.shared.*;
+import pp2016.team16.server.engine.IServerEngine;
+import pp2016.team16.server.map.AlleLevel;
 
-class ServerEngine extends Thread // entweder extends Thread oder implements
+
+class ServerEngine extends Thread   // entweder extends Thread oder implements
 									// Runnable sind notwendig um mehrere
 									// Threads gleichzeitig laufen zu lassen.
 									// Dies ist notwendig, da Server um Client
@@ -62,7 +65,8 @@ class ServerEngine extends Thread // entweder extends Thread oder implements
 			break; // Aufforderung zum runterfahren
 		} else if (eingehendeNachricht instanceof ChangeLevelMessage) {
 			System.out.println("Der Server soll neue Leveldaten laden");
-			int[][] level = new int[16][16];
+			AlleLevel level = new AlleLevel();
+			int[][] levelmap =level.setzeInhalt(2);
 			ChangeLevelMessage answer = new ChangeLevelMessage();
 			answer.ueberschreibe(eingehendeNachricht);
 			answer.map = level;

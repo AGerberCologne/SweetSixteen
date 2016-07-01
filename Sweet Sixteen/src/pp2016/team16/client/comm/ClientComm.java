@@ -9,6 +9,8 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.util.LinkedList;
 
+import pp2016.team16.shared.MessageObject;
+
 public class ClientComm {
 	LinkedList<Message> ClientList = new LinkedList<Message>();
 	InputStream IS;
@@ -26,7 +28,7 @@ public class ClientComm {
 			
 		}
 	}
-	public void SendeAnServer(Message msg){
+	public void SendeAnServer(MessageObject msg){
 		
 		try{
 			OOS = new ObjectOutputStream(c.getOutputStream());

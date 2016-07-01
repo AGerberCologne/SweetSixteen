@@ -153,7 +153,7 @@ public class AlleLevel implements IServerEngine {
 	* <Methode setzeTrank() setzt zufaellig vier Traenke in unser erzeugtes Labyrinth.
 	* Dabei wird zunaechst ueberprüft, ob die gewaehlte Position begehbar ist.  >
 	* @author <Noll , Markus , 5812500 > */
-	public int[][] setzeTrank() {
+/*	public int[][] setzeTrank() {
 		int maxTrank = 0;
 		while (maxTrank < 4) {
 			int x = zufallsPositionx();
@@ -281,7 +281,7 @@ public class AlleLevel implements IServerEngine {
 		erzeugeLabyrinth();
 		setzeStart();
 		setzeExit();
-		setzeTrank();
+	//	setzeTrank();
 		if (levelzahl<3){
 			setzeMonsterTyp1(levelzahl);
 		}

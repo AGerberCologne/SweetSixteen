@@ -69,6 +69,10 @@ public ServerComm(int port){
 			return r;
 		}
 		
+		public void gebeWeiterAnClient(MessageObject h){
+			SendeAnClient.addLast(h);
+			sendeAnClient();
+		}
 		
 		public void sendeAnClient(){
 			try {

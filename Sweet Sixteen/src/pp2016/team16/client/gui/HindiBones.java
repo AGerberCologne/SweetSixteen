@@ -31,10 +31,11 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 	private MenuLeiste menuLeiste;
 	private Steuerung steuerung;
 //	public boolean test;
-
+	
+	public AlleLevel[][] level;
 	public LinkedList<Monster> monsterListe;
 	public Spieler spieler;
-	public Spielelement[][] level;
+//	public Spielelement[][] level;
 	public ClientEngine engine;
 	public int currentLevel = 0;
 	public boolean spielende = false;
@@ -253,8 +254,8 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 
 		spieler = new Spieler("img//spieler.png", this);
 		monsterListe = new LinkedList<Monster>();
-		level = new Spielelement[WIDTH][HEIGHT];
-		
+	//	level = new Spielelement[WIDTH][HEIGHT];
+		level = new AlleLevel[17][17];
 		
 		currentLevel = 0;
 		spielende = false;
@@ -302,11 +303,15 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 
 	public void nextLevel() {
 		currentLevel++;
-
 		
-		
-
+	//	level = engine.getLevel()
 	}
+
+	public ClientEngine getEngine() {
+			return engine;
+		}
+
+	
 
 }
 

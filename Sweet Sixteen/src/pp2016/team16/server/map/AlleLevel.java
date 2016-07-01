@@ -12,7 +12,7 @@ public class AlleLevel {
 	public int hoehe, breite; // deklariere oeffentliche Variabeln hoehe und breite
 	public  int[][] level; // deklariere zweidimensionales Array level
 
-
+	
 /**
 * <Zweidimensionales Array stellt die Grundlage des jeweiligen Levels dar >
 * @author <Noll , Markus , 5812500 > */
@@ -162,6 +162,7 @@ public class AlleLevel {
 			}
 		}
 		return level;
+		
 	}
 	/**
 	* <Methode setzeStart() setzt zufaellig eine Startposition in unsere obere Aussenwand.  >

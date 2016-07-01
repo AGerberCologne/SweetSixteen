@@ -14,6 +14,7 @@ public class ClientComm {
 	LinkedList<MessageObject> EmpfangeVomServer = new LinkedList<MessageObject>();
 	LinkedList<MessageObject> SendeAnServer=new LinkedList<MessageObject>();
 	ObjectInputStream OIS=null;
+
 	ObjectOutputStream OOS=null;
 	Socket c;
 	

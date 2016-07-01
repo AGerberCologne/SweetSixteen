@@ -9,8 +9,11 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.util.LinkedList;
 
+import pp2016.team16.shared.MessageObject;
+
 public class ClientComm {
-	LinkedList<Message> ClientList = new LinkedList<Message>();
+	LinkedList<MessageObject> EmpfangeVomServer = new LinkedList<MessageObject>();
+	LinkedList<MessageObject> SendeAnServer=new LinkedList<MessageObject>();
 	InputStream IS;
 	OutputStream OS;
 	ObjectInputStream OIS=null;
@@ -20,36 +23,38 @@ public class ClientComm {
 	public ClientComm(String host,int port){
 		try{
 			c = new Socket(host, port);
-			System.out.println("Verbindung zum Client steht");
 			
 		}catch(IOException e){
 			
 		}
 	}
-	public void SendeAnServer(Message msg){
+	public void SendeAnServer(){
 		
 		try{
+			MessageObject msg = SendeAnServer.removeFirst();
 			OOS = new ObjectOutputStream(c.getOutputStream());
-			System.out.println("ObjectStream steht");
 			OOS.writeObject(msg);
 			OOS.flush();
-			System.out.println("Client sendet an Server");
-			Message bmsg = new Message();
-			OIS=new ObjectInputStream(c.getInputStream());
-			System.out.println("ObjectInputStream steht");
-			bmsg=(Message)OIS.readObject();
-			//ClientList.addLast(bmsg);
-			System.out.println("Client empfängt Antwort von Server"+ getMessage(bmsg));
+			//OIS=new ObjectInputStream(c.getInputStream());
 		}catch(IOException e){
 			
-		} catch (ClassNotFoundException e) {
-			
-		}
+		} 
 		
 	}
-/*public Message GebeWeiterAnClient(){
-	Message j = new Message();
-	j=ClientList.removeFirst();
+	public void EmpfangeVomServer() throws IOException, ClassNotFoundException{
+		OIS=new ObjectInputStream(c.getInputStream());
+		MessageObject bmsg = (MessageObject)OIS.readObject();
+		EmpfangeVomServer.addLast(bmsg);
+		GebeWeiterAnClient();
+	}
+	
+	public void BekommeVonClient(MessageObject cmsg){
+		SendeAnServer.addLast(cmsg);
+		SendeAnServer();
+	}
+	public MessageObject GebeWeiterAnClient(){
+	MessageObject j = new MessageObject();
+	j=EmpfangeVomServer.removeFirst();
 	return j;
-}*/
+}
 }

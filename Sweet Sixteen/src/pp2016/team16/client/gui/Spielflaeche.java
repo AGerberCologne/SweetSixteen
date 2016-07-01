@@ -66,7 +66,7 @@ public class Spielflaeche extends JPanel {
 								j * fenster.BOX, null);
 						g.drawImage(schluessel, i * fenster.BOX, j
 								* fenster.BOX, null);
-					} else if (fenster.level[i][j] instanceof Tuer) {
+					} else if (fenster.level[i][j] instanceof Tuer){
 						// Hier ist die Tuer
 						g.drawImage(boden, i * fenster.BOX,
 								j * fenster.BOX, null);
@@ -112,6 +112,7 @@ public class Spielflaeche extends JPanel {
 
 			// Male das Monster, falls es von anfang an anwesend ist
 			if (m.getTyp() == 0) drawMonster(g,m);
+			else if (m.getTyp() == 2) drawMonster(g,m);
 			// Male das Monster, falls es erst durch das Event 'Schluessel aufheben' erscheint
 			else if (event && m.getTyp() == 1) drawMonster(g,m);
 			

@@ -20,6 +20,9 @@ public class ServerComm {
 	LinkedList<MessageObject> empfangeVomClient = new LinkedList<MessageObject>();
 	LinkedList<MessageObject> sendeAnClient = new LinkedList<MessageObject>();
 	
+public ServerComm(){
+	
+}
 public ServerComm(int port){
 		try {
 			serverS = new ServerSocket(port);

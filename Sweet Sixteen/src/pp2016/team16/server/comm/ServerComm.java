@@ -13,22 +13,21 @@ import pp2016.team16.shared.MessageObject;
 
 public class ServerComm {
 	
-	public ServerSocket ServerS;
-	public Socket S;
-	boolean ServerOpen;
-	ObjectOutputStream OST=null;
-	ObjectInputStream IN=null;
-	LinkedList<MessageObject> EmpfangeVomClient = new LinkedList<MessageObject>();
-	LinkedList<MessageObject> SendeAnClient = new LinkedList<MessageObject>();
+	public ServerSocket serverS;
+	public Socket s;
+	boolean serverOpen;
+	ObjectOutputStream ost=null;
+	ObjectInputStream in=null;
+	LinkedList<MessageObject> empfangeVomClient = new LinkedList<MessageObject>();
+	LinkedList<MessageObject> sendeAnClient = new LinkedList<MessageObject>();
 	
 public ServerComm(int port){
 		
 		while (true){
 			try {
-			ServerS = new ServerSocket(port);
-			ServerS.setSoTimeout(60000);
-			S = ServerS.accept();
-			System.out.println("Starte Server");
+			serverS = new ServerSocket(port);
+			serverS.setSoTimeout(60000);
+			s = serverS.accept();
 			run();
 			
 		}catch(IOException e){}
@@ -37,9 +36,9 @@ public ServerComm(int port){
 
 		
 		public void run() {
-			this.ServerOpen = true;
+			this.serverOpen = true;
 		
-			while (this.ServerOpen) {
+			while (this.serverOpen) {
 				verarbeiteNachricht();
 			}
 		}
@@ -47,15 +46,15 @@ public ServerComm(int port){
 		public void verarbeiteNachricht(){
 			try {
 				//OST = new ObjectOutputStream(S.getOutputStream());
-				IN = new ObjectInputStream(S.getInputStream());
+				in = new ObjectInputStream(s.getInputStream());
 				MessageObject n = new MessageObject();
-				n = (MessageObject)IN.readObject();
+				n = (MessageObject)in.readObject();
 				if (n instanceof IchBinDa);
 				else if (n instanceof LogoutMessage){
 					schlieﬂe();
 				}
 				else{
-					EmpfangeVomClient.addLast(n);
+					empfangeVomClient.addLast(n);
 					gebeWeiterAnServer();
 				}
 			} catch (IOException | ClassNotFoundException e) {
@@ -65,21 +64,21 @@ public ServerComm(int port){
 		
 		public MessageObject gebeWeiterAnServer(){  
 			MessageObject r= new MessageObject();
-			r=EmpfangeVomClient.removeFirst();
+			r=empfangeVomClient.removeFirst();
 			return r;
 		}
 		
 		public void gebeWeiterAnClient(MessageObject h){
-			SendeAnClient.addLast(h);
+			sendeAnClient.addLast(h);
 			sendeAnClient();
 		}
 		
 		public void sendeAnClient(){
 			try {
-				MessageObject m = SendeAnClient.removeFirst();
-				OST=new ObjectOutputStream(S.getOutputStream());
-				OST.writeObject(m);
-				OST.flush();
+				MessageObject m = sendeAnClient.removeFirst();
+				ost=new ObjectOutputStream(s.getOutputStream());
+				ost.writeObject(m);
+				ost.flush();
 			} catch (IOException e) {
 				
 			
@@ -88,11 +87,11 @@ public ServerComm(int port){
 			
 		}
 		public void schlieﬂe() throws IOException{
-			ServerOpen = false;
-			OST.close();
-			IN.close();
-			ServerS.close();
-			S.close();
+			serverOpen = false;
+			ost.close();
+			in.close();
+			serverS.close();
+			s.close();
 			
 			
 		}

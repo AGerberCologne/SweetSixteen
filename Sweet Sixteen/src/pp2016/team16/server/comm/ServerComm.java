@@ -14,7 +14,7 @@ import pp2016.team16.shared.MessageObject;
 public class ServerComm {
 	public ServerSocket serverS;
 	public Socket s;
-	boolean serverOpen;
+	public boolean serverOpen;
 	ObjectOutputStream ost=null;
 	ObjectInputStream in=null;
 	LinkedList<MessageObject> empfangeVomClient = new LinkedList<MessageObject>();

@@ -8,6 +8,7 @@ import java.net.*;
 import java.util.*;
 
 import pp2016.team16.shared.*;
+import pp2016.team16.server.comm.ServerComm;
 import pp2016.team16.server.engine.IServerEngine;
 import pp2016.team16.server.map.AlleLevel;
 
@@ -18,7 +19,8 @@ class ServerEngine extends Thread   // entweder extends Thread oder implements
 									// Dies ist notwendig, da Server um Client
 									// natürlich parallel aktiv sein müssen
 {
-	MessageObject serverDatenbestand = new MessageObject(); 
+	MessageObject serverDatenbestand = new MessageObject();
+	ServerComm server = new ServerComm();
 	public int[][] map ;
 	public int levelzaehler;
 
@@ -27,8 +29,8 @@ class ServerEngine extends Thread   // entweder extends Thread oder implements
 
 	}
 	public void run(){
-		while(serverOpen){
-			MessageObject m = gebeWeiterAnServer();
+		while(server.serverOpen){
+			MessageObject m = server.gebeWeiterAnServer();
 			this.nachrichtenVerarbeiten(m);
 		}
 	}
@@ -38,7 +40,7 @@ class ServerEngine extends Thread   // entweder extends Thread oder implements
 	 * Message-Handeling @ Gerber, Alina , 5961246
 	 */
 	void nachrichtenVerarbeiten(MessageObject eingehendeNachricht) {
-		if (eingehendeNachricht instanceof LoginMessage) 
+		/*if (eingehendeNachricht instanceof LoginMessage) 
 		{
 			System.out.println("Der Client möchte sich im Server einloggen");
 			this.serverDatenbestand.ueberschreibe(eingehendeNachricht);
@@ -60,14 +62,14 @@ class ServerEngine extends Thread   // entweder extends Thread oder implements
 		{
 			System.out.println("Server Shutdown");
 			break; // Aufforderung zum runterfahren
-		} else if (eingehendeNachricht instanceof ChangeLevelMessage) {
+		} else */if (eingehendeNachricht instanceof ChangeLevelMessage) {
 			this.levelzaehler = ((ChangeLevelMessage) eingehendeNachricht).levelzaehler;
 			AlleLevel levelObject = new AlleLevel();
 			map =levelObject.setzeInhalt(levelzaehler);
 			ChangeLevelMessage answer = new ChangeLevelMessage();
 			answer.map = levelObject.level;
-			gebeWeiterAnClient(answer);
-		} else if (eingehendeNachricht instanceof MoveMessage) {
+			server.gebeWeiterAnClient(answer);
+		} /*else if (eingehendeNachricht instanceof MoveMessage) {
 			System.out.println("Der Spieler möchte sich bewegen");
 			MoveMessage answer = new MoveMessage();
 			answer.ueberschreibe((MoveMessage) eingehendeNachricht);
@@ -96,7 +98,7 @@ class ServerEngine extends Thread   // entweder extends Thread oder implements
 		{
 			new Exception(
 					"Server hat eine Nachricht erhalten, die nicht verarbeitet werden kann");
-		}
+		}*/
 	}
 
 }

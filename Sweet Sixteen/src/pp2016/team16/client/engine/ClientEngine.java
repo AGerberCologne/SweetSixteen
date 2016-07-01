@@ -20,6 +20,7 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 // natürlich parallel aktiv sein müssen
 {
 	// In diesem Objekt speichert der Client interne Daten
+	ClientComm client = new ClientComm();
 	MessageObject clientDatenbestand = new MessageObject();
 	public int [][] map;
 	public int levelzaehler;
@@ -33,9 +34,14 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 	}
 	
 	public void run(){
-		while(clientOpen){
-			MessageObject m = gebeWeiterAnClient();
-			this.nachrichtVerarbeiten(m);
+		while(client.clientOpen){
+			MessageObject m = client.gebeWeiterAnClient();
+			try {
+				this.nachrichtVerarbeiten(m);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 		}
 	}
@@ -52,18 +58,18 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 	 */
 	// Message-Handling
 	void nachrichtVerarbeiten(MessageObject daten) throws Exception {
-		if (daten instanceof LoginAnswerMessage) {
+		/*if (daten instanceof LoginAnswerMessage) {
 			System.out.println(daten.toString());
 			if (((LoginAnswerMessage) daten).success == 1) {
 				this.c = new Character(((LoginAnswerMessage) daten).CharacterID);
 				this.c.position = ((LoginAnswerMessage) daten).startposition;
-				this.datenBeimServerAnfragen(new ChangeLevelMessage(1));
+				
 			}
-		} else if (daten instanceof ChangeLevelMessage) {
+		} else */ if (daten instanceof ChangeLevelMessage) {
 			map = ((ChangeLevelMessage) daten).map;
 			levelzaehler = ((ChangeLevelMessage) daten).levelzaehler;
 
-		} else if (daten instanceof MoveMessage) {
+		} /*else if (daten instanceof MoveMessage) {
 			if (((MoveMessage) daten).validerZug == true) {
 				c.position = ((MoveMessage) daten).posNeu;
 				System.out
@@ -76,7 +82,7 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 			int i = ((CheatMessage) daten).i;
 			System.out.println("Der Cheat wurde angenommen & zwar Nr. " + i
 					+ "\n");
-		}
+		}*/
 	}
 
 /*
@@ -107,12 +113,12 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 		SendeAnServer(move);
 	} */
 
-	public int[][] changeLevel(){
+	public int[][] changeLevel() throws Exception{
 		System.out.println("Der Client fragt ein neues Level an");
 		ChangeLevelMessage level = new ChangeLevelMessage();
 		level.levelzaehler = this.levelzaehler;
-		pp2016.team16.client.engine.IClientComm.bekommeVonClient(level);
-		MessageObject answer =gebeWeiterAnClient();
+		client.bekommeVonClient(level);
+		MessageObject answer = client.gebeWeiterAnClient();
 		this.nachrichtVerarbeiten(answer);
 		return map;
 	}

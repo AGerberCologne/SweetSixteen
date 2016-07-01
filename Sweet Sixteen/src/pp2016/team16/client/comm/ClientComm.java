@@ -15,7 +15,6 @@ public class ClientComm {
 	LinkedList<MessageObject> EmpfangeVomServer = new LinkedList<MessageObject>();
 	LinkedList<MessageObject> SendeAnServer=new LinkedList<MessageObject>();
 	ObjectInputStream OIS=null;
-
 	ObjectOutputStream OOS=null;
 	Socket c;
 	
@@ -29,7 +28,7 @@ public class ClientComm {
 		}
 	}
 
-	public void SendeAnServer(){
+	public void sendeAnServer(){
 
 		
 		try{
@@ -39,7 +38,7 @@ public class ClientComm {
 			OOS.writeObject(msg);
 			OOS.flush();
 			if(msg instanceof LogoutMessage)
-				Beende();
+				beende();
 			
 			//OIS=new ObjectInputStream(c.getInputStream());
 		}catch(IOException e){
@@ -47,24 +46,25 @@ public class ClientComm {
 		} 
 		
 	}
-	public void EmpfangeVomServer() throws IOException, ClassNotFoundException{
+	public void empfangeVomServer() throws IOException, ClassNotFoundException{
 		OIS=new ObjectInputStream(c.getInputStream());
 		MessageObject bmsg = (MessageObject)OIS.readObject();
 		EmpfangeVomServer.addLast(bmsg);
-		GebeWeiterAnClient();
+		gebeWeiterAnClient();
 	}
 	
 	public void BekommeVonClient(MessageObject cmsg){
 		SendeAnServer.addLast(cmsg);
-		SendeAnServer();
+		sendeAnServer();
 	}
-	public MessageObject GebeWeiterAnClient(){
+	
+	public MessageObject gebeWeiterAnClient(){
 	MessageObject j = new MessageObject();
 	j=EmpfangeVomServer.removeFirst();
 	return j;
 }
 	
-	public void Beende() throws IOException{
+	public void beende() throws IOException{
 		OIS.close();
 		OOS.close();
 		c.close();

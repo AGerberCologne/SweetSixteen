@@ -52,25 +52,25 @@ public ServerComm(int port){
 				n = (MessageObject)IN.readObject();
 				if (n instanceof IchBinDa);
 				else if (n instanceof LogoutMessage){
-					Schlieﬂe();
+					schlieﬂe();
 				}
 				else{
 					EmpfangeVomClient.addLast(n);
-					GebeWeiterAnServer();
+					gebeWeiterAnServer();
 				}
 			} catch (IOException | ClassNotFoundException e) {
 			}
 			
 		}
 		
-		public MessageObject GebeWeiterAnServer(){  
+		public MessageObject gebeWeiterAnServer(){  
 			MessageObject r= new MessageObject();
 			r=EmpfangeVomClient.removeFirst();
 			return r;
 		}
 		
 		
-		public void SendeAnClient(){
+		public void sendeAnClient(){
 			try {
 				MessageObject m = SendeAnClient.removeFirst();
 				OST=new ObjectOutputStream(S.getOutputStream());
@@ -83,7 +83,7 @@ public ServerComm(int port){
 			
 			
 		}
-		public void Schlieﬂe() throws IOException{
+		public void schlieﬂe() throws IOException{
 			ServerOpen = false;
 			OST.close();
 			IN.close();

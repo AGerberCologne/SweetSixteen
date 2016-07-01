@@ -19,6 +19,7 @@ public class ClientComm {
 	ObjectOutputStream OOS=null;
 	Socket c;
 	
+
 	public ClientComm(String host,int port){
 		try{
 			c = new Socket(host, port);

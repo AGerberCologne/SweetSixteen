@@ -27,6 +27,7 @@ public class ClientComm implements IClientComm {
 			
 		}
 	}
+
 	
 	public ClientComm(){
 		

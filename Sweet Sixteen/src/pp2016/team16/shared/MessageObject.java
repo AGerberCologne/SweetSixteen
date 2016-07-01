@@ -13,7 +13,7 @@ public class MessageObject implements Serializable	//Datenstruktur
 	 */
 	private static final long serialVersionUID = 1L;
 
-void ueberschreibe(MessageObject message){
+public void ueberschreibe(MessageObject message){
 	 
  }
     

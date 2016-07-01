@@ -1,11 +1,12 @@
 package pp2016.team16.shared;
 
 public class ChangeLevelMessage extends MessageObject {
-	int[][] map;
-	boolean login = false;
+	public int[][] map;
+	public int levelzaehler;
+	public boolean login = false;
 	
 	public ChangeLevelMessage(){
-		this.map = new int[16][16];
+		this.map = new int[17][17];
 	}
 	
 	public ChangeLevelMessage(int i){
@@ -14,6 +15,8 @@ public class ChangeLevelMessage extends MessageObject {
 	
 	void  ueberschreibe(ChangeLevelMessage message){
 		this.login = message.login;
+		this.map = message.map;
+		this.levelzaehler =message.levelzaehler;
 	}
 
 	

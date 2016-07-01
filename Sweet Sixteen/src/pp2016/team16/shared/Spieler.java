@@ -104,7 +104,7 @@ public class Spieler extends Figur {
 			boolean kannAngreifen = false;
 			if (m.getTyp() == 0) kannAngreifen = true; 
 			if (m.getTyp() == 1) kannAngreifen = hatSchluessel;
-			
+			if (m.getTyp() == 2) kannAngreifen = true;
 			if((Math.sqrt(Math.pow(getXPos() - m.getXPos(), 2)+ Math.pow(getYPos() - m.getYPos(), 2)) < 2)&&kannAngreifen){
 				return m;
 			}

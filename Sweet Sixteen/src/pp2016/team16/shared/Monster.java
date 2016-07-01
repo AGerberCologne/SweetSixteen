@@ -74,7 +74,8 @@ public class Monster extends Figur {
 			kannAngreifen = ((System.currentTimeMillis() - lastAttack) >= cooldownAttack);
 		if (typ == 1)
 			kannAngreifen = (hatSchluessel && ((System.currentTimeMillis() - lastAttack) >= cooldownAttack));
-
+		if (typ == 2)
+			kannAngreifen = ((System.currentTimeMillis() - lastAttack) >= cooldownAttack);
 		if (spielerImRadius && kannAngreifen) {
 			lastAttack = System.currentTimeMillis();
 			spieler.changeHealth(-getSchaden());
@@ -85,8 +86,15 @@ public class Monster extends Figur {
 	public void changeHealth(int change) {
 		super.changeHealth(change);
 		if (getHealth() <= 0) {
+			if(typ==0 || typ==1){
 			fenster.level[getXPos()][getYPos()] = new Heiltrank(30);
 			fenster.monsterListe.remove(this);
+			}
+			if(typ == 2){
+			fenster.level[getXPos()][getYPos()] = new Schluessel();
+			fenster.monsterListe.remove(this);
+			}
+			
 		}
 	}
 

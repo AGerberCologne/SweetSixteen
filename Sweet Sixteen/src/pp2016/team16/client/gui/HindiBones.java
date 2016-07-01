@@ -10,6 +10,7 @@ import java.util.LinkedList;
 
 import javax.swing.JFrame;
 
+import pp2016.team16.client.gui.Leser;
 import pp2016.team16.client.engine.ClientEngine;
 import pp2016.team16.server.map.AlleLevel;
 import pp2016.team16.shared.Boden;
@@ -25,6 +26,7 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 	
 	private static final long serialVersionUID = 1L;
 
+
 	private Spielflaeche spielflaeche;
 	private Statusleiste statusleiste;
 	private Highscore highscore;
@@ -32,10 +34,13 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 	private Steuerung steuerung;
 //	public boolean test;
 	
-	public AlleLevel[][] level;
+
+	
+	public AlleLevel level2 = new AlleLevel();
+	public int [][] laby ;
 	public LinkedList<Monster> monsterListe;
 	public Spieler spieler;
-//	public Spielelement[][] level;
+	public Spielelement[][] level;
 	public ClientEngine engine;
 	public int currentLevel = 0;
 	public boolean spielende = false;
@@ -48,9 +53,10 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 	public boolean highscoreAngezeigt = false;
 	
 	public final int MAXLEVEL = 5;
-	public final int WIDTH = 16;
-	public final int HEIGHT = 16;
+	public final int WIDTH = 17;
+	public final int HEIGHT = 17;
 	public final int BOX = 32;
+
 
 	public HindiBones(int width, int height, String title) {
 		zeigeLogin();
@@ -254,8 +260,8 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 
 		spieler = new Spieler("img//spieler.png", this);
 		monsterListe = new LinkedList<Monster>();
-	//	level = new Spielelement[WIDTH][HEIGHT];
-		level = new AlleLevel[17][17];
+		level = new Spielelement[WIDTH][HEIGHT];
+	//	level = new AlleLevel[17][17];
 		
 		currentLevel = 0;
 		spielende = false;
@@ -304,12 +310,15 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 	public void nextLevel() {
 		currentLevel++;
 		
-	//	level = engine.getLevel()
+		laby = level2.setzeInhalt(currentLevel);		
+		
+		Leser leser = new Leser(laby, this);
+		level = leser.getLevel();
 	}
 
-	public ClientEngine getEngine() {
-			return engine;
-		}
+//	public ClientEngine getEngine() {
+//			return engine;
+//		}
 
 	
 

@@ -116,6 +116,9 @@ public class MiniMap extends JPanel{
 			}if (m.getTyp() == 0) {
 				g.setColor(Color.RED);
 				g.fillOval(m.getXPos() * size+2, m.getYPos()* size+2,8,8);
+			}if (m.getTyp() == 2){
+				g.setColor(Color.RED);
+				g.fillOval(m.getXPos() * size+2, m.getYPos()* size+2,8,8);
 			}else if (event && m.getTyp() == 1) {
 				g.setColor(Color.RED);
 				g.fillOval(m.getXPos() * size+2, m.getYPos()* size+2,8,8);			

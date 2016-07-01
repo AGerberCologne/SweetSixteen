@@ -10,10 +10,10 @@ import java.util.*;
 import javax.swing.JOptionPane;
 
 import pp2016.team16.shared.*;
-import pp2016.team16.shared.MessageObject;
+import pp2016.team16.shared.Character;
 import pp2016.team16.client.comm.ClientComm;
 
-public class ClientEngine extends Thread // entweder extends Thread oder implements
+public class ClientEngine extends Thread// entweder extends Thread oder implements
 // Runnable sind notwendig um mehrere
 // Threads gleichzeitig laufen zu lassen.
 // Dies ist notwendig, da Server um Client
@@ -21,13 +21,24 @@ public class ClientEngine extends Thread // entweder extends Thread oder impleme
 {
 	// In diesem Objekt speichert der Client interne Daten
 	MessageObject clientDatenbestand = new MessageObject();
+	public int [][] map;
+	public int levelzaehler;
+	public int posX;
+	public int posY;
 	Character c;
 
 	ClientEngine() throws InterruptedException {
 		System.out.println("Starte Client");
 
 	}
-
+	
+	public void run(){
+		while(clientOpen){
+			MessageObject m = gebeWeiterAnClient();
+			this.nachrichtVerarbeiten(m);
+			
+		}
+	}
 	/*
 	 * public void run() // Run Methode wird in der Main durch den .start()
 	 * Befehl // aufgerufen. { System.out.println("");// Für die Formatierung
@@ -49,13 +60,8 @@ public class ClientEngine extends Thread // entweder extends Thread oder impleme
 				this.datenBeimServerAnfragen(new ChangeLevelMessage(1));
 			}
 		} else if (daten instanceof ChangeLevelMessage) {
-			if (((ChangeLevelMessage) daten).login = false) {
-				System.out.println("Das neue Level wurde geladen \n");
-			} else {
-				System.out.println("Das erste Level wurde geladen");
-				System.out.println("Der Login wurde abgeschlossen \n");
-			}
-			c.level = ((ChangeLevelMessage) daten).map;
+			map = ((ChangeLevelMessage) daten).map;
+			levelzaehler = ((ChangeLevelMessage) daten).levelzaehler;
 
 		} else if (daten instanceof MoveMessage) {
 			if (((MoveMessage) daten).validerZug == true) {
@@ -73,10 +79,11 @@ public class ClientEngine extends Thread // entweder extends Thread oder impleme
 		}
 	}
 
+/*
 	// Methoden für GUI
-		void login(String n, String p) throws Exception {
+		void login(String n, String p)  {
 		LoginMessage anfrage = new LoginMessage(n, p);
-		this.datenBeimServerAnfragen(anfrage);
+		
 	}
 
 	void logout() throws Exception {
@@ -93,23 +100,28 @@ public class ClientEngine extends Thread // entweder extends Thread oder impleme
 	void bewege(int x, int y) throws Exception {
 
 		MoveMessage move = new MoveMessage();
-		move.posAlt = c.getPosition();
+		move.posAlt = 
 		move.posNeu[x] = y;
 		System.out.println("Der Character will sich" + " zu Position [" + x
 				+ ", " + y + "] bewegen");
 		SendeAnServer(move);
-	}
+	} */
 
-	void changeLevel() throws Exception {
+	public int[][] changeLevel(){
 		System.out.println("Der Client fragt ein neues Level an");
 		ChangeLevelMessage level = new ChangeLevelMessage();
-		level.login = false;
-		SendeAnServer(level);
+		level.levelzaehler = this.levelzaehler;
+		pp2016.team16.client.engine.IClientComm.bekommeVonClient(level);
+		MessageObject answer =gebeWeiterAnClient();
+		this.nachrichtVerarbeiten(answer);
+		return map;
 	}
 
 	void benutzeItem() {
 
 	}
+
+
 
 	/*
 	 * void lebenändern(int i){
@@ -119,9 +131,9 @@ public class ClientEngine extends Thread // entweder extends Thread oder impleme
 	 * 
 	 * }
 	 */
-	void cheatBenutzen(int i) throws Exception {
+	/*void cheatBenutzen(int i) throws Exception {
 		CheatMessage cheat = new CheatMessage(i);
 		this.datenBeimServerAnfragen(cheat);
 	}
-
+*/
 }

@@ -18,24 +18,27 @@ class ServerEngine extends Thread   // entweder extends Thread oder implements
 									// Dies ist notwendig, da Server um Client
 									// natürlich parallel aktiv sein müssen
 {
-	MessageObject serverDatenbestand = new MessageObject(); // In diesem Objekt
-															// speichert der
-															// Sercer seine
-															// internen Daten
+	MessageObject serverDatenbestand = new MessageObject(); 
+	public int[][] map ;
+	public int levelzaehler;
 
 	ServerEngine() throws InterruptedException, IOException {
 		System.out.println("Starte Server");
 
 	}
+	public void run(){
+		while(serverOpen){
+			MessageObject m = gebeWeiterAnServer();
+			this.nachrichtenVerarbeiten(m);
+		}
+	}
+	
 
 	/**
 	 * Message-Handeling @ Gerber, Alina , 5961246
 	 */
 	void nachrichtenVerarbeiten(MessageObject eingehendeNachricht) {
-		if (eingehendeNachricht instanceof LoginMessage) // Daten übernehmen,
-															// dass heißt im
-															// internen Objekt
-															// speichern
+		if (eingehendeNachricht instanceof LoginMessage) 
 		{
 			System.out.println("Der Client möchte sich im Server einloggen");
 			this.serverDatenbestand.ueberschreibe(eingehendeNachricht);
@@ -46,31 +49,24 @@ class ServerEngine extends Thread   // entweder extends Thread oder implements
 			if (true) {
 				answer.success = 1;
 				messageSchicken(answer);
-				System.out
-						.println("Server hat LoginDaten an den Client gesendet");
+				System.out.println("Server hat LoginDaten an den Client gesendet");
 			} else {
 				answer.success = 0;
 				messageSchicken(answer);
 				System.out.println("Server konnte LoginDaten nicht finden");
 			}
 
-		} else if (eingehendeNachricht instanceof LogoutMessage) // Der Server
-																	// bekommt
-																	// die
-																	// aufforderung
-																	// zum
-																	// beenden.
+		} else if (eingehendeNachricht instanceof LogoutMessage)
 		{
 			System.out.println("Server Shutdown");
 			break; // Aufforderung zum runterfahren
 		} else if (eingehendeNachricht instanceof ChangeLevelMessage) {
-			System.out.println("Der Server soll neue Leveldaten laden");
-			AlleLevel level = new AlleLevel();
-			int[][] levelmap =level.setzeInhalt(2);
+			this.levelzaehler = ((ChangeLevelMessage) eingehendeNachricht).levelzaehler;
+			AlleLevel levelObject = new AlleLevel();
+			map =levelObject.setzeInhalt(levelzaehler);
 			ChangeLevelMessage answer = new ChangeLevelMessage();
-			answer.ueberschreibe(eingehendeNachricht);
-			answer.map = level;
-			nachrichtSchicken(answer);
+			answer.map = levelObject.level;
+			gebeWeiterAnClient(answer);
 		} else if (eingehendeNachricht instanceof MoveMessage) {
 			System.out.println("Der Spieler möchte sich bewegen");
 			MoveMessage answer = new MoveMessage();

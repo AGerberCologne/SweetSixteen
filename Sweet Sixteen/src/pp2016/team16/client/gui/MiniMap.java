@@ -35,9 +35,9 @@ public class MiniMap extends JPanel{
 		this.fenster = fenster;
 		
 		//setze die Groeße und Position fest.
-	    jFrame.setSize(196,220);
+	    jFrame.setSize(210,260);
 		final Dimension d = jFrame.getToolkit().getScreenSize();
-		jFrame.setLocation((int) ((d.getWidth() - jFrame.getWidth()) / 2)+((32*16)/2)+120,
+		jFrame.setLocation((int) ((d.getWidth() - jFrame.getWidth()) / 2)+((32*16)/2)+150,
 				(int) ((d.getHeight() - jFrame
 						.getHeight()) / 2)-((32*16)/2)+90);
 		this.setBackground(Color.BLACK);
@@ -70,7 +70,8 @@ public class MiniMap extends JPanel{
 		} catch (IOException e) {
 			System.err.println("Error while loading one of the images.");
 		}
-				
+		
+		
 		//super.paint(g);
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
@@ -125,6 +126,17 @@ public class MiniMap extends JPanel{
 			}
 			
 		}
+		//Legende für die MiniMap
+		g.setColor(Color.GREEN);
+		g.fillOval(10,212,8,8);
+		
+		g.setColor(Color.RED);
+		g.fillOval(100,212,8,8);
+		
+		g.setColor(Color.WHITE);
+		g.drawString("Spieler",30,220);
+		g.drawString("Drache", 120, 220);
+				
 					
 		
 		repaint();

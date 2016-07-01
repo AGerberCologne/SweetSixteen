@@ -13,8 +13,8 @@ public class HindiBonesMain {
 	
 	public static void main(String[] args){
 			
-		 //*new HindiBones(BOX*WIDTH, BOX*HEIGHT, "Hindi");
-		ClientComm com = new ClientComm("localhost", 10000);
+		 new HindiBones(BOX*WIDTH, BOX*HEIGHT, "Hindi");
+	/*	ClientComm com = new ClientComm("localhost", 10000);
 		 ServerComm serv = new ServerComm(10000);
 		 System.out.println("Starte Server");
 		 ClientEngine client = new ClientEngine();
@@ -24,8 +24,8 @@ public class HindiBonesMain {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 		
-	}
+	} 
 
 }

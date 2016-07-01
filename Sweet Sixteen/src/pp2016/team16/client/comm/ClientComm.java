@@ -28,7 +28,7 @@ public class ClientComm implements IClientComm {
 		}
 	}
 
-	public void sendeAnServer() throws ClassNotFoundException{
+	public void sendeAnServer(){
 
 		
 		try{
@@ -38,7 +38,7 @@ public class ClientComm implements IClientComm {
 			oos.writeObject(msg);
 			oos.flush();
 			ois=new ObjectInputStream(c.getInputStream());
-			empfangeVomServer();
+			//empfangeVomServer();
 			if(msg instanceof LogoutMessage)
 				beende();
 			
@@ -56,7 +56,7 @@ public class ClientComm implements IClientComm {
 		empfangeVomServer.addLast(bmsg);
 	}
 	
-	public void bekommeVonClient(MessageObject cmsg) throws ClassNotFoundException{
+	public void bekommeVonClient(MessageObject cmsg){
 		sendeAnServer.addLast(cmsg);
 		sendeAnServer();
 	}

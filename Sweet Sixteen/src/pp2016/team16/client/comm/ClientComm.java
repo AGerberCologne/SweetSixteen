@@ -7,6 +7,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.LinkedList;
 
+import pp2016.team16.shared.IchBinDa;
 import pp2016.team16.shared.LogoutMessage;
 import pp2016.team16.shared.MessageObject;
 
@@ -31,7 +32,14 @@ public class ClientComm extends Thread{
 	public ClientComm(){
 		
 	}
-
+	
+	public void run(){
+		while (clientOpen){
+			IchBinDa i =new IchBinDa();
+			bekommeVonClient(i);//ThreadPause einbauen
+			
+		}
+	}
 	public void sendeAnServer(){
 
 		

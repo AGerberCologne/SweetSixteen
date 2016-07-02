@@ -13,11 +13,7 @@ import pp2016.team16.server.engine.IServerEngine;
 import pp2016.team16.server.map.AlleLevel;
 
 
-class ServerEngine extends Thread   // entweder extends Thread oder implements
-									// Runnable sind notwendig um mehrere
-									// Threads gleichzeitig laufen zu lassen.
-									// Dies ist notwendig, da Server um Client
-									// natürlich parallel aktiv sein müssen
+class ServerEngine
 {
 	MessageObject serverDatenbestand = new MessageObject();
 	ServerComm server = new ServerComm();

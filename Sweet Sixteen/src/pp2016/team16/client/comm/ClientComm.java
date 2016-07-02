@@ -35,8 +35,16 @@ public class ClientComm extends Thread{
 	
 	public void run(){
 		while (clientOpen){
+			if (isInterrupted()){
+				break;
+			}
 			IchBinDa i =new IchBinDa();
-			bekommeVonClient(i);//ThreadPause einbauen
+			bekommeVonClient(i);
+			try {
+				sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			
 		}
 	}

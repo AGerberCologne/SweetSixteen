@@ -16,7 +16,6 @@ public class HindiBonesMain {
 		 new HindiBones(BOX*WIDTH, BOX*HEIGHT, "Hindi");
 	/*	ClientComm com = new ClientComm("localhost", 10000);
 		 ServerComm serv = new ServerComm(10000);
-		 serv.run();
 		 System.out.println("Starte Server");
 		 ClientEngine client = new ClientEngine();
 		 client.levelzaehler = 1;

@@ -26,6 +26,7 @@ public ServerComm(){
 public ServerComm(int port){
 		try {
 			serverS = new ServerSocket(port);
+			run();
 		}catch(IOException e){}
 		}
 

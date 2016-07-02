@@ -98,9 +98,29 @@ class ServerEngine
 		}*/
 	}
 	
-//Ann-Catherine Hartmann,37658
+/*Ann-Catherine Hartmann,37658
 public void LogIn(){
-	
+	int i;
+	if (i ==1){
+	//neuer	
+		FileWriter fw = new FileWriter ("Anmeldung"); //zum Abspeichern als Textdatei
+		BufferedWriter bw = new BufferedWriter (fw);
+		try{
+			bw.write(String name);
+			bw.newLine();
+			}
+		bw.write(ergebnisb);
+		System.out.println(ergebnisb);
+		bw.close();//Schlieﬂt die Datei
+		}catch(FileNotFoundException e){
+			System.err.println("Fehler");
+		
+		}
+	}else if(i==2){
+		
+	}else{
+		
+	}
 }
 //Ann-Catherine Hartmann,37658
 public void LeseHighScore(){
@@ -117,5 +137,5 @@ public void abmelden(){
 //Ann-Catherine Hartmann,37658
 public void Speichern(){
 	
-}
+}*/
 }

@@ -7,11 +7,10 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.LinkedList;
 
-import pp2016.team16.client.engine.IClientComm;
 import pp2016.team16.shared.LogoutMessage;
 import pp2016.team16.shared.MessageObject;
 
-public class ClientComm implements IClientComm {
+public class ClientComm extends Thread{
 	LinkedList<MessageObject> empfangeVomServer = new LinkedList<MessageObject>();
 	LinkedList<MessageObject> sendeAnServer=new LinkedList<MessageObject>();
 	ObjectInputStream ois=null;

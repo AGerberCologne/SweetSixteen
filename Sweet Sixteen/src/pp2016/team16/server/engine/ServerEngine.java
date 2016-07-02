@@ -37,7 +37,7 @@ class ServerEngine extends Thread   // entweder extends Thread oder implements
 	
 
 	/**
-	 * Message-Handeling @ Gerber, Alina , 5961246
+	 * Message-Handling @ Gerber, Alina , 5961246
 	 */
 	void nachrichtenVerarbeiten(MessageObject eingehendeNachricht) {
 		/*if (eingehendeNachricht instanceof LoginMessage) 
@@ -101,5 +101,25 @@ class ServerEngine extends Thread   // entweder extends Thread oder implements
 					"Server hat eine Nachricht erhalten, die nicht verarbeitet werden kann");
 		}*/
 	}
-
+	
+//Ann-Catherine Hartmann,37658
+public void LogIn(){
+	
+}
+//Ann-Catherine Hartmann,37658
+public void LeseHighScore(){
+	
+}
+//Ann-Catherine Hartmann,37658
+public void SetHighScore(){
+	
+}
+//Ann-Catherine Hartmann,37658
+public void abmelden(){
+	
+}
+//Ann-Catherine Hartmann,37658
+public void Speichern(){
+	
+}
 }

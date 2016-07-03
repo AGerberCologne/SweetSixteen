@@ -47,36 +47,57 @@ public class Spielflaeche extends JPanel {
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
 
-		// Male die einzelnen Felder
-		for (int i = 0; i < fenster.WIDTH; i++) {
-			for (int j = 0; j < fenster.HEIGHT; j++) {
-				if (inRange(i,j)) {
+		int zähler1=0;
+		int zähler2=0;
 
-					if (fenster.level[i][j] instanceof Wand) {
+		if(fenster.spieler.getYPos()>(fenster.HEIGHT+1)/2+3)
+			zähler2 = 4;
+		else if(fenster.spieler.getYPos()>(fenster.HEIGHT+1)/2+2)
+			zähler2 = 3;
+		else if(fenster.spieler.getYPos()>(fenster.HEIGHT+1)/2+1)
+			zähler2 = 2;
+		else if(fenster.spieler.getYPos()>(fenster.HEIGHT+1)/2)
+			zähler2 = 1;
+		
+		if(fenster.spieler.getXPos()>(fenster.HEIGHT+1)/2+3)
+			zähler1 = 4;
+		else if(fenster.spieler.getXPos()>(fenster.HEIGHT+1)/2+2)
+			zähler1 = 3;
+		else if(fenster.spieler.getXPos()>(fenster.HEIGHT+1)/2+1)
+			zähler1 = 2;
+		else if(fenster.spieler.getXPos()>(fenster.HEIGHT+1)/2)
+			zähler1 = 1;
+		
+		// Male die einzelnen Felder
+		for (int i = 0; i < fenster.Width; i++) {
+			for (int j = 0; j < fenster.Height; j++) {
+				if (inRange(i+zähler1,j+zähler2)) {
+
+					if (fenster.level[i+zähler1][j+zähler2] instanceof Wand) {
 						// Hier kommt eine Wand hin
 						g.drawImage(wand, i * fenster.BOX, j * fenster.BOX,
 								null);
-					} else if (fenster.level[i][j] instanceof Boden) {
+					} else if (fenster.level[i+zähler1][j+zähler2] instanceof Boden) {
 						// Dieses Feld ist begehbar
 						g.drawImage(boden, i * fenster.BOX,
 								j * fenster.BOX, null);
-					} else if (fenster.level[i][j] instanceof Schluessel) {
+					} else if (fenster.level[i+zähler1][j+zähler2] instanceof Schluessel) {
 						// Hier liegt ein Schluessel
 						g.drawImage(boden, i * fenster.BOX,
 								j * fenster.BOX, null);
 						g.drawImage(schluessel, i * fenster.BOX, j
 								* fenster.BOX, null);
-					} else if (fenster.level[i][j] instanceof Tuer){
+					} else if (fenster.level[i+zähler1][j+zähler2] instanceof Tuer){
 						// Hier ist die Tuer
 						g.drawImage(boden, i * fenster.BOX,
 								j * fenster.BOX, null);
-						if (((Tuer) fenster.level[i][j]).istOffen())
+						if (((Tuer) fenster.level[i+zähler1][j+zähler2]).istOffen())
 							g.drawImage(tuerOffen, i * fenster.BOX, j
 									* fenster.BOX, null);
 						else
 							g.drawImage(tuerZu, i * fenster.BOX, j
 									* fenster.BOX, null);
-					} else if (fenster.level[i][j] instanceof Heiltrank) {
+					} else if (fenster.level[i+zähler1][j+zähler2] instanceof Heiltrank) {
 						// Hier ist die Tuer
 						g.drawImage(boden, i * fenster.BOX,
 								j * fenster.BOX, null);
@@ -106,8 +127,8 @@ public class Spielflaeche extends JPanel {
 				
 				double p = m.cooldownProzent();
 				g.setColor(Color.RED);
-				g.drawImage(feuerball, (int)(((1-p) * m.getXPos() + (p) * s.getXPos())*box) + box/2, 
-						   (int)(((1-p) * m.getYPos() + (p) * s.getYPos())*box) + box/2, 8, 8, null);
+				g.drawImage(feuerball, (int)(((1-p) * m.getXPos() + (p) * s.getXPos()-zähler1)*box) + box/2, 
+						   (int)(((1-p) * m.getYPos() + (p) * s.getYPos()-zähler2)*box) + box/2, 8, 8, null);
 			}	
 
 			// Male das Monster, falls es von anfang an anwesend ist
@@ -120,9 +141,26 @@ public class Spielflaeche extends JPanel {
 
 		
 		// Male den Spieler an seiner Position
-		g.drawImage(fenster.spieler.getImage(), fenster.spieler.getXPos()
-				* fenster.BOX, fenster.spieler.getYPos() * fenster.BOX,
-				null);
+	//	g.drawImage(fenster.spieler.getImage(), fenster.spieler.getXPos()
+	//			* fenster.BOX, fenster.spieler.getYPos() * fenster.BOX,
+	//			null);
+		
+		if(zähler1>0 && zähler2>0){
+			g.drawImage(fenster.spieler.getImage(), (fenster.spieler.getXPos()-zähler1)
+					* fenster.BOX, (fenster.spieler.getYPos()-zähler2) * fenster.BOX,
+					null);
+		}else if(zähler2>0){
+			g.drawImage(fenster.spieler.getImage(), fenster.spieler.getXPos()
+					* fenster.BOX, (fenster.spieler.getYPos()-zähler2) * fenster.BOX,
+					null);
+		}else if(zähler1>0){
+			g.drawImage(fenster.spieler.getImage(), (fenster.spieler.getXPos()-zähler1)
+					* fenster.BOX, (fenster.spieler.getYPos()) * fenster.BOX,
+					null);
+		}else{	g.drawImage(fenster.spieler.getImage(), fenster.spieler.getXPos()
+					* fenster.BOX, fenster.spieler.getYPos() * fenster.BOX,
+					null);
+		}
 		
 		if(fenster.verloren){
 			g.setColor(Color.WHITE);
@@ -139,11 +177,34 @@ public class Spielflaeche extends JPanel {
 
 	private void drawMonster(Graphics g, Monster m){
 		// Monster Health Points
+		
+		int a=0;
+		int b=0;
+
+		if(fenster.spieler.getYPos()>(fenster.HEIGHT+1)/2+3)
+			b = 4;
+		else if(fenster.spieler.getYPos()>(fenster.HEIGHT+1)/2+2)
+			b = 3;
+		else if(fenster.spieler.getYPos()>(fenster.HEIGHT+1)/2+1)
+			b = 2;
+		else if(fenster.spieler.getYPos()>(fenster.HEIGHT+1)/2)
+			b = 1;
+		
+		if(fenster.spieler.getXPos()>(fenster.HEIGHT+1)/2+3)
+			a = 4;
+		else if(fenster.spieler.getXPos()>(fenster.HEIGHT+1)/2+2)
+			a = 3;
+		else if(fenster.spieler.getXPos()>(fenster.HEIGHT+1)/2+1)
+			a = 2;
+		else if(fenster.spieler.getXPos()>(fenster.HEIGHT+1)/2)
+			a = 1;
+		
+		
 		if(inRange(m.getXPos(), m.getYPos())){
-			g.drawImage(m.getImage(), m.getXPos() * fenster.BOX, m.getYPos()
+			g.drawImage(m.getImage(), (m.getXPos()-a) * fenster.BOX, (m.getYPos()-b)
 					* fenster.BOX, null);
 			g.setColor(Color.GREEN);
-			g.fillRect(m.getXPos()*fenster.BOX, m.getYPos()
+			g.fillRect((m.getXPos()-a)*fenster.BOX, (m.getYPos()-b)
 					* fenster.BOX - 2, m.getHealth(), 2);
 			
 			}

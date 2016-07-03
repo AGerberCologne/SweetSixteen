@@ -53,10 +53,11 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 	public boolean highscoreAngezeigt = false;
 	
 	public final int MAXLEVEL = 5;
-	public final int WIDTH = 17;
-	public final int HEIGHT = 17;
+	public final int WIDTH = 21;
+	public final int HEIGHT = 21;
 	public final int BOX = 32;
-
+	public final int Width = 17;
+	public final int Height = 17;
 
 	public HindiBones(int width, int height, String title) {
 		zeigeLogin();
@@ -178,13 +179,13 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 				if (yPos > 0 && !(level[xPos][yPos - 1] instanceof Wand))
 					spieler.hoch();
 			} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-				if (yPos < HEIGHT - 1 && !(level[xPos][yPos + 1] instanceof Wand))
+				if (yPos < HEIGHT + 4 && !(level[xPos][yPos + 1] instanceof Wand))
 					spieler.runter();
 			} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
 				if (xPos > 0 && !(level[xPos - 1][yPos] instanceof Wand))
 					spieler.links();
 			} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-				if (xPos < WIDTH - 1 && !(level[xPos + 1][yPos] instanceof Wand))
+				if (xPos < WIDTH + 4 && !(level[xPos + 1][yPos] instanceof Wand))
 					spieler.rechts();
 			} else if (e.getKeyCode() == KeyEvent.VK_Q) {
 				Monster m = spieler.angriffsMonster();

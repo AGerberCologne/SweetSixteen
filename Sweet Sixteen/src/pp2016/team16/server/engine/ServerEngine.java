@@ -13,16 +13,17 @@ import pp2016.team16.server.engine.IServerEngine;
 import pp2016.team16.server.map.AlleLevel;
 
 
-class ServerEngine
+public class ServerEngine
 {
 	MessageObject serverDatenbestand = new MessageObject();
-	ServerComm server = new ServerComm();
+    ServerComm server;
 	public int[][] map ;
 	public int levelzaehler;
 
-	ServerEngine() throws InterruptedException, IOException {
+	public ServerEngine() {
 		System.out.println("Starte Server");
-
+		server = new ServerComm(10000);
+		this.run();
 	}
 	public void run(){
 		while(server.serverOpen){

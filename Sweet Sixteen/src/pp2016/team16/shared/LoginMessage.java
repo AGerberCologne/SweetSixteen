@@ -6,7 +6,7 @@ public class LoginMessage extends MessageObject{
 	int artVonAnmeldung;
 	public LoginMessage(String name, String passwort, int artVonAnmeldung){
 		this.name = name;
-		this.passwort = name;//alina, muss das nicht Passwort sein ??
+		this.passwort = passwort;
 		this.artVonAnmeldung=artVonAnmeldung;
 		
 	}

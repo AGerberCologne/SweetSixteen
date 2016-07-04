@@ -20,7 +20,7 @@ public class ClientEngine // entweder extends Thread oder implements
 // natürlich parallel aktiv sein müssen
 {
 	// In diesem Objekt speichert der Client interne Daten
-	ClientComm client = new ClientComm();
+	ClientComm com = new ClientComm("localhost", 10000);
 	MessageObject clientDatenbestand = new MessageObject();
 	public int [][] map;
 	public int levelzaehler;
@@ -30,12 +30,13 @@ public class ClientEngine // entweder extends Thread oder implements
 
 	 public ClientEngine()  {
 		System.out.println("Starte Client");
+		this.run();
 
 	}
 	
 	public void run(){
-		while(client.clientOpen){
-			MessageObject m = client.gebeWeiterAnClient();
+		while(com.clientOpen){
+			MessageObject m = com.gebeWeiterAnClient();
 			try {
 				this.nachrichtVerarbeiten(m);
 			} catch (Exception e) {
@@ -118,8 +119,8 @@ public class ClientEngine // entweder extends Thread oder implements
 		System.out.println("Der Client fragt ein neues Level an");
 		ChangeLevelMessage level = new ChangeLevelMessage();
 		level.levelzaehler = this.levelzaehler;
-		client.bekommeVonClient(level);
-		MessageObject answer = client.gebeWeiterAnClient();
+		com.bekommeVonClient(level);
+		MessageObject answer = com.gebeWeiterAnClient();
 		this.nachrichtVerarbeiten(answer);
 		return map;
 	}

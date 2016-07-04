@@ -6,7 +6,7 @@ public class ChangeLevelMessage extends MessageObject {
 	public boolean login = false;
 	
 	public ChangeLevelMessage(){
-		this.map = new int[17][17];
+		this.map = new int[21][21];
 	}
 	
 	public ChangeLevelMessage(int i){

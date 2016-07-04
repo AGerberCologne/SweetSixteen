@@ -18,6 +18,7 @@ public class Spieler extends Figur {
 
 	
 	private String name;
+	private String passwort;
 	private boolean hatSchluessel;
 	public int anzahlHeiltraenke;
 	private int heiltrankWirkung;
@@ -94,6 +95,16 @@ public class Spieler extends Figur {
 	
 	public void setName(String name){
 		this.name = name ;
+	}
+	
+	public String getPasswort(){
+		
+		return passwort;
+		
+	}
+	
+	public void setPasswort(String passwort){
+		this.passwort = passwort ;
 	}
 	
 	public Monster angriffsMonster(){

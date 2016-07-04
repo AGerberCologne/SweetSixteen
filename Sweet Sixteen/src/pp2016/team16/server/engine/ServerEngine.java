@@ -8,6 +8,7 @@ import java.net.*;
 import java.util.*;
 
 import pp2016.team16.shared.*;
+import pp2016.team16.shared.Map;
 import pp2016.team16.server.comm.ServerComm;
 import pp2016.team16.server.engine.IServerEngine;
 import pp2016.team16.server.map.AlleLevel;
@@ -17,8 +18,9 @@ public class ServerEngine
 {
 	MessageObject serverDatenbestand = new MessageObject();
     ServerComm server;
-	public int[][] map ;
-	public int levelzaehler;
+	public Map map;
+	public Spieler spieler;
+	public Monster monster;
 
 	public ServerEngine() {
 		System.out.println("Starte Server");
@@ -37,48 +39,33 @@ public class ServerEngine
 	 * Message-Handling @ Gerber, Alina , 5961246
 	 */
 	void nachrichtenVerarbeiten(MessageObject eingehendeNachricht) {
-		/*if (eingehendeNachricht instanceof LoginMessage) 
-		{
-			System.out.println("Der Client möchte sich im Server einloggen");
-			this.serverDatenbestand.ueberschreibe(eingehendeNachricht);
-			LoginAnswerMessage answer = new LoginAnswerMessage();
-			// Testdaten, diese müssten eigentlich vom Server geladen werden
-			answer.CharacterID = 3;
-			answer.startposition[3] = 4;
-			if (true) {
-				answer.success = 1;
-				messageSchicken(answer);
-				System.out.println("Server hat LoginDaten an den Client gesendet");
-			} else {
-				answer.success = 0;
-				messageSchicken(answer);
-				System.out.println("Server konnte LoginDaten nicht finden");
-			}
-
-		} else if (eingehendeNachricht instanceof LogoutMessage)
+		if (eingehendeNachricht instanceof LoginMessage) 
+		{  LoginMessage l = (LoginMessage) eingehendeNachricht;
+		   this.logIn(l.artVonAnmeldung, l.name, l.passwort);
+		   
+		}/* else if (eingehendeNachricht instanceof LogoutMessage)
 		{
 			System.out.println("Server Shutdown");
 			break; // Aufforderung zum runterfahren
 		} else */if (eingehendeNachricht instanceof ChangeLevelMessage) {
 			System.out.println("sERVER HAT lEVEL-nACHRICHT empfangen");
-			this.levelzaehler = ((ChangeLevelMessage) eingehendeNachricht).levelzaehler;
+			map.levelzaehler = ((ChangeLevelMessage) eingehendeNachricht).levelzaehler;
 			AlleLevel levelObject = new AlleLevel();
-			map =levelObject.setzeInhalt(levelzaehler);
+			map.level =levelObject.setzeInhalt(map.levelzaehler);
 			ChangeLevelMessage answer = new ChangeLevelMessage();
 			answer.map = levelObject.level;
 			server.gebeWeiterAnClient(answer);
-		} /*else if (eingehendeNachricht instanceof MoveMessage) {
+		} else if (eingehendeNachricht instanceof MoveMessage) {
 			System.out.println("Der Spieler möchte sich bewegen");
+			MoveMessage m = (MoveMessage) eingehendeNachricht;
+			spieler.setPos(m.altX, m.altY);
+			spieler.zielX = m.neuX;
+			spieler.zielY = m.neuY;
+			int richtung = spieler.geheZumZiel();
 			MoveMessage answer = new MoveMessage();
-			answer.ueberschreibe((MoveMessage) eingehendeNachricht);
-			if (true) {
-				answer.validerZug = true;
-				nachrichtSchicken(answer);
-			} else {
-				answer.validerZug = false;
-				nachrichtSchicken(answer);
-			}
-		} else if (eingehendeNachricht instanceof CheatMessage) {
+			answer.richtung = richtung;
+			server.gebeWeiterAnClient(answer);
+		} /*else if (eingehendeNachricht instanceof CheatMessage) {
 			int i = ((CheatMessage) eingehendeNachricht).i;
 			switch (i) {
 			case 1:
@@ -100,8 +87,7 @@ public class ServerEngine
 	}
 	
 /*Ann-Catherine Hartmann,37658
-public void LogIn(){
-	int i;
+public void logIn(int i, String name, String passwort){
 	if (i ==1){
 	//neuer	
 		FileWriter fw = new FileWriter ("Anmeldung"); //zum Abspeichern als Textdatei
@@ -124,11 +110,11 @@ public void LogIn(){
 	}
 }
 //Ann-Catherine Hartmann,37658
-public void LeseHighScore(){
+public void leseHighScore(){
 	
 }
 //Ann-Catherine Hartmann,37658
-public void SetHighScore(){
+public void setHighScore(){
 	
 }
 //Ann-Catherine Hartmann,37658
@@ -136,7 +122,7 @@ public void abmelden(){
 	
 }
 //Ann-Catherine Hartmann,37658
-public void Speichern(){
+public void speichern(){
 	
 }*/
 }

@@ -7,11 +7,10 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
-import javax.swing.JOptionPane;
-
 import pp2016.team16.shared.*;
-import pp2016.team16.shared.Character;
+import pp2016.team16.shared.Map;
 import pp2016.team16.client.comm.ClientComm;
+import pp2016.team16.client.gui.HindiBones;
 
 public class ClientEngine // entweder extends Thread oder implements
 // Runnable sind notwendig um mehrere
@@ -22,11 +21,9 @@ public class ClientEngine // entweder extends Thread oder implements
 	// In diesem Objekt speichert der Client interne Daten
 	ClientComm com = new ClientComm("localhost", 10000);
 	MessageObject clientDatenbestand = new MessageObject();
-	public int [][] map;
-	public int levelzaehler;
-	public int posX;
-	public int posY;
-	Character c;
+	public Map map;
+	public Spieler spieler;
+	public Monster monster;
 
 	 public ClientEngine()  {
 		System.out.println("Starte Client");
@@ -59,70 +56,75 @@ public class ClientEngine // entweder extends Thread oder implements
 	 */
 	// Message-Handling
 	void nachrichtVerarbeiten(MessageObject daten) throws Exception {
-		/*if (daten instanceof LoginAnswerMessage) {
-			System.out.println(daten.toString());
-			if (((LoginAnswerMessage) daten).success == 1) {
-				this.c = new Character(((LoginAnswerMessage) daten).CharacterID);
-				this.c.position = ((LoginAnswerMessage) daten).startposition;
-				
-			}
-		} else */ if (daten instanceof ChangeLevelMessage) {
-			map = ((ChangeLevelMessage) daten).map;
-			levelzaehler = ((ChangeLevelMessage) daten).levelzaehler;
+		  if (daten instanceof LoginAnswerMessage) {
+			  LoginAnswerMessage l = (LoginAnswerMessage) daten;
+			  map.level = l.map;
+			  map.levelzaehler = l.levelzaehler;
+			  spieler.setName(l.name);
+			  spieler.setPasswort(l.passwort);
+			  notify();
+			
+		} else  if (daten instanceof ChangeLevelMessage) {
+			map.level = ((ChangeLevelMessage) daten).map;
+			map.levelzaehler = ((ChangeLevelMessage) daten).levelzaehler;
+			notify();
 			System.out.println("Neues Level gespeichert");
 
-		} /*else if (daten instanceof MoveMessage) {
-			if (((MoveMessage) daten).validerZug == true) {
-				c.position = ((MoveMessage) daten).posNeu;
-				System.out
-						.println("Der Spieler hat einen validen Zug gemacht \n");
-			} else {
-				c.position = ((MoveMessage) daten).posAlt;
-				System.out.println("Das ist kein valider Zug \n");
+		} else if (daten instanceof MoveMessage) {
+			int richtung = ((MoveMessage) daten).richtung;
+			switch(richtung){
+				case 1:
+				case 2:
+				case 3:
+				case 0:
 			}
-		} else if (daten instanceof CheatMessage) {
+			
+			
+		} /*else if (daten instanceof CheatMessage) {
 			int i = ((CheatMessage) daten).i;
 			System.out.println("Der Cheat wurde angenommen & zwar Nr. " + i
 					+ "\n");
 		}*/
 	}
 
-/*
+
 	// Methoden für GUI
-		void login(String n, String p)  {
-		LoginMessage anfrage = new LoginMessage(n, p);
-		
+	public int [][] login( int i, String n, String p) throws InterruptedException  { 
+		LoginMessage anfrage = new LoginMessage(i, n, p);
+		com.bekommeVonClient(anfrage);
+		wait();
+		return map.level;
 	}
 
 	void logout() throws Exception {
-		LogoutMessage exitNachricht = new LogoutMessage();
-		(exitNachricht);
+		LogoutMessage anfrage = new LogoutMessage();
 	}
 
 	// Diese Methode wird entweder eine Liste/Array etc. zurückgeben, in dem der
 	// von Astern berechnete Weg gespeicher tist
-	public WegAnfragen(int x, int y) {
-
+	void wegAnfragen(int x, int y) throws InterruptedException {
+		spieler.zielX = x;
+		spieler.zielY = y;
+		MoveMessage anfrage = new MoveMessage();
+		anfrage.altX = spieler.getXPos();
+		anfrage.altY = spieler.getYPos();
+		anfrage.neuX = spieler.zielX;
+		anfrage.neuY = spieler.zielY;
+		com.bekommeVonClient(anfrage);
+		wait();
 	}
 
-	void bewege(int x, int y) throws Exception {
-
-		MoveMessage move = new MoveMessage();
-		move.posAlt = 
-		move.posNeu[x] = y;
-		System.out.println("Der Character will sich" + " zu Position [" + x
-				+ ", " + y + "] bewegen");
-		SendeAnServer(move);
-	} */
+	
 
 	public int[][] changeLevel() throws Exception{
 		System.out.println("Der Client fragt ein neues Level an");
-		ChangeLevelMessage level = new ChangeLevelMessage();
-		level.levelzaehler = this.levelzaehler;
-		com.bekommeVonClient(level);
-		MessageObject answer = com.gebeWeiterAnClient();
-		this.nachrichtVerarbeiten(answer);
-		return map;
+		ChangeLevelMessage anfrage = new ChangeLevelMessage();
+		anfrage.levelzaehler = this.map.levelzaehler;
+		com.bekommeVonClient(anfrage);
+		//MessageObject answer = com.gebeWeiterAnClient();
+		//this.nachrichtVerarbeiten(answer);
+		wait();
+		return map.level;
 	}
 
 	void benutzeItem() {
@@ -131,14 +133,7 @@ public class ClientEngine // entweder extends Thread oder implements
 
 
 
-	/*
-	 * void lebenändern(int i){
-	 * System.out.println("Der Client möchte das Leben ändern");
-	 * CharacterChangeMessage change = new CharacterChangeMessage();
-	 * change.änderungshöhe = i;
-	 * 
-	 * }
-	 */
+	
 	/*void cheatBenutzen(int i) throws Exception {
 		CheatMessage cheat = new CheatMessage(i);
 		this.datenBeimServerAnfragen(cheat);

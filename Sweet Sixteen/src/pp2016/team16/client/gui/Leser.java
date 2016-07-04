@@ -9,12 +9,24 @@ import pp2016.team16.shared.Spielelement;
 import pp2016.team16.shared.Tuer;
 import pp2016.team16.shared.Wand;
 
+/**
+ * Der Leser ließt ein array aus und speichert es in einem array des Spielelement
+ * @author Simon Nietz, Matr_Nr: 5823560
+ *
+ */
+
 public class Leser {
 
 	private int [][] dateiname;
 //	private String dateiname;
 	private Spielelement[][] karte;
 	private HindiBones fenster;
+	
+	/**
+	 * @author Simon Nietz, Matr_Nr: 5823560
+	 * @param a das übergebene zwei dimensionale Array
+	 * @param fenster das HindiBones JFrame
+	 */
 	
 	public Leser(int [][] a, HindiBones fenster){
 		this.fenster = fenster;
@@ -23,14 +35,17 @@ public class Leser {
 		readLevel();
 	}
 	
+	
+	
 	private void readLevel(){
 
-			
+		// erzeuge zunächste ein Datentyp Spielelement
+		// erzeuge  LinkedList
 			karte = new Spielelement[fenster.WIDTH][fenster.HEIGHT];
 			fenster.monsterListe = new LinkedList<Monster>();		
 			
 	
-		
+		// Lese das übergebene Array aus und Speicher es im Datentyp Spielelement
 		for(int i=0;i<dateiname.length;i++){
 			for(int j=0;j<dateiname.length;j++){
 				int Variable = dateiname[i][j];
@@ -49,7 +64,10 @@ public class Leser {
 			}
 		}
 		}
-	
+	/**
+	 * @author Simon Nietz, Matr_Nr: 5823560
+	 * @return gebe das Spielelement zurück
+	 */
 	public Spielelement[][] getLevel(){
 		return karte;
 	}

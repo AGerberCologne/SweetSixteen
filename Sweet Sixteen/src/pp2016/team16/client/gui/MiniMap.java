@@ -18,7 +18,11 @@ import pp2016.team16.shared.Schluessel;
 import pp2016.team16.shared.Tuer;
 import pp2016.team16.shared.Wand;
 
-
+/**
+ * Klasse für die erzeugung der Minimap
+ * @author Simon Nietz, Matr_Nr: 5823560
+ *
+ */
 public class MiniMap extends JPanel{	
 	
 	private HindiBones fenster;
@@ -31,6 +35,11 @@ public class MiniMap extends JPanel{
 	
 	private static final long serialVersionUID = 1L;
 	
+	/**
+	 * @author Simon Nietz, Matr_Nr: 5823560
+	 * @param fenster fenster der Anwendung
+	 */
+	
 	public MiniMap(HindiBones fenster) {
 		this.fenster = fenster;
 		
@@ -41,19 +50,26 @@ public class MiniMap extends JPanel{
 				(int) ((d.getHeight() - jFrame
 						.getHeight()) / 2)-((32*16)/2)+98);
 		this.setBackground(Color.BLACK);
-		jFrame.setResizable(false);
+		jFrame.setResizable(false); // Die Groeße soll nicht veraendert werden
 		jFrame.add(this);
-		jFrame.setVisible(true);
-		fenster.toFront();
+		jFrame.setVisible(true); // sichtbar machen
+		fenster.toFront();	// setze das Spielfenster in den Focus
 
 		
 		
 	}
 	
-	//zeichne aehnlich wie bei der Spielflaeche in die Minimap das aktuelle Level
+	/**
+	 * Paint Methode zeichnet wie die Methode bei der Spielflaeche die Karte
+	 * @author Simon Nietz, Matr_Nr: 5823560
+	 */
+	
 	
 	public void paint(Graphics g) {
 		int size = 12;
+		
+		// benute Scaled Images um eine kleinere Version der Karten zu zeichnen
+		
 		try {
 			boden = ImageIO.read(new File("img//boden.png")); 
 			scaledBoden=boden.getScaledInstance(size, size,Image.SCALE_SMOOTH);
@@ -104,6 +120,8 @@ public class MiniMap extends JPanel{
 				
 			}
 		}
+		
+		// zeichne auch den Spieler aber als gruenen Punkt
 		g.setColor(Color.GREEN);
 		g.fillOval(fenster.spieler.getXPos()* size+2, fenster.spieler.getYPos() * size+
 				2, 8,8);
@@ -111,7 +129,7 @@ public class MiniMap extends JPanel{
 		for (int i = 0; i < fenster.monsterListe.size(); i++) {
 			Monster m = fenster.monsterListe.get(i);
 			boolean event = fenster.spieler.hatSchluessel();
-			
+		// zeichne die Monster als roten Punkt	
 			if(!m.attackiereSpieler(event)){
 				m.move();
 			}if (m.getTyp() == 0) {
@@ -127,7 +145,7 @@ public class MiniMap extends JPanel{
 			
 		}
 		//Legende für die MiniMap
-		//Zunächst werden die Bilder gezeichnet
+		//Zunaechst werden die Bilder gezeichnet
 		g.setColor(Color.GREEN);
 		g.fillOval(10,270,8,8);
 		g.setColor(Color.RED);

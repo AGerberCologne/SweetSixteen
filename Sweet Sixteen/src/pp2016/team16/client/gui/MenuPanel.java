@@ -14,6 +14,12 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+/**
+ * 
+ * @author Simon Nietz, Matr_Nr: 5823560
+ *
+ */
+
 public class MenuPanel extends JPanel{
 
 	private static final long serialVersionUID = 1L;
@@ -22,10 +28,7 @@ public class MenuPanel extends JPanel{
 	JButton highscore = new JButton("Highscore");
 	JButton beenden = new JButton("Beenden");
 	JTextField name = new JTextField("Spieler Eins");
-/*	JButton einloggen = new JButton("Login");
-	JButton ausloggen = new JButton("Ausloggen");
-	JButton minimapzeigen = new JButton("MiniMap zeigen");
-*/
+
 	HindiBones fenster;
 	
 	public MenuPanel(HindiBones f){
@@ -53,7 +56,7 @@ public class MenuPanel extends JPanel{
 		add(p);
 		
 		// Spiel-starten-Button
-		start.addActionListener(new ActionListener(){
+/*		start.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				fenster.zeigeSpielfeld();
 				fenster.spieler.setName(name.getText());
@@ -63,7 +66,7 @@ public class MenuPanel extends JPanel{
 		//start.setPreferredSize(new Dimension(200,50));
 		
 		// Highscore-anzeigen-Button
-		highscore.addActionListener(new ActionListener(){
+	/*	highscore.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				fenster.zeigeHighscore();
 			}	
@@ -71,11 +74,11 @@ public class MenuPanel extends JPanel{
 		//highscore.setPreferredSize(new Dimension(200,50));
 		
 		// Beenden-Button
-		beenden.addActionListener(new ActionListener(){
+	/*	beenden.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);
 			}	
-		});
+		});*/
 		//beenden.setPreferredSize(new Dimension(200,50));
 
 		name.addActionListener(new ActionListener(){

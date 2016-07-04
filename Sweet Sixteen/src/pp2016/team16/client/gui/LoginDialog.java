@@ -10,6 +10,12 @@ import javax.swing.border.*;
 import pp2016.team16.client.engine.ClientEngine;
 import pp2016.team16.client.gui.HindiBones;
  
+/**
+ * Klasse für den LoginDialog
+ * @author Simon Nietz, Matr_Nr: 5823560
+ *
+ */
+
 public class LoginDialog extends JDialog {
  
 	public static ArrayList<String> User = new ArrayList<String>();
@@ -30,15 +36,20 @@ public class LoginDialog extends JDialog {
     private String benutzername ="";
     private String passwort = "";
     		
-    
+    /**
+     * @author Simon Nietz, Matr_Nr: 5823560
+     * @param parent erweitere das LoginFenster aus HindiBones
+     */
     public LoginDialog(Frame parent) {
         super(parent, "Login", true);
         
     
-
+        // erzeuge ein neues JPanel
+        // ordne die Buttons mithilfe GridBagLayout
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints cs = new GridBagConstraints();
- 
+        
+        
         cs.fill = GridBagConstraints.HORIZONTAL;
         
         //erstelle die Buttons Benutername, Passwort mit den zugehörigen Textfeldern 
@@ -86,7 +97,7 @@ public class LoginDialog extends JDialog {
                             "Ungültiger Benutzername oder Passwort",
                             "Login",
                             JOptionPane.ERROR_MESSAGE);
-                    // Benutzername und Passwort zurücksetzen
+                    // Benutzername und Passwort zuruecksetzen
                     tfUsername.setText("");
                     pfPassword.setText("");
                     succeeded = false;
@@ -94,7 +105,7 @@ public class LoginDialog extends JDialog {
                 }
             }
         });
-        //möglichkeit ohne sich einzuloggen zu spielen
+        //moeglichkeit ohne sich einzuloggen zu spielen
         btnCancel1 = new JButton("Spiele als Gast");
         btnCancel1.addActionListener(new ActionListener() {
  
@@ -104,6 +115,7 @@ public class LoginDialog extends JDialog {
             }
         });
         
+        //neuen Benutzer erstellen
         btnAnmelden = new JButton("Neu Anmelden");
         btnAnmelden.addActionListener(new ActionListener(){
         	

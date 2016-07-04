@@ -14,6 +14,12 @@ import pp2016.team16.shared.Schluessel;
 import pp2016.team16.shared.Spielelement;
 import pp2016.team16.shared.Tuer;
 
+/**
+ * Klasse für die Statusleiste die unten zu sehen ist
+ * @author Simon Nietz, Matr_Nr: 5823560
+ *
+ */
+
 public class Statusleiste extends JPanel {
 
 	private static final long serialVersionUID = 1L;
@@ -22,9 +28,15 @@ public class Statusleiste extends JPanel {
 	
 	private HindiBones fenster;
 	
+	/**
+	 * @author Simon Nietz, Matr_Nr: 5823560
+	 * @param fenster fenster der Anwendung
+	 */
+	
 	public Statusleiste(HindiBones fenster){
 		this.fenster = fenster;
 		
+		// lade die Bilder die anzeigt werden sollen
 		try {
 			hintergrund = ImageIO.read(new File("img//status.png"));
 			schluessel = ImageIO.read(new File("img//schluessel.png"));
@@ -34,20 +46,25 @@ public class Statusleiste extends JPanel {
 		}
 	}
 	
+
+	
 	public void paint(Graphics g) {
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
 		
+		
+		// Lege die Groeße der Statusleiste fest
 		for(int i = 0; i < fenster.Width; i++){
 			g.drawImage(hintergrund, i*fenster.BOX, 0, null);
 		}		
-
+		// male ein Bild des Spieler auf die Statusleiste
 		g.drawImage(fenster.spieler.getImage(), 4, 4, fenster.BOX - 8, fenster.BOX - 8, null);
-		
+		// male ein Bild des Schluessels
 		if(fenster.spieler.hatSchluessel()){
 			g.drawImage(schluessel, fenster.BOX * (fenster.Width - 1), 0, null);
 		}
 		
+		// die Zeite wird mitlaufen angezeigt, sowie das Level
 		g.setColor(Color.WHITE);	
 		g.drawString(fenster.spieler.getName(), fenster.BOX + 5, 20);
 		g.drawString("Zeit: " + (System.currentTimeMillis() - fenster.startZeit)/1000, fenster.BOX * (fenster.Width - 6), 20);
@@ -62,7 +79,7 @@ public class Statusleiste extends JPanel {
 		g.drawImage(heiltrank,fenster.BOX * (fenster.Width-2),0,null);
 
 		Spielelement feld = fenster.level[fenster.spieler.getXPos()][fenster.spieler.getYPos()];
-		
+		// falls ein Schluessel aufgehoben wird, wird dieser auch in die Statusleiste gezeichnet
 		if(feld instanceof Schluessel){
 			g.drawString("Leertaste zum Aufnehmen", fenster.BOX * (fenster.Width - 11) - 5, 20);
 		}else if(feld instanceof Tuer){
@@ -76,6 +93,7 @@ public class Statusleiste extends JPanel {
 			g.drawString("Leertaste zum Aufnehmen", fenster.BOX * (fenster.Width - 11) - 5, 20);
 		}
 		
+		// zeige die Lebensanzeige des Spielers an
 		g.setColor(Color.RED);
 		g.fillRect((fenster.Width / 2) * fenster.BOX - 80, getHeight() - 8, fenster.spieler.getMaxHealth(), 5);
 		g.setColor(Color.GREEN);

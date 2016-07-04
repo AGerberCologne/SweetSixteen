@@ -22,6 +22,13 @@ import pp2016.team16.shared.Spieler;
 import pp2016.team16.shared.Tuer;
 import pp2016.team16.shared.Wand;
 
+/**
+ * Klasse für das gesamte Fenster des Spiels
+ * Mit KeyListener und MouseListener
+ * @author Simon Nietz, Matr_Nr: 5823560
+ *
+ */
+
 public class HindiBones extends JFrame implements KeyListener, MouseListener {
 	
 	private static final long serialVersionUID = 1L;
@@ -58,6 +65,13 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 	public final int BOX = 32;
 	public final int Width = 17;
 	public final int Height = 17;
+	
+	/**
+	 * @author Simon Nietz, Matr_Nr: 5823560
+	 * @param width Breite des Fensters
+	 * @param height Hoehe des Fensters
+	 * @param title Titel des Fensters
+	 */
 
 	public HindiBones(int width, int height, String title) {
 		zeigeLogin();
@@ -67,6 +81,12 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 		}
 	}	
 	
+	/**
+	 * 
+	 * @param width Breite des erzeugten JFrame
+	 * @param height Heohe des erzeugten JFrame
+	 * @param title Titel des erzeugten JFrame
+	 */
 
 	public void initialisiereJFrame(int width, int height, String title) {
 		// Layout fuer unser Fenster
@@ -113,7 +133,7 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 	}
 	
     public void zeigeLogin() {
-                    	
+        // erstelle das Fenster für den Login     	
         LoginDialog loginDlg = new LoginDialog(frame);
          loginDlg.setVisible(true);
            if(loginDlg.isSucceeded()){
@@ -245,7 +265,9 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 		}
 	}
 	
-	
+	/* die uebrigen Methoden des MouseListener muessen auch implementiert werden 
+	 auch wenn diese nicht genutzt werden
+	 */
 	public void mouseEntered(MouseEvent arg0) {}
 	public void mouseExited(MouseEvent arg0) {}
 	public void mousePressed(MouseEvent arg0) {}
@@ -258,11 +280,12 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 	public void keyTyped(KeyEvent e) {}
 
 	public void spielZuruecksetzen() {
-
+		
+		// das Spiel wird neu initialisiert
 		spieler = new Spieler("img//spieler.png", this);
 		monsterListe = new LinkedList<Monster>();
 		level = new Spielelement[WIDTH][HEIGHT];
-	//	level = new AlleLevel[17][17];
+	
 		
 		currentLevel = 0;
 		spielende = false;
@@ -309,6 +332,7 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 	}
 
 	public void nextLevel() {
+		// das nächste Level wird geladen
 		currentLevel++;
 		
 		laby = level2.setzeInhalt(currentLevel);		

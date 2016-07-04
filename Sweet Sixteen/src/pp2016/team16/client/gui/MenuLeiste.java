@@ -8,6 +8,12 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
+/**
+ * Klasse für die Menueleiste die oben angezeigt wird
+ * @author Simon Nietz, Matr_Nr: 5823560
+ *
+ */
+
 public class MenuLeiste extends JMenuBar implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
@@ -15,11 +21,13 @@ public class MenuLeiste extends JMenuBar implements ActionListener {
 	private MiniMap mini;
 	private boolean anzeigen=false;
 	
+	// die einzelnen Menuepunkte
     private JMenu spiel;
     private JMenu anzeige;
 	private JMenu hilfe;
     private JMenu minimap;
 	
+    //die Unterpunkte der Menues
     private JMenuItem neuesSpiel;
     private JMenuItem einloggen;
     private JMenuItem highscore;
@@ -30,18 +38,27 @@ public class MenuLeiste extends JMenuBar implements ActionListener {
     private JMenuItem minimapzeigen;
     private JMenuItem minimapverstecken;
     
-    
+    /**
+     * 
+     */
     
     private HindiBones fenster;
+    
+    /**
+     * @author Simon Nietz, Matr_Nr: 5823560
+     * @param fenster fenster von der Anwendung
+     */
     
 	public MenuLeiste(HindiBones fenster){
 		this.fenster = fenster;
 		
+		// diese werden oben angezeigt
 		spiel = new JMenu("Spiel");
 		anzeige = new JMenu("Anzeige");
 		hilfe = new JMenu("Hilfe");
 		minimap = new JMenu("Minimap");
         
+		// dieses sind die Unterpunkte
         neuesSpiel = new JMenuItem("Neues Spiel starten");
         einloggen = new JMenuItem("Einloggen");
         highscore = new JMenuItem("Highscore anzeigen");
@@ -77,6 +94,8 @@ public class MenuLeiste extends JMenuBar implements ActionListener {
         this.add(anzeige);
         this.add(hilfe);
         this.add(minimap);
+        
+        // Aktionen die aufgerufen werden, falls draufgeklickt wird
 	}
 	public void actionPerformed(ActionEvent e){
 		if(e.getSource() == neuesSpiel){
@@ -134,7 +153,10 @@ public class MenuLeiste extends JMenuBar implements ActionListener {
 		}
 	}
 	
-	
+	/**
+	 * @author Simon Nietz, Matr_Nr: 5823560
+	 * @return der Highscore wird geladen
+	 */
 	public JMenuItem getHighscore(){
 		return highscore;
 	}

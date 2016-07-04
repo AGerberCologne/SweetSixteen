@@ -14,6 +14,14 @@ import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import pp2016.team16.client.gui.LoginDialog;
+
+
+/**
+ * Klasse für das Panel um den Highscore anzuzeigen
+ * @author Simon Nietz, Matr_Nr: 5823560
+ *
+ */
+
 public class Highscore extends JPanel {
 
 	private static final long serialVersionUID = 1L;
@@ -53,6 +61,12 @@ public class Highscore extends JPanel {
 		}
 	}
 		
+	/**
+	 * Methode um einen Spieler in die Highscore Liste mit aufzunehmen
+	 * @author Simon Nietz, Matr_Nr: 5823560
+	 * @param zeit ist der Highscore
+	 */
+	
 	public void addSpielerToHighScore(int zeit){
 		String name;
 		if(LoginDialog.succeeded==true ){
@@ -66,7 +80,7 @@ public class Highscore extends JPanel {
 				i = highScore.size();
 			}
 		}
-		
+		// der name und die zeit wird in die Liste Highscore.txt eingetragen
 		try {
 			FileWriter writer = new FileWriter(new File("highscore.txt"));
 			for(int i = 0; i < 10; i++){
@@ -80,11 +94,19 @@ public class Highscore extends JPanel {
 		}
 		
 	}
-	
+	/**
+	 * getter für den Highscore
+	 * @author Simon Nietz, Matr_Nr: 5823560
+	 * @return Die Highscore Liste
+	 */
 	public LinkedList<HighScoreElement> getHighScore(){
 		return highScore;
 	}
 	
+	/**
+	 * paint methode um den Highscore anzuzeigen
+	 * @author Simon Nietz, Matr_Nr: 5823560
+	 */
 	public void paint(Graphics g){
 		Image img = null, boden = null;
 		
@@ -113,10 +135,22 @@ public class Highscore extends JPanel {
 	}
 }
 
+/**
+ * Klasse für HighScoreElement
+ * @author Simon Nietz, Matr_Nr: 5823560
+ *
+ */
+
 class HighScoreElement {
 	
 	String name;
 	int zeit;
+	
+	/** Konstruktor für HighScoreElement
+	 * @author Simon Nietz, Matr_Nr: 5823560
+	 * @param punkte Die Punkte des Spielers
+	 * @param name Der Name des Spielers 
+	 */
 	
 	public HighScoreElement(int punkte, String name){
 		this.name = name;

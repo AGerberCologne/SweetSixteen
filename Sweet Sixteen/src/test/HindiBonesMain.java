@@ -4,7 +4,6 @@ import pp2016.team16.client.comm.ClientComm;
 import pp2016.team16.client.engine.ClientEngine;
 import pp2016.team16.client.gui.HindiBones;
 import pp2016.team16.server.comm.ServerComm;
-import pp2016.team16.server.engine.ServerEngine;
 
 
 public class HindiBonesMain {
@@ -14,10 +13,9 @@ public class HindiBonesMain {
 	
 	public static void main(String[] args){
 			
-	//*	 new HindiBones(BOX*WIDTH, BOX*HEIGHT, "Hindi"); 
-		
-		ServerEngine serv = new ServerEngine();
-		ClientEngine com = new ClientEngine();
+		 new HindiBones(BOX*WIDTH, BOX*HEIGHT, "Hindi"); 
+	/*	ServerComm serv = new ServerComm(10000);
+		ClientComm com = new ClientComm("localhost", 10000);
 		
 		 System.out.println("Starte Server");
 		 ClientEngine client = new ClientEngine();
@@ -27,7 +25,7 @@ public class HindiBonesMain {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-	} 
+		} */
+	}
 
 }

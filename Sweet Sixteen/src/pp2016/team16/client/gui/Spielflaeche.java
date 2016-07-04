@@ -18,12 +18,25 @@ import pp2016.team16.shared.Spieler;
 import pp2016.team16.shared.Tuer;
 import pp2016.team16.shared.Wand;
 
+/**
+ * Klasse für das JPanel auf dem die Spielflaeche gezeichnet wird
+ * @author Simon Nietz, Matr_Nr: 5823560
+ *
+ */
+
+
+	//Panel für die Spielflache
 public class Spielflaeche extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
 	private Image boden, wand, tuerOffen, tuerZu, schluessel, heiltrank, feuerball;
 	public HindiBones fenster;
+	
+	/**
+	 * @author Simon Nietz, Matr_Nr: 5823560
+	 * @param fenster das Spielfenster 
+	 */
 	
 	public Spielflaeche(HindiBones fenster) {
 		this.fenster = fenster;
@@ -40,6 +53,11 @@ public class Spielflaeche extends JPanel {
 			System.err.println("Ein Bild konnte nicht geladen werden.");
 		}
 	}
+	
+	/**
+	 * @author Simon Nietz, Matr_Nr: 5823560
+	 * Die paint Methode zeichnet die Spieler, Monster, Feuerbaelle, Spielflaeche, etc.
+	 */
 
 	public void paint(Graphics g) {
 		
@@ -49,7 +67,7 @@ public class Spielflaeche extends JPanel {
 
 		int zähler1=0;
 		int zähler2=0;
-
+		// Ueberpruefe an welcher Positition der Spieler ist
 		if(fenster.spieler.getYPos()>(fenster.HEIGHT+1)/2+3)
 			zähler2 = 4;
 		else if(fenster.spieler.getYPos()>(fenster.HEIGHT+1)/2+2)
@@ -69,6 +87,7 @@ public class Spielflaeche extends JPanel {
 			zähler1 = 1;
 		
 		// Male die einzelnen Felder
+		// falls der Spieler eine gewisse Position ueberschreitet wird mitgescrollt
 		for (int i = 0; i < fenster.Width; i++) {
 			for (int j = 0; j < fenster.Height; j++) {
 				if (inRange(i+zähler1,j+zähler2)) {
@@ -175,6 +194,11 @@ public class Spielflaeche extends JPanel {
 		}
 	}
 
+	/**
+	 * @author Simon Nietz, Matr_Nr: 5823560
+	 * @param g
+	 * @param m der Typ des Monsters
+	 */
 	private void drawMonster(Graphics g, Monster m){
 		// Monster Health Points
 		

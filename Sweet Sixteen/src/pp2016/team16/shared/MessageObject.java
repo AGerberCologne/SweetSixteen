@@ -7,11 +7,12 @@ public class MessageObject implements Serializable	//Datenstruktur
 {	
 
 	
-   
- /**
+  
+
+/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 4971782962320406464L;
 
 public void ueberschreibe(MessageObject message){
 	 

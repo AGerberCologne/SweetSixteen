@@ -25,6 +25,7 @@ public class ClientComm extends Thread{
 		try{
 			c = new Socket(host, port);
 			clientOpen=true;
+			this.start();
 		}catch(IOException e){
 			
 		}

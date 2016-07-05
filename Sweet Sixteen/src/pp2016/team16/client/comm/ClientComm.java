@@ -17,9 +17,11 @@ public class ClientComm extends Thread{
 	ObjectInputStream ois=null;
 	ObjectOutputStream oos=null;
 	Socket c;
+	public String host = "localhost";
+	public int port = 10000;
 	public boolean clientOpen;
 
-	public ClientComm(String host,int port){
+	public ClientComm(){
 		try{
 			c = new Socket(host, port);
 			clientOpen=true;
@@ -29,9 +31,7 @@ public class ClientComm extends Thread{
 	}
 
 	
-	public ClientComm(){
-		
-	}
+	
 	
 	public void run(){
 		while (clientOpen){

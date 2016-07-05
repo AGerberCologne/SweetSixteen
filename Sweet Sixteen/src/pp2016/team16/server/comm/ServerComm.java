@@ -11,22 +11,21 @@ import pp2016.team16.shared.MessageObject;
 //Gruppe 16 Kommunikation; Ann-Catherine Hartmann
 
 
-public class ServerComm {
+public class ServerComm extends Thread {
 	public ServerSocket serverS;
 	public Socket s;
+	int port = 10000;
 	public boolean serverOpen;
 	ObjectOutputStream ost=null;
 	ObjectInputStream in=null;
 	LinkedList<MessageObject> empfangeVomClient = new LinkedList<MessageObject>();
 	LinkedList<MessageObject> sendeAnClient = new LinkedList<MessageObject>();
 	
+
 public ServerComm(){
-	
-}
-public ServerComm(int port){
 		try {
 			serverS = new ServerSocket(port);
-			run();
+			this.start();
 		}catch(IOException e){}
 		}
 
@@ -55,7 +54,6 @@ public ServerComm(int port){
 				}
 				else{
 					empfangeVomClient.addLast(n);
-					gebeWeiterAnServer();
 				}
 			} catch (IOException | ClassNotFoundException e) {
 			}

@@ -16,10 +16,10 @@ import pp2016.team16.server.map.AlleLevel;
 import pp2016.team16.server.map.Leser;
 
 
-public class ServerEngine
-{
+public class ServerEngine extends Thread
+{ 
 	MessageObject serverDatenbestand = new MessageObject();
-    ServerComm server;
+	ServerComm server;
 	public Map map = new Map();
 	public Spieler spieler = new Spieler();
 	public LinkedList<Monster> monsterListe;
@@ -27,11 +27,12 @@ public class ServerEngine
 	
 
 	public ServerEngine() {
+		this.start();
 		System.out.println("Starte Server");
-		server = new ServerComm(10000);
-	//	this.run();
+		
 	}
 	public void run(){
+		server = new ServerComm();
 		while(server.serverOpen){
 			MessageObject m = server.gebeWeiterAnServer();
 			this.nachrichtenVerarbeiten(m);

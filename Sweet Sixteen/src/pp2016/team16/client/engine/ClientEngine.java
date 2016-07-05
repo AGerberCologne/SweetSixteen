@@ -19,7 +19,7 @@ public class ClientEngine // entweder extends Thread oder implements
 // natürlich parallel aktiv sein müssen
 {
 	// In diesem Objekt speichert der Client interne Daten
-	ClientComm com = new ClientComm("localhost", 10000);
+	ClientComm com;
 	MessageObject clientDatenbestand = new MessageObject();
 	public Map map = new Map();
 	public Spieler spieler = new Spieler();
@@ -29,6 +29,7 @@ public class ClientEngine // entweder extends Thread oder implements
 
 	 public ClientEngine()  {
 		System.out.println("Starte Client");
+		com = new ClientComm();
 		//this.run();
 
 	}
@@ -131,9 +132,9 @@ public class ClientEngine // entweder extends Thread oder implements
 		ChangeLevelMessage anfrage = new ChangeLevelMessage();
 		anfrage.levelzaehler = this.map.levelzaehler;
 		com.bekommeVonClient(anfrage);
-		//MessageObject answer = com.gebeWeiterAnClient();
-		//this.nachrichtVerarbeiten(answer);
-		this.run();
+		MessageObject answer = com.gebeWeiterAnClient();
+		this.nachrichtVerarbeiten(answer);
+		//this.run();
 		return map.map;
 	}
 

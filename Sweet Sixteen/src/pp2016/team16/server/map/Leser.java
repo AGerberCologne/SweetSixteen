@@ -5,6 +5,7 @@ import java.util.LinkedList;
 
 import pp2016.team16.client.engine.ClientEngine;
 import pp2016.team16.client.gui.HindiBones;
+import pp2016.team16.server.engine.ServerEngine;
 import pp2016.team16.shared.Boden;
 import pp2016.team16.shared.Monster;
 import pp2016.team16.shared.Spielelement;
@@ -22,16 +23,14 @@ public class Leser {
 	private int [][] dateiname;
 //	private String dateiname;
 	private Spielelement[][] karte;
-	private HindiBones fenster;
-	public ClientEngine engine;
+	public ServerEngine sengine = new ServerEngine();
 	/**
 	 * @author Simon Nietz, Matr_Nr: 5823560
 	 * @param a das übergebene zwei dimensionale Array
 	 * @param fenster das HindiBones JFrame
 	 */
 	
-	public Leser(int [][] a, HindiBones fenster){
-		this.fenster = fenster;
+	public Leser(int [][] a){
 		this.dateiname = a;
 		
 		readLevel();
@@ -43,8 +42,8 @@ public class Leser {
 
 		// erzeuge zunächste ein Datentyp Spielelement
 		// erzeuge  LinkedList
-			karte = new Spielelement[fenster.WIDTH][fenster.HEIGHT];
-			fenster.monsterListe = new LinkedList<Monster>();		
+			karte = new Spielelement[21][21];
+			sengine.monsterListe = new LinkedList<Monster>();		
 			
 	
 		// Lese das übergebene Array aus und Speicher es im Datentyp Spielelement
@@ -56,11 +55,11 @@ public class Leser {
 			case 1: karte[i][j] = new Boden(); break;
 //			case 3: karte[i][j] = new Schluessel(); break;
 			case 6: karte[i][j] = new Tuer(false); break;
-			case 4: karte[i][j] = new Tuer(true); fenster.spieler.setPos(i, j); break;
-			case 2: karte[i][j] = new Boden(); fenster.monsterListe.add(new Monster(i,j, fenster, 0)); break;
+			case 4: karte[i][j] = new Tuer(true); sengine.spieler.setPos(i, j); break;
+			case 2: karte[i][j] = new Boden(); sengine.monsterListe.add(new Monster(i,j, 0)); break;
 			// Monster, welche erst nach dem Aufheben des Schluessels erscheinen
-			case 3: karte[i][j] = new Boden(); fenster.monsterListe.add(new Monster(i,j, fenster, 2)); break;
-			case 8: karte[i][j] = new Boden(); fenster.monsterListe.add(new Monster(i,j, fenster, 1)); break;
+			case 3: karte[i][j] = new Boden(); sengine.monsterListe.add(new Monster(i,j, 2)); break;
+			case 8: karte[i][j] = new Boden(); sengine.monsterListe.add(new Monster(i,j, 1)); break;
 		}	
 				
 			}

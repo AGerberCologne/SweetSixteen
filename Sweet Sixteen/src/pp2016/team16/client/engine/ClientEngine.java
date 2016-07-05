@@ -21,9 +21,10 @@ public class ClientEngine // entweder extends Thread oder implements
 	// In diesem Objekt speichert der Client interne Daten
 	ClientComm com = new ClientComm("localhost", 10000);
 	MessageObject clientDatenbestand = new MessageObject();
-	public Map map= new Map();
-	public Spieler spieler;
-	public Monster monster;
+	public Map map = new Map();
+	public Spieler spieler = new Spieler();
+	public LinkedList<Monster> monsterListe;
+	public Spielelement[][] karte = new Spielelement[21][21];
 	public boolean eingeloggt;
 
 	 public ClientEngine()  {
@@ -64,11 +65,12 @@ public class ClientEngine // entweder extends Thread oder implements
 			  spieler.setName(l.name);
 			  spieler.setPasswort(l.passwort);
 			  this.eingeloggt= l.eingeloggt;
-			  notify();
 			
 		} else  if (daten instanceof ChangeLevelMessage) {
-			map.level = ((ChangeLevelMessage) daten).map;
+			map.map = ((ChangeLevelMessage) daten).map;
 			map.levelzaehler = ((ChangeLevelMessage) daten).levelzaehler;
+			this.spieler =((ChangeLevelMessage) daten).spieler;
+			this.monsterListe = ((ChangeLevelMessage) daten).monsterListe;
 			System.out.println("Neues Level gespeichert");
 
 		} else if (daten instanceof MoveMessage) {
@@ -90,10 +92,17 @@ public class ClientEngine // entweder extends Thread oder implements
 
 
 	// Methoden für GUI
+	
+	/*public void übergebe(){
+		if( f instanceof Spieler){
+			this.spieler = (Spieler) f;
+		}
+		else this.monster = (Monster) f;
+	}*/
+	
 	public boolean login( int i, String n, String p) throws InterruptedException  { 
 		LoginMessage anfrage = new LoginMessage(i, n, p);
 		com.bekommeVonClient(anfrage);
-		wait();
 		return eingeloggt;
 	}
 
@@ -117,7 +126,7 @@ public class ClientEngine // entweder extends Thread oder implements
 
 	
 
-	public int[][] changeLevel() throws Exception{
+	public Spielelement[][] changeLevel() throws Exception{
 		System.out.println("Der Client fragt ein neues Level an");
 		ChangeLevelMessage anfrage = new ChangeLevelMessage();
 		anfrage.levelzaehler = this.map.levelzaehler;
@@ -125,7 +134,7 @@ public class ClientEngine // entweder extends Thread oder implements
 		//MessageObject answer = com.gebeWeiterAnClient();
 		//this.nachrichtVerarbeiten(answer);
 		this.run();
-		return map.level;
+		return map.map;
 	}
 
 	void benutzeItem() {

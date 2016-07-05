@@ -50,6 +50,22 @@ public class Spieler extends Figur {
 		}
 	}
 	
+	public Spieler(){
+		
+		setAnzahlHeiltraenke(0);
+		setPos(0,0);		
+		setHealth(100);
+		setMaxHealth(getHealth());
+		
+		if(LoginDialog.succeeded){
+			setName(LoginDialog.getUsername());
+		}else{
+		setName("Hindi");
+		}
+		
+		
+	}
+	
 
 	
 	// Methode, um den Schluessel aufzuheben

@@ -1,24 +1,22 @@
 package pp2016.team16.shared;
 
+import java.util.LinkedList;
+
 public class ChangeLevelMessage extends MessageObject {
-	public int[][] map;
+	public int[][] level;
 	public int levelzaehler;
-	public boolean login = false;
+	public Spielelement [][] map;
+	public Spieler spieler;
+	public LinkedList<Monster> monsterListe;
 	
 	public ChangeLevelMessage(){
-		this.map = new int[21][21];
+		this.level = new int[21][21];
 	}
-	
-	public ChangeLevelMessage(int i){
-		this.login = true;
+	public ChangeLevelMessage(Spieler spieler, LinkedList<Monster> monsterListe, Spielelement[][] map){
+		this.spieler = spieler;
+		this.monsterListe = monsterListe;
+		this.map = map;
 	}
-	
-	void  ueberschreibe(ChangeLevelMessage message){
-		this.login = message.login;
-		this.map = message.map;
-		this.levelzaehler =message.levelzaehler;
-	}
-
 	
 
 }

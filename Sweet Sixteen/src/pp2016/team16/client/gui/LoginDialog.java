@@ -87,22 +87,22 @@ public class LoginDialog extends JDialog {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-        	if (test == false){
+        	if (test == true){
         		JOptionPane.showMessageDialog(LoginDialog.this,
+                        "Hi " + getUsername() + "! Du hast dich erfolgreich eingeloggt.",
+                        "Login",
+                        JOptionPane.INFORMATION_MESSAGE);
+                succeeded = true;
+                dispose();    		
+        	} else  {                
+                JOptionPane.showMessageDialog(LoginDialog.this,
                         "Ungültiger Benutzername oder Passwort",
                         "Login",
                         JOptionPane.ERROR_MESSAGE);
                 // Benutzername und Passwort zuruecksetzen
                 tfUsername.setText("");
                 pfPassword.setText("");
-                succeeded = false;      		
-        	} else {
-        		JOptionPane.showMessageDialog(LoginDialog.this,
-                        "Hi " + getUsername() + "! Du hast dich erfolgreich eingeloggt.",
-                        "Login",
-                        JOptionPane.INFORMATION_MESSAGE);
-                succeeded = true;
-                dispose();
+                succeeded = false;  
         	}
         		
         	}
@@ -151,13 +151,7 @@ public class LoginDialog extends JDialog {
 					e1.printStackTrace();
 				}
         		
-        		if(test == false){
-        			JOptionPane.showMessageDialog(LoginDialog.this,
-                            "Der Benutzername ist bereits vergeben!",
-                            "Login",
-                            JOptionPane.ERROR_MESSAGE);
-        			succeeded = false;
-        		} else {
+        		if(test == true){
         			JOptionPane.showMessageDialog(LoginDialog.this,
                             "Hi " + getUsername() + "! Du hast dich erfolgreich neu angemeldet",
                             "Anmeldung",
@@ -165,6 +159,13 @@ public class LoginDialog extends JDialog {
                     succeeded = false;
                     tfUsername.setText("");
                     pfPassword.setText("");
+        		} else {      			
+                    
+                    JOptionPane.showMessageDialog(LoginDialog.this,
+                            "Der Benutzername ist bereits vergeben!",
+                            "Login",
+                            JOptionPane.ERROR_MESSAGE);
+        			succeeded = false;
         		}
         	}
       

@@ -25,6 +25,7 @@ public class Spieler extends Figur {
 	
 	public int zielX = 0;
 	public int zielY = 0;
+	public boolean hatSchrittgemacht =false;
 	
 	private HindiBones fenster;
 	

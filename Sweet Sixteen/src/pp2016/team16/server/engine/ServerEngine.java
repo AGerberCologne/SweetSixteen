@@ -23,7 +23,7 @@ public class ServerEngine extends Thread
 	public Map map = new Map();
 	public Spieler spieler = new Spieler();
 	public LinkedList<Monster> monsterListe;
-	public Spielelement[][] karte = new Spielelement[21][21];
+	public boolean eingeloggt;
 	
 
 	public ServerEngine() {
@@ -56,6 +56,17 @@ public class ServerEngine extends Thread
 		if (eingehendeNachricht instanceof LoginMessage) 
 		{  LoginMessage l = (LoginMessage) eingehendeNachricht;
 		  // this.logIn(l.artVonAnmeldung, l.name, l.passwort);
+			LoginAnswerMessage answer =new LoginAnswerMessage();
+			if(this.eingeloggt){
+				spieler.setName(l.name);
+				spieler.setPasswort(l.passwort);
+				answer.eingeloggt= eingeloggt;
+				answer.name = l.name;
+				answer.passwort = l.passwort;
+				answer.levelzaehler = map.levelzaehler;
+				
+				
+			}
 		   
 		}/* else if (eingehendeNachricht instanceof LogoutMessage)
 		{
@@ -70,9 +81,10 @@ public class ServerEngine extends Thread
 			Leser l = new Leser(map.level);
 			this.spieler = l.sengine.spieler;
 			this.monsterListe = l.sengine.monsterListe;
-			this.karte = l.getLevel();
+			map.karte = l.getLevel();
 			ChangeLevelMessage answer = new ChangeLevelMessage();
-			//ChangeLevelMessage answer = new ChangeLevelMessage(spieler,monsterListe,karte);
+			answer.level = map.level;
+			answer.levelzaehler = map.levelzaehler;
 			server.gebeWeiterAnClient(answer);
 			
 		} else if (eingehendeNachricht instanceof MoveMessage) {
@@ -85,6 +97,7 @@ public class ServerEngine extends Thread
 			MoveMessage answer = new MoveMessage();
 			answer.richtung = richtung;
 			server.gebeWeiterAnClient(answer);
+			
 		} /*else if (eingehendeNachricht instanceof CheatMessage) {
 			int i = ((CheatMessage) eingehendeNachricht).i;
 			switch (i) {
@@ -107,6 +120,12 @@ public class ServerEngine extends Thread
 	}
 	
 /*Ann-Catherine Hartmann,37658
+ * 
+ //Die Methode sollte im boolean eingeloggt true speichern, falls man erfolgreich 
+  * eine anmeldung oder einen login durchgeführt hat;
+  * außerdem sollte wenn es eine neue anmeldung ist 1 bei this.map.levelzaehler gespeichert werden
+  * wenn man sich einlogt, dann soll nicht nur geprüft werden ob name und passwort zusammen passen sondern 
+  * auch noch die levelnr ausgelesen werden ( die speichern wir mit), und an this.map.levelzaehler übergeben werden
 public void logIn(int i, String name, String passwort){
 	if (i ==1){
 	//neuer	
@@ -142,7 +161,9 @@ public void abmelden(){
 	
 }
 //Ann-Catherine Hartmann,37658
-public void speichern(){
+ //es wird immer name, passwort und levelnr gespeichert
+  * wichtig ist, dass die bereits bestehenden eintragungen entweder überschrieben oder gelöscht werden
+public void speichern( String name, String passwort, int levelNr){
 	
 }*/
 }

@@ -7,6 +7,7 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
+import pp2016.team16.server.map.Leser;
 import pp2016.team16.shared.*;
 import pp2016.team16.shared.Map;
 import pp2016.team16.client.comm.ClientComm;
@@ -25,6 +26,10 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 	public LinkedList<Monster> monsterListe;
 	public boolean eingeloggt = false;
 	public boolean neuesLevel = false;
+	
+	public final int MAXLEVEL = 5;
+	public final int WIDTH = 21;
+	public final int HEIGHT = 21;
 
 	 public ClientEngine()  {
 		System.out.println("Starte Client");
@@ -55,17 +60,7 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 			 }
 		 }
 	 }
-	/*
-	 * public void run() // Run Methode wird in der Main durch den .start()
-	 * Befehl // aufgerufen. { System.out.println("");// Für die Formatierung
-	 * try { // Beim ersten Start downloaded der Client die Spielerdaten vom //
-	 * Server String name = JOptionPane.showInputDialog("Username"); String
-	 * passwort = JOptionPane.showInputDialog("Passwort"); this.login(name,
-	 * passwort); this.sleep(2000); this.move(4, 5); this.sleep(2000);
-	 * this.changeLevel(); this.sleep(2000); this.cheatBenutzen(2);
-	 * this.sleep(2000); this.logout(); } catch (Exception e) //
-	 * Exceptionbehandlung { System.out.println("Client Exception: " + e); } }
-	 */
+	
 	// Message-Handling
 	void nachrichtVerarbeiten(MessageObject daten) throws Exception {
 		  if (daten instanceof LoginAnswerMessage) {
@@ -77,20 +72,30 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 			  this.eingeloggt= l.eingeloggt;
 			
 		} else  if (daten instanceof ChangeLevelMessage) {
-			map.karte = ((ChangeLevelMessage) daten).map;
-			map.levelzaehler = ((ChangeLevelMessage) daten).levelzaehler;
-			this.spieler =((ChangeLevelMessage) daten).spieler;
-			this.monsterListe = ((ChangeLevelMessage) daten).monsterListe;
+			ChangeLevelMessage c = (ChangeLevelMessage) daten;
+			Leser l = new Leser(c.level);
+			this.spieler = l.sengine.spieler;
+			this.monsterListe = l.sengine.monsterListe;
+			map.karte = l.getLevel();
+			map.levelzaehler = c.levelzaehler;
 			this.neuesLevel = true;
 			System.out.println("Neues Level gespeichert");
 
 		} else if (daten instanceof MoveMessage) {
 			int richtung = ((MoveMessage) daten).richtung;
 			switch(richtung){
-				case 1:
-				case 2:
-				case 3:
-				case 0:
+				case 1: spieler.rechts();
+						spieler.hatSchrittgemacht = true;
+						break;
+				case 2: spieler.links(); 
+						spieler.hatSchrittgemacht = true;
+						break;
+				case 3: spieler.runter(); 
+						spieler.hatSchrittgemacht = true;
+						break;
+				case 0: spieler.hoch();
+						spieler.hatSchrittgemacht = true;
+						break;
 			}
 			
 			
@@ -104,14 +109,8 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 
 	// Methoden für GUI
 	
-	/*public void übergebe(){
-		if( f instanceof Spieler){
-			this.spieler = (Spieler) f;
-		}
-		else this.monster = (Monster) f;
-	}*/
 	
-	public boolean login( int i, String n, String p) throws InterruptedException  { 
+	public boolean login(int i, String n, String p) throws InterruptedException  { 
 		LoginMessage anfrage = new LoginMessage(i, n, p);
 		com.bekommeVonClient(anfrage);
 		return eingeloggt;
@@ -132,7 +131,8 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 		anfrage.neuX = spieler.zielX;
 		anfrage.neuY = spieler.zielY;
 		com.bekommeVonClient(anfrage);
-		wait();
+		while(spieler.hatSchrittgemacht ==false){}
+		spieler.hatSchrittgemacht =false;
 	}
 
 	
@@ -151,6 +151,29 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 	}
 
 	void benutzeItem() {
+		// Schluessel aufnehmen
+		if (map.karte[spieler.getXPos()][spieler.getYPos()] instanceof Schluessel) {
+			spieler.nimmSchluessel();
+			map.karte[spieler.getXPos()][spieler.getYPos()] = new Boden();
+		}
+		// Heiltrank aufnehmen
+		else if (map.karte[spieler.getXPos()][spieler.getYPos()] instanceof Heiltrank) {
+			spieler.nimmHeiltrank((Heiltrank) map.karte[spieler.getXPos()][spieler.getYPos()]);		
+			map.karte[spieler.getXPos()][spieler.getYPos()] = new Boden();
+		}
+		// Schluessel benutzen
+		if (map.karte[spieler.getXPos()][spieler.getYPos()] instanceof Tuer) {
+			if (!((Tuer) map.karte[spieler.getXPos()][spieler.getYPos()]).istOffen() && spieler.hatSchluessel()) {
+				((Tuer) map.karte[spieler.getXPos()][spieler.getYPos()]).setOffen();
+				// Nach dem Oeffnen der Tuer ist der Schluessel wieder weg
+				spieler.entferneSchluessel();
+				if (map.levelzaehler < MAXLEVEL)
+					nextLevel();
+				else {
+					spielende = true;
+				}
+			}
+		}
 
 	}
 

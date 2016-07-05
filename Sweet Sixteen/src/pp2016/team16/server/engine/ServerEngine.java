@@ -35,7 +35,16 @@ public class ServerEngine extends Thread
 		server = new ServerComm();
 		while(server.serverOpen){
 			MessageObject m = server.gebeWeiterAnServer();
-			this.nachrichtenVerarbeiten(m);
+			if(m == null){
+				System.out.println("Test1");
+				try {
+					sleep(6000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			else this.nachrichtenVerarbeiten(m);
 		}
 	}
 	
@@ -56,6 +65,7 @@ public class ServerEngine extends Thread
 			System.out.println("Server hat Level-Anfrage erhalten");
 			map.levelzaehler = ((ChangeLevelMessage) eingehendeNachricht).levelzaehler;
 			AlleLevel levelObject = new AlleLevel();
+			map.levelzaehler = 1;
 			map.level =levelObject.setzeInhalt(map.levelzaehler);
 			Leser l = new Leser(map.level);
 			this.spieler = l.sengine.spieler;

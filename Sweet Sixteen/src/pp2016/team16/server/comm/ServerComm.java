@@ -25,13 +25,14 @@ public class ServerComm extends Thread {
 public ServerComm(){
 		try {
 			serverS = new ServerSocket(port);
+			serverOpen=true;
 			this.start();
 		}catch(IOException e){}
 		}
 
 		
 		public void run() {
-			serverOpen=true;
+			
 			while (serverOpen){
 				try {
 				//serverS.setSoTimeout(60000);
@@ -47,23 +48,32 @@ public ServerComm(){
 				ost.flush();
 				in = new ObjectInputStream(s.getInputStream());
 				MessageObject n;
+				System.out.println("InputStream");
 				n = (MessageObject)in.readObject();
-				if (n instanceof IchBinDa);else 
-				if (n instanceof LogoutMessage){
+				System.out.println("Message gelesen");
+				if (n instanceof IchBinDa){
+					System.out.println("IchBinDa");
+				}
+				else if (n instanceof LogoutMessage){
+					System.out.println("ost wird geschlossen");
 					schliesse();
 				}
 				else{
 					empfangeVomClient.addLast(n);
 				}
 			} catch (IOException | ClassNotFoundException e) {
+				System.out.println("Test 7");
 			}
 			
 		}
 		
 		public MessageObject gebeWeiterAnServer(){  
-			MessageObject r;
-			r=empfangeVomClient.removeFirst();
+			if (empfangeVomClient.isEmpty()==false){
+				MessageObject r;
+				r=empfangeVomClient.removeFirst();
 			return r;
+		}else
+			return null;
 		}
 		
 		public void gebeWeiterAnClient(MessageObject h){
@@ -73,12 +83,13 @@ public ServerComm(){
 		
 		public void sendeAnClient(){
 			try {
-				MessageObject m = sendeAnClient.removeFirst();
-				ost=new ObjectOutputStream(s.getOutputStream());
-				ost.writeObject(m);
-				ost.flush();
-			} catch (IOException e) {
 				
+				MessageObject m = sendeAnClient.removeFirst();
+				ost = new ObjectOutputStream(s.getOutputStream());
+				ost.writeObject(m);
+				ost.flush();	
+			} catch (IOException e) {
+				System.out.println("Test 9");
 			
 			}
 			

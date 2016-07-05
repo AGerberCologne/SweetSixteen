@@ -64,19 +64,18 @@ public class Monster extends Figur {
 	}
 	
 	public Monster(int x, int y, int typ) {
-		this.spieler = fenster.spieler;
 		this.typ = typ;
 		setPos(x, y);
 		setHealth(32);
 		setMaxHealth(getHealth());
 		lastAttack = System.currentTimeMillis();
 		lastStep = System.currentTimeMillis();
-		cooldownAttack = 500 - 10 * fenster.currentLevel; // ms
+	//	cooldownAttack = 500 - 10 * fenster.currentLevel; // ms
 		cooldownWalk = 1000;
 
 		zustand = 1;
 
-		setSchaden(5 + fenster.currentLevel * 2);
+	//	setSchaden(5 + fenster.currentLevel * 2);
 		Random r = new Random();
 		changeDir();
 

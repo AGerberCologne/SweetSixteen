@@ -21,13 +21,14 @@ public class ClientEngine // entweder extends Thread oder implements
 	// In diesem Objekt speichert der Client interne Daten
 	ClientComm com = new ClientComm("localhost", 10000);
 	MessageObject clientDatenbestand = new MessageObject();
-	public Map map;
+	public Map map= new Map();
 	public Spieler spieler;
 	public Monster monster;
+	public boolean eingeloggt;
 
 	 public ClientEngine()  {
 		System.out.println("Starte Client");
-		this.run();
+		//this.run();
 
 	}
 	
@@ -62,12 +63,12 @@ public class ClientEngine // entweder extends Thread oder implements
 			  map.levelzaehler = l.levelzaehler;
 			  spieler.setName(l.name);
 			  spieler.setPasswort(l.passwort);
+			  this.eingeloggt= l.eingeloggt;
 			  notify();
 			
 		} else  if (daten instanceof ChangeLevelMessage) {
 			map.level = ((ChangeLevelMessage) daten).map;
 			map.levelzaehler = ((ChangeLevelMessage) daten).levelzaehler;
-			notify();
 			System.out.println("Neues Level gespeichert");
 
 		} else if (daten instanceof MoveMessage) {
@@ -89,11 +90,11 @@ public class ClientEngine // entweder extends Thread oder implements
 
 
 	// Methoden für GUI
-	public int [][] login( int i, String n, String p) throws InterruptedException  { 
+	public boolean login( int i, String n, String p) throws InterruptedException  { 
 		LoginMessage anfrage = new LoginMessage(i, n, p);
 		com.bekommeVonClient(anfrage);
 		wait();
-		return map.level;
+		return eingeloggt;
 	}
 
 	void logout() throws Exception {
@@ -123,7 +124,7 @@ public class ClientEngine // entweder extends Thread oder implements
 		com.bekommeVonClient(anfrage);
 		//MessageObject answer = com.gebeWeiterAnClient();
 		//this.nachrichtVerarbeiten(answer);
-		wait();
+		this.run();
 		return map.level;
 	}
 

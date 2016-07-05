@@ -41,7 +41,7 @@ public class ServerEngine
 	void nachrichtenVerarbeiten(MessageObject eingehendeNachricht) {
 		if (eingehendeNachricht instanceof LoginMessage) 
 		{  LoginMessage l = (LoginMessage) eingehendeNachricht;
-		   this.logIn(l.artVonAnmeldung, l.name, l.passwort);
+		  // this.logIn(l.artVonAnmeldung, l.name, l.passwort);
 		   
 		}/* else if (eingehendeNachricht instanceof LogoutMessage)
 		{

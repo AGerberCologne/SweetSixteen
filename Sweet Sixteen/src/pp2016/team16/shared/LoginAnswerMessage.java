@@ -5,4 +5,5 @@ public class LoginAnswerMessage extends MessageObject{
 	public int levelzaehler;
 	public String name;
 	public String passwort;
+	public boolean eingeloggt;
 }

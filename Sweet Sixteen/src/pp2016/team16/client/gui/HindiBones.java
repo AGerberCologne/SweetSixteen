@@ -262,6 +262,8 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 			// Es war die linke Maustaste
 		int	zielX = e.getX() / 32; // Koordinaten des Klicks ...
 		int	zielY = e.getY() / 32; // auslesen und als Ziel setzen
+		
+		System.out.println(zielX +","+ zielY);
 		}
 	}
 	

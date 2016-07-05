@@ -19,13 +19,13 @@ import pp2016.team16.shared.Tuer;
 import pp2016.team16.shared.Wand;
 
 /**
- * Klasse für das JPanel auf dem die Spielflaeche gezeichnet wird
+ * Klasse fï¿½r das JPanel auf dem die Spielflaeche gezeichnet wird
  * @author Simon Nietz, Matr_Nr: 5823560
  *
  */
 
 
-	//Panel für die Spielflache
+	//Panel fï¿½r die Spielflache
 public class Spielflaeche extends JPanel {
 
 	private static final long serialVersionUID = 1L;
@@ -65,58 +65,58 @@ public class Spielflaeche extends JPanel {
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
 
-		int zähler1=0;
-		int zähler2=0;
+		int zaehler1=0;
+		int zaehler2=0;
 		// Ueberpruefe an welcher Positition der Spieler ist
 		if(fenster.spieler.getYPos()>(fenster.HEIGHT+1)/2+3)
-			zähler2 = 4;
+			zaehler2 = 4;
 		else if(fenster.spieler.getYPos()>(fenster.HEIGHT+1)/2+2)
-			zähler2 = 3;
+			zaehler2 = 3;
 		else if(fenster.spieler.getYPos()>(fenster.HEIGHT+1)/2+1)
-			zähler2 = 2;
+			zaehler2 = 2;
 		else if(fenster.spieler.getYPos()>(fenster.HEIGHT+1)/2)
-			zähler2 = 1;
+			zaehler2 = 1;
 		
 		if(fenster.spieler.getXPos()>(fenster.HEIGHT+1)/2+3)
-			zähler1 = 4;
+			zaehler1 = 4;
 		else if(fenster.spieler.getXPos()>(fenster.HEIGHT+1)/2+2)
-			zähler1 = 3;
+			zaehler1 = 3;
 		else if(fenster.spieler.getXPos()>(fenster.HEIGHT+1)/2+1)
-			zähler1 = 2;
+			zaehler1 = 2;
 		else if(fenster.spieler.getXPos()>(fenster.HEIGHT+1)/2)
-			zähler1 = 1;
+			zaehler1 = 1;
 		
 		// Male die einzelnen Felder
 		// falls der Spieler eine gewisse Position ueberschreitet wird mitgescrollt
 		for (int i = 0; i < fenster.Width; i++) {
 			for (int j = 0; j < fenster.Height; j++) {
-				if (inRange(i+zähler1,j+zähler2)) {
+				if (inRange(i+zaehler1,j+zaehler2)) {
 
-					if (fenster.level[i+zähler1][j+zähler2] instanceof Wand) {
+					if (fenster.level[i+zaehler1][j+zaehler2] instanceof Wand) {
 						// Hier kommt eine Wand hin
 						g.drawImage(wand, i * fenster.BOX, j * fenster.BOX,
 								null);
-					} else if (fenster.level[i+zähler1][j+zähler2] instanceof Boden) {
+					} else if (fenster.level[i+zaehler1][j+zaehler2] instanceof Boden) {
 						// Dieses Feld ist begehbar
 						g.drawImage(boden, i * fenster.BOX,
 								j * fenster.BOX, null);
-					} else if (fenster.level[i+zähler1][j+zähler2] instanceof Schluessel) {
+					} else if (fenster.level[i+zaehler1][j+zaehler2] instanceof Schluessel) {
 						// Hier liegt ein Schluessel
 						g.drawImage(boden, i * fenster.BOX,
 								j * fenster.BOX, null);
 						g.drawImage(schluessel, i * fenster.BOX, j
 								* fenster.BOX, null);
-					} else if (fenster.level[i+zähler1][j+zähler2] instanceof Tuer){
+					} else if (fenster.level[i+zaehler1][j+zaehler2] instanceof Tuer){
 						// Hier ist die Tuer
 						g.drawImage(boden, i * fenster.BOX,
 								j * fenster.BOX, null);
-						if (((Tuer) fenster.level[i+zähler1][j+zähler2]).istOffen())
+						if (((Tuer) fenster.level[i+zaehler1][j+zaehler2]).istOffen())
 							g.drawImage(tuerOffen, i * fenster.BOX, j
 									* fenster.BOX, null);
 						else
 							g.drawImage(tuerZu, i * fenster.BOX, j
 									* fenster.BOX, null);
-					} else if (fenster.level[i+zähler1][j+zähler2] instanceof Heiltrank) {
+					} else if (fenster.level[i+zaehler1][j+zaehler2] instanceof Heiltrank) {
 						// Hier ist die Tuer
 						g.drawImage(boden, i * fenster.BOX,
 								j * fenster.BOX, null);
@@ -146,8 +146,8 @@ public class Spielflaeche extends JPanel {
 				
 				double p = m.cooldownProzent();
 				g.setColor(Color.RED);
-				g.drawImage(feuerball, (int)(((1-p) * m.getXPos() + (p) * s.getXPos()-zähler1)*box) + box/2, 
-						   (int)(((1-p) * m.getYPos() + (p) * s.getYPos()-zähler2)*box) + box/2, 8, 8, null);
+				g.drawImage(feuerball, (int)(((1-p) * m.getXPos() + (p) * s.getXPos()-zaehler1)*box) + box/2, 
+						   (int)(((1-p) * m.getYPos() + (p) * s.getYPos()-zaehler2)*box) + box/2, 8, 8, null);
 			}	
 
 			// Male das Monster, falls es von anfang an anwesend ist
@@ -164,16 +164,16 @@ public class Spielflaeche extends JPanel {
 	//			* fenster.BOX, fenster.spieler.getYPos() * fenster.BOX,
 	//			null);
 		
-		if(zähler1>0 && zähler2>0){
-			g.drawImage(fenster.spieler.getImage(), (fenster.spieler.getXPos()-zähler1)
-					* fenster.BOX, (fenster.spieler.getYPos()-zähler2) * fenster.BOX,
+		if(zaehler1>0 && zaehler2>0){
+			g.drawImage(fenster.spieler.getImage(), (fenster.spieler.getXPos()-zaehler1)
+					* fenster.BOX, (fenster.spieler.getYPos()-zaehler2) * fenster.BOX,
 					null);
-		}else if(zähler2>0){
+		}else if(zaehler2>0){
 			g.drawImage(fenster.spieler.getImage(), fenster.spieler.getXPos()
-					* fenster.BOX, (fenster.spieler.getYPos()-zähler2) * fenster.BOX,
+					* fenster.BOX, (fenster.spieler.getYPos()-zaehler2) * fenster.BOX,
 					null);
-		}else if(zähler1>0){
-			g.drawImage(fenster.spieler.getImage(), (fenster.spieler.getXPos()-zähler1)
+		}else if(zaehler1>0){
+			g.drawImage(fenster.spieler.getImage(), (fenster.spieler.getXPos()-zaehler1)
 					* fenster.BOX, (fenster.spieler.getYPos()) * fenster.BOX,
 					null);
 		}else{	g.drawImage(fenster.spieler.getImage(), fenster.spieler.getXPos()

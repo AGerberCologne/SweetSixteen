@@ -51,7 +51,7 @@ public ServerComm(int port){
 				n = (MessageObject)in.readObject();
 				if (n instanceof IchBinDa);else 
 				if (n instanceof LogoutMessage){
-					schlieﬂe();
+					schliesse();
 				}
 				else{
 					empfangeVomClient.addLast(n);
@@ -86,7 +86,7 @@ public ServerComm(int port){
 			
 			
 		}
-		public void schlieﬂe() throws IOException{
+		public void schliesse() throws IOException{
 			serverOpen = false;
 			ost.close();
 			in.close();

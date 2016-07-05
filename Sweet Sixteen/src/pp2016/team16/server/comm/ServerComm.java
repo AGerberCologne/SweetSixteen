@@ -60,6 +60,7 @@ public ServerComm(){
 				}
 				else{
 					empfangeVomClient.addLast(n);
+					System.out.println("Test 5");
 				}
 			} catch (IOException | ClassNotFoundException e) {
 				System.out.println("Test 7");

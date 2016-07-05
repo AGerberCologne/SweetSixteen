@@ -71,7 +71,8 @@ public class ServerEngine extends Thread
 			this.spieler = l.sengine.spieler;
 			this.monsterListe = l.sengine.monsterListe;
 			this.karte = l.getLevel();
-			ChangeLevelMessage answer = new ChangeLevelMessage(spieler,monsterListe,karte);
+			ChangeLevelMessage answer = new ChangeLevelMessage();
+			//ChangeLevelMessage answer = new ChangeLevelMessage(spieler,monsterListe,karte);
 			server.gebeWeiterAnClient(answer);
 			
 		} else if (eingehendeNachricht instanceof MoveMessage) {

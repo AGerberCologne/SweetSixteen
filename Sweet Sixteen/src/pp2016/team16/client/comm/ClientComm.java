@@ -37,13 +37,20 @@ public class ClientComm extends Thread{
 	public void run(){
 		while (clientOpen){
 			if (isInterrupted()){
+				System.out.println("FEHLER");
 				break;
 			}
-			IchBinDa i =new IchBinDa();
-			bekommeVonClient(i);
+			//IchBinDa i =new IchBinDa();
+			//bekommeVonClient(i);
 			try {
 				sleep(1000);
 			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			try {
+				empfangeVomServer();
+			} catch (ClassNotFoundException | IOException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
@@ -84,7 +91,7 @@ public class ClientComm extends Thread{
 	
 	public MessageObject gebeWeiterAnClient(){
 	MessageObject j;
-	if (empfangeVomServer.isEmpty()!=false){
+	if (empfangeVomServer.isEmpty()== false){
 	j=empfangeVomServer.removeFirst();
 	return j;}
 	else {

@@ -12,7 +12,7 @@ import pp2016.team16.shared.Map;
 import pp2016.team16.client.comm.ClientComm;
 import pp2016.team16.client.gui.HindiBones;
 
-public class ClientEngine // entweder extends Thread oder implements
+public class ClientEngine extends Thread// entweder extends Thread oder implements
 // Runnable sind notwendig um mehrere
 // Threads gleichzeitig laufen zu lassen.
 // Dies ist notwendig, da Server um Client
@@ -20,32 +20,41 @@ public class ClientEngine // entweder extends Thread oder implements
 {
 	// In diesem Objekt speichert der Client interne Daten
 	ClientComm com;
-	MessageObject clientDatenbestand = new MessageObject();
 	public Map map = new Map();
 	public Spieler spieler = new Spieler();
 	public LinkedList<Monster> monsterListe;
-	public Spielelement[][] karte = new Spielelement[21][21];
-	public boolean eingeloggt;
+	public boolean eingeloggt = false;
+	public boolean neuesLevel = false;
 
 	 public ClientEngine()  {
 		System.out.println("Starte Client");
 		com = new ClientComm();
-		//this.run();
+		this.start();
 
 	}
 	
-	public void run(){
-		while(com.clientOpen){
-			MessageObject m = com.gebeWeiterAnClient();
-			try {
-				this.nachrichtVerarbeiten(m);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-		}
-	}
+	 public void run(){
+		 while(com.clientOpen){
+			 MessageObject m = com.gebeWeiterAnClient();
+			 if(m == null){
+				 System.out.println("Test 2");
+				 try {
+					sleep(6000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			 }
+			 else{ 
+				 try {
+					 this.nachrichtVerarbeiten(m);
+				 } catch (Exception e) {
+					 // TODO Auto-generated catch block
+					 e.printStackTrace();
+				 }
+			 }
+		 }
+	 }
 	/*
 	 * public void run() // Run Methode wird in der Main durch den .start()
 	 * Befehl // aufgerufen. { System.out.println("");// Für die Formatierung
@@ -68,10 +77,11 @@ public class ClientEngine // entweder extends Thread oder implements
 			  this.eingeloggt= l.eingeloggt;
 			
 		} else  if (daten instanceof ChangeLevelMessage) {
-			map.map = ((ChangeLevelMessage) daten).map;
+			map.karte = ((ChangeLevelMessage) daten).map;
 			map.levelzaehler = ((ChangeLevelMessage) daten).levelzaehler;
 			this.spieler =((ChangeLevelMessage) daten).spieler;
 			this.monsterListe = ((ChangeLevelMessage) daten).monsterListe;
+			this.neuesLevel = true;
 			System.out.println("Neues Level gespeichert");
 
 		} else if (daten instanceof MoveMessage) {
@@ -132,10 +142,12 @@ public class ClientEngine // entweder extends Thread oder implements
 		ChangeLevelMessage anfrage = new ChangeLevelMessage();
 		anfrage.levelzaehler = this.map.levelzaehler;
 		com.bekommeVonClient(anfrage);
-		MessageObject answer = com.gebeWeiterAnClient();
-		this.nachrichtVerarbeiten(answer);
-		//this.run();
-		return map.map;
+		while(this.neuesLevel == false){
+		//	System.out.println("Neues Level wurde noch nicht geladen");
+		}
+		this.neuesLevel = false;
+		System.out.println("Endlch geschafft");
+		return map.karte;
 	}
 
 	void benutzeItem() {

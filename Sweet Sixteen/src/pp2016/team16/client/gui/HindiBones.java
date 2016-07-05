@@ -260,13 +260,26 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 		// Linke Taste: Den Drachen auf die Reise schicken.
 		if (e.getButton() == MouseEvent.BUTTON1) {
 			// Es war die linke Maustaste
-		int	zielX = e.getX() / 32; // Koordinaten des Klicks ...
-		int	zielY = e.getY() / 32; // auslesen und als Ziel setzen
+		int	zielX = e.getX() / 34; // Koordinaten des Klicks ...
+		int	zielY = e.getY() / 34; // auslesen und als Ziel setzen
+		int startX = spieler.getXPos();
+		int startY = spieler.getYPos();
+		Monster m = spieler.angriffsMonster();
+		if (m != null)
+			m.changeHealth(-BOX / 4);
 		
-		System.out.println(zielX +","+ zielY);
+		
 		}
 	}
 	
+	/* laufweg = engine.Astern(int zielX, zielY, startX, StartY, this)   | was für ein Typ ist laufweg?
+		
+		
+		
+	
+	
+	
+	*/
 	/* die uebrigen Methoden des MouseListener muessen auch implementiert werden 
 	 auch wenn diese nicht genutzt werden
 	 */
@@ -337,10 +350,14 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 		// das nächste Level wird geladen
 		currentLevel++;
 		
-		laby = level2.setzeInhalt(currentLevel);		
-	//	laby = engine.changeLevel();
-		Leser leser = new Leser(laby, this);
-		level = leser.getLevel();
+	//	laby = level2.setzeInhalt(currentLevel);		
+		try {
+			level = engine.changeLevel();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	//	Leser leser = new Leser(laby, this);
+	//	level = leser.getLevel();
 	}
 
 	public ClientEngine getEngine() {

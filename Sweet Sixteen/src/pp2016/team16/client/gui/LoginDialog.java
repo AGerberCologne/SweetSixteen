@@ -20,7 +20,7 @@ public class LoginDialog extends JDialog {
  
 	public static ArrayList<String> User = new ArrayList<String>();
 	public static ArrayList<String> Passwort = new ArrayList<String>();
-  
+	public ClientEngine engine;
 	
 	private HindiBones fenster;
 	private static final long serialVersionUID = 1L;
@@ -33,8 +33,6 @@ public class LoginDialog extends JDialog {
     private JButton btnCancel1;
     public static boolean succeeded;
     public static boolean test;
-    private String benutzername ="";
-    private String passwort = "";
     		
     /**
      * @author Simon Nietz, Matr_Nr: 5823560
@@ -82,8 +80,34 @@ public class LoginDialog extends JDialog {
  
         btnLogin.addActionListener(new ActionListener() {
  
+        	public void actionPerformed(ActionEvent e){
+        		try {
+					test = engine.login(2, getUsername(), getPassword());
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+        	if (test == false){
+        		JOptionPane.showMessageDialog(LoginDialog.this,
+                        "Ungültiger Benutzername oder Passwort",
+                        "Login",
+                        JOptionPane.ERROR_MESSAGE);
+                // Benutzername und Passwort zuruecksetzen
+                tfUsername.setText("");
+                pfPassword.setText("");
+                succeeded = false;      		
+        	} else {
+        		JOptionPane.showMessageDialog(LoginDialog.this,
+                        "Hi " + getUsername() + "! Du hast dich erfolgreich eingeloggt.",
+                        "Login",
+                        JOptionPane.INFORMATION_MESSAGE);
+                succeeded = true;
+                dispose();
+        	}
+        		
+        	}
         	// abfragen, ob der eingegeben Benutzername existiert und das Passwort stimmt
-            public void actionPerformed(ActionEvent e) {
+       /*     public void actionPerformed(ActionEvent e) {
                 if (Loginn.authenticate(getUsername(), getPassword())) {
                     JOptionPane.showMessageDialog(LoginDialog.this,
                             "Hi " + getUsername() + "! Du hast dich erfolgreich eingeloggt.",
@@ -103,23 +127,48 @@ public class LoginDialog extends JDialog {
                     succeeded = false;
  
                 }
-            }
+            } */
         });
         //moeglichkeit ohne sich einzuloggen zu spielen
         btnCancel1 = new JButton("Spiele als Gast");
         btnCancel1.addActionListener(new ActionListener() {
  
             public void actionPerformed(ActionEvent e) {
+                
+                succeeded = true;
                 dispose();
-                test=true;
             }
         });
         
         //neuen Benutzer erstellen
         btnAnmelden = new JButton("Neu Anmelden");
         btnAnmelden.addActionListener(new ActionListener(){
-        	
-       	public void actionPerformed(ActionEvent e) {   
+        	public void actionPerformed(ActionEvent e){
+        		try {
+					test = engine.login(2, getUsername(), getPassword());
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+        		
+        		if(test == false){
+        			JOptionPane.showMessageDialog(LoginDialog.this,
+                            "Der Benutzername ist bereits vergeben!",
+                            "Login",
+                            JOptionPane.ERROR_MESSAGE);
+        			succeeded = false;
+        		} else {
+        			JOptionPane.showMessageDialog(LoginDialog.this,
+                            "Hi " + getUsername() + "! Du hast dich erfolgreich neu angemeldet",
+                            "Anmeldung",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    succeeded = false;
+                    tfUsername.setText("");
+                    pfPassword.setText("");
+        		}
+        	}
+      
+       /* 	public void actionPerformed(ActionEvent e) {   
         		if(User.contains(getUsername())){
         			JOptionPane.showMessageDialog(LoginDialog.this,
                             "Der Benutzername ist bereits vergeben!",
@@ -146,7 +195,7 @@ public class LoginDialog extends JDialog {
                 test= true;
         		}
         		
-        	}
+        	} */
         });
        
         JPanel bp = new JPanel();
@@ -174,7 +223,7 @@ public class LoginDialog extends JDialog {
         return succeeded;
     }
     
-    public static class Loginn {
+  /*  public static class Loginn {
     	static int a;
 		static int b;
 		static boolean c;
@@ -207,7 +256,7 @@ public class LoginDialog extends JDialog {
 
         }
 
-    }
+    }*/
      
 	
  

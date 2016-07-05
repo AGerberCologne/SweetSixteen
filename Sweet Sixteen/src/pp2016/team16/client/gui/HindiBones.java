@@ -333,19 +333,19 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 
 	}
 
-	public void nextLevel() {
+	public void nextLevel()  {
 		// das nächste Level wird geladen
 		currentLevel++;
 		
 		laby = level2.setzeInhalt(currentLevel);		
-		
+	//	laby = engine.changeLevel();
 		Leser leser = new Leser(laby, this);
 		level = leser.getLevel();
 	}
 
-//	public ClientEngine getEngine() {
-//			return engine;
-//		}
+	public ClientEngine getEngine() {
+			return engine;
+		}
 
 	
 

@@ -3,6 +3,7 @@ package pp2016.team16.client.gui;
 
 import java.util.LinkedList;
 
+import pp2016.team16.client.engine.ClientEngine;
 import pp2016.team16.shared.Boden;
 import pp2016.team16.shared.Monster;
 import pp2016.team16.shared.Spielelement;
@@ -21,7 +22,7 @@ public class Leser {
 //	private String dateiname;
 	private Spielelement[][] karte;
 	private HindiBones fenster;
-	
+	public ClientEngine engine;
 	/**
 	 * @author Simon Nietz, Matr_Nr: 5823560
 	 * @param a das übergebene zwei dimensionale Array
@@ -62,6 +63,7 @@ public class Leser {
 		}	
 				
 			}
+			
 		}
 		}
 	/**

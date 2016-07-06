@@ -33,6 +33,7 @@ public class LoginDialog extends JDialog {
     private JButton btnCancel1;
     public static boolean succeeded;
     public static boolean test;
+    public static boolean test2;
     		
     /**
      * @author Simon Nietz, Matr_Nr: 5823560
@@ -82,17 +83,18 @@ public class LoginDialog extends JDialog {
  
         	public void actionPerformed(ActionEvent e){
         		try {
-					test = engine.login(2, getUsername(), getPassword());
+					test2 = engine.login(2, getUsername(), getPassword());
 				} catch (InterruptedException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-        	if (test == true){
+        	if (test2 == true){
         		JOptionPane.showMessageDialog(LoginDialog.this,
                         "Hi " + getUsername() + "! Du hast dich erfolgreich eingeloggt.",
                         "Login",
                         JOptionPane.INFORMATION_MESSAGE);
                 succeeded = true;
+                test = true;
                 dispose();    		
         	} else  {                
                 JOptionPane.showMessageDialog(LoginDialog.this,
@@ -134,7 +136,7 @@ public class LoginDialog extends JDialog {
         btnCancel1.addActionListener(new ActionListener() {
  
             public void actionPerformed(ActionEvent e) {
-                
+                test = true;
                 succeeded = true;
                 dispose();
             }
@@ -145,18 +147,19 @@ public class LoginDialog extends JDialog {
         btnAnmelden.addActionListener(new ActionListener(){
         	public void actionPerformed(ActionEvent e){
         		try {
-					test = engine.login(2, getUsername(), getPassword());
+					test2 = engine.login(2, getUsername(), getPassword());
 				} catch (InterruptedException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
         		
-        		if(test == true){
+        		if(test2 == true){
         			JOptionPane.showMessageDialog(LoginDialog.this,
                             "Hi " + getUsername() + "! Du hast dich erfolgreich neu angemeldet",
                             "Anmeldung",
                             JOptionPane.INFORMATION_MESSAGE);
                     succeeded = false;
+                    test= true;
                     tfUsername.setText("");
                     pfPassword.setText("");
         		} else {      			

@@ -170,10 +170,12 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 	public Spielelement[][] changeLevel() throws Exception{
 		System.out.println("Der Client fragt ein neues Level an");
 		ChangeLevelMessage anfrage = new ChangeLevelMessage();
+		this.map.levelzaehler = 1;
 		anfrage.levelzaehler = this.map.levelzaehler;
 		com.bekommeVonClient(anfrage);
 		while(this.neuesLevel == false){
-		//	System.out.println("Neues Level wurde noch nicht geladen");
+			System.out.println("Neues Level wurde noch nicht geladen");
+			sleep(6000);
 		}
 		this.neuesLevel = false;
 		System.out.println("Endlich geschafft");

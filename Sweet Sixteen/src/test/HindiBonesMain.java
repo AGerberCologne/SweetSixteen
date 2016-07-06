@@ -14,15 +14,15 @@ public class HindiBonesMain {
 	
 	public static void main(String[] args){
 			
-	//	 new HindiBones(BOX*WIDTH, BOX*HEIGHT, "Hindi"); 
+	 new HindiBones(BOX*WIDTH, BOX*HEIGHT, "Hindi"); 
 		
-		 ClientEngine client = new ClientEngine();
+		/* ClientEngine client = new ClientEngine();
 		 try {
 			client.changeLevel();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}  
+		}  */
 	}
 
 }

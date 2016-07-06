@@ -84,7 +84,7 @@ public class MenuPanel extends JPanel{
 		name.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				fenster.zeigeSpielfeld();
-				fenster.spieler.setName(name.getText());
+				fenster.engine.spieler.setName(name.getText());
 			}	
 		});
 		//name.setPreferredSize(new Dimension(200,50));

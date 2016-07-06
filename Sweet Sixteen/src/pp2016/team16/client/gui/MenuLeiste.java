@@ -99,20 +99,30 @@ public class MenuLeiste extends JMenuBar implements ActionListener {
 	}
 	public void actionPerformed(ActionEvent e){
 		if(e.getSource() == neuesSpiel){
+			// Popup schwierigkeit wird gelöscht Message
+			//Methode von Client zum loeschen der Daten
 			fenster.spielZuruecksetzen();
 			fenster.zeigeSpielfeld();
-		}else if(e.getSource() == einloggen){
-			if(LoginDialog.succeeded==true){
+			
+			
+	/*	}else if(e.getSource() == einloggen){
+			if(LoginDialog.test==true){
 				JOptionPane.showMessageDialog(null,
 						"Du bist schon eingeloggt");
 			}else{
 			fenster.zeigeLogin();
-			}
+			}*/
+			// else if Level in gleicher schwierigkeit
+			//
+			//
+			
 		}else if(e.getSource() == ausloggen){
+			
+			// Benutzer wechseln  dann Login Fenster
 			if(LoginDialog.succeeded==true){
 				LoginDialog.succeeded = false;
 				fenster.spielZuruecksetzen();
-				fenster.spieler.setName("Hindi");
+		//		fenster.engine.spieler.setName("Hindi");
 				JOptionPane.showMessageDialog(null,							
                         "Du wurdest ausgeloggt"
                         );

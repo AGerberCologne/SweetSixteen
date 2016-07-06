@@ -68,22 +68,22 @@ public class Spielflaeche extends JPanel {
 		int zaehler1=0;
 		int zaehler2=0;
 		// Ueberpruefe an welcher Positition der Spieler ist
-		if(fenster.spieler.getYPos()>(fenster.HEIGHT+1)/2+3)
+		if(fenster.engine.spieler.getYPos()>(fenster.HEIGHT+1)/2+3)
 			zaehler2 = 4;
-		else if(fenster.spieler.getYPos()>(fenster.HEIGHT+1)/2+2)
+		else if(fenster.engine.spieler.getYPos()>(fenster.HEIGHT+1)/2+2)
 			zaehler2 = 3;
-		else if(fenster.spieler.getYPos()>(fenster.HEIGHT+1)/2+1)
+		else if(fenster.engine.spieler.getYPos()>(fenster.HEIGHT+1)/2+1)
 			zaehler2 = 2;
-		else if(fenster.spieler.getYPos()>(fenster.HEIGHT+1)/2)
+		else if(fenster.engine.spieler.getYPos()>(fenster.HEIGHT+1)/2)
 			zaehler2 = 1;
 		
-		if(fenster.spieler.getXPos()>(fenster.HEIGHT+1)/2+3)
+		if(fenster.engine.spieler.getXPos()>(fenster.HEIGHT+1)/2+3)
 			zaehler1 = 4;
-		else if(fenster.spieler.getXPos()>(fenster.HEIGHT+1)/2+2)
+		else if(fenster.engine.spieler.getXPos()>(fenster.HEIGHT+1)/2+2)
 			zaehler1 = 3;
-		else if(fenster.spieler.getXPos()>(fenster.HEIGHT+1)/2+1)
+		else if(fenster.engine.spieler.getXPos()>(fenster.HEIGHT+1)/2+1)
 			zaehler1 = 2;
-		else if(fenster.spieler.getXPos()>(fenster.HEIGHT+1)/2)
+		else if(fenster.engine.spieler.getXPos()>(fenster.HEIGHT+1)/2)
 			zaehler1 = 1;
 		
 		// Male die einzelnen Felder
@@ -92,31 +92,31 @@ public class Spielflaeche extends JPanel {
 			for (int j = 0; j < fenster.Height; j++) {
 				if (inRange(i+zaehler1,j+zaehler2)) {
 
-					if (fenster.level[i+zaehler1][j+zaehler2] instanceof Wand) {
+					if (fenster.engine.map.karte[i+zaehler1][j+zaehler2] instanceof Wand) {
 						// Hier kommt eine Wand hin
 						g.drawImage(wand, i * fenster.BOX, j * fenster.BOX,
 								null);
-					} else if (fenster.level[i+zaehler1][j+zaehler2] instanceof Boden) {
+					} else if (fenster.engine.map.karte[i+zaehler1][j+zaehler2] instanceof Boden) {
 						// Dieses Feld ist begehbar
 						g.drawImage(boden, i * fenster.BOX,
 								j * fenster.BOX, null);
-					} else if (fenster.level[i+zaehler1][j+zaehler2] instanceof Schluessel) {
+					} else if (fenster.engine.map.karte[i+zaehler1][j+zaehler2] instanceof Schluessel) {
 						// Hier liegt ein Schluessel
 						g.drawImage(boden, i * fenster.BOX,
 								j * fenster.BOX, null);
 						g.drawImage(schluessel, i * fenster.BOX, j
 								* fenster.BOX, null);
-					} else if (fenster.level[i+zaehler1][j+zaehler2] instanceof Tuer){
+					} else if (fenster.engine.map.karte[i+zaehler1][j+zaehler2] instanceof Tuer){
 						// Hier ist die Tuer
 						g.drawImage(boden, i * fenster.BOX,
 								j * fenster.BOX, null);
-						if (((Tuer) fenster.level[i+zaehler1][j+zaehler2]).istOffen())
+						if (((Tuer) fenster.engine.map.karte[i+zaehler1][j+zaehler2]).istOffen())
 							g.drawImage(tuerOffen, i * fenster.BOX, j
 									* fenster.BOX, null);
 						else
 							g.drawImage(tuerZu, i * fenster.BOX, j
 									* fenster.BOX, null);
-					} else if (fenster.level[i+zaehler1][j+zaehler2] instanceof Heiltrank) {
+					} else if (fenster.engine.map.karte[i+zaehler1][j+zaehler2] instanceof Heiltrank) {
 						// Hier ist die Tuer
 						g.drawImage(boden, i * fenster.BOX,
 								j * fenster.BOX, null);
@@ -131,9 +131,9 @@ public class Spielflaeche extends JPanel {
 		}
 
 		// Male die Monster an ihrer Position
-		for (int i = 0; i < fenster.monsterListe.size(); i++) {
-			Monster m = fenster.monsterListe.get(i);
-			boolean event = fenster.spieler.hatSchluessel();
+		for (int i = 0; i < fenster.engine.monsterListe.size(); i++) {
+			Monster m = fenster.engine.monsterListe.get(i);
+			boolean event = fenster.engine.spieler.hatSchluessel();
 			// Da hier alle Monster aufgerufen werden, wird an dieser
 			// Stelle auch ein Angriffsbefehl fuer die Monster
 			// abgegeben, falls der Spieler in der Naehe ist.
@@ -142,7 +142,7 @@ public class Spielflaeche extends JPanel {
 				m.move();
 			}else{
 				int box = fenster.BOX;
-				Spieler s = fenster.spieler;
+				Spieler s = fenster.engine.spieler;
 				
 				double p = m.cooldownProzent();
 				g.setColor(Color.RED);
@@ -165,19 +165,19 @@ public class Spielflaeche extends JPanel {
 	//			null);
 		
 		if(zaehler1>0 && zaehler2>0){
-			g.drawImage(fenster.spieler.getImage(), (fenster.spieler.getXPos()-zaehler1)
-					* fenster.BOX, (fenster.spieler.getYPos()-zaehler2) * fenster.BOX,
+			g.drawImage(fenster.engine.spieler.getImage(), (fenster.engine.spieler.getXPos()-zaehler1)
+					* fenster.BOX, (fenster.engine.spieler.getYPos()-zaehler2) * fenster.BOX,
 					null);
 		}else if(zaehler2>0){
-			g.drawImage(fenster.spieler.getImage(), fenster.spieler.getXPos()
-					* fenster.BOX, (fenster.spieler.getYPos()-zaehler2) * fenster.BOX,
+			g.drawImage(fenster.engine.spieler.getImage(), fenster.engine.spieler.getXPos()
+					* fenster.BOX, (fenster.engine.spieler.getYPos()-zaehler2) * fenster.BOX,
 					null);
 		}else if(zaehler1>0){
-			g.drawImage(fenster.spieler.getImage(), (fenster.spieler.getXPos()-zaehler1)
-					* fenster.BOX, (fenster.spieler.getYPos()) * fenster.BOX,
+			g.drawImage(fenster.engine.spieler.getImage(), (fenster.engine.spieler.getXPos()-zaehler1)
+					* fenster.BOX, (fenster.engine.spieler.getYPos()) * fenster.BOX,
 					null);
-		}else{	g.drawImage(fenster.spieler.getImage(), fenster.spieler.getXPos()
-					* fenster.BOX, fenster.spieler.getYPos() * fenster.BOX,
+		}else{	g.drawImage(fenster.engine.spieler.getImage(), fenster.engine.spieler.getXPos()
+					* fenster.BOX, fenster.engine.spieler.getYPos() * fenster.BOX,
 					null);
 		}
 		
@@ -205,22 +205,22 @@ public class Spielflaeche extends JPanel {
 		int a=0;
 		int b=0;
 
-		if(fenster.spieler.getYPos()>(fenster.HEIGHT+1)/2+3)
+		if(fenster.engine.spieler.getYPos()>(fenster.HEIGHT+1)/2+3)
 			b = 4;
-		else if(fenster.spieler.getYPos()>(fenster.HEIGHT+1)/2+2)
+		else if(fenster.engine.spieler.getYPos()>(fenster.HEIGHT+1)/2+2)
 			b = 3;
-		else if(fenster.spieler.getYPos()>(fenster.HEIGHT+1)/2+1)
+		else if(fenster.engine.spieler.getYPos()>(fenster.HEIGHT+1)/2+1)
 			b = 2;
-		else if(fenster.spieler.getYPos()>(fenster.HEIGHT+1)/2)
+		else if(fenster.engine.spieler.getYPos()>(fenster.HEIGHT+1)/2)
 			b = 1;
 		
-		if(fenster.spieler.getXPos()>(fenster.HEIGHT+1)/2+3)
+		if(fenster.engine.spieler.getXPos()>(fenster.HEIGHT+1)/2+3)
 			a = 4;
-		else if(fenster.spieler.getXPos()>(fenster.HEIGHT+1)/2+2)
+		else if(fenster.engine.spieler.getXPos()>(fenster.HEIGHT+1)/2+2)
 			a = 3;
-		else if(fenster.spieler.getXPos()>(fenster.HEIGHT+1)/2+1)
+		else if(fenster.engine.spieler.getXPos()>(fenster.HEIGHT+1)/2+1)
 			a = 2;
-		else if(fenster.spieler.getXPos()>(fenster.HEIGHT+1)/2)
+		else if(fenster.engine.spieler.getXPos()>(fenster.HEIGHT+1)/2)
 			a = 1;
 		
 		
@@ -235,8 +235,8 @@ public class Spielflaeche extends JPanel {
 	}
 	
 	private boolean inRange(int i, int j) {
-		return (Math.sqrt(Math.pow(fenster.spieler.getXPos() - i, 2)
-				+ Math.pow(fenster.spieler.getYPos() - j, 2)) < 3 || !fenster.nebelAn);
+		return (Math.sqrt(Math.pow(fenster.engine.spieler.getXPos() - i, 2)
+				+ Math.pow(fenster.engine.spieler.getYPos() - j, 2)) < 3 || !fenster.nebelAn);
 	}
 
 }

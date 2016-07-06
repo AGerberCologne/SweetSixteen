@@ -93,7 +93,6 @@ public class LoginDialog extends JDialog {
                         "Hi " + getUsername() + "! Du hast dich erfolgreich eingeloggt.",
                         "Login",
                         JOptionPane.INFORMATION_MESSAGE);
-                succeeded = true;
                 test = true;
                 dispose();    		
         	} else  {                
@@ -104,7 +103,7 @@ public class LoginDialog extends JDialog {
                 // Benutzername und Passwort zuruecksetzen
                 tfUsername.setText("");
                 pfPassword.setText("");
-                succeeded = false;  
+                test = false;  
         	}
         		
         	}
@@ -137,7 +136,6 @@ public class LoginDialog extends JDialog {
  
             public void actionPerformed(ActionEvent e) {
                 test = true;
-                succeeded = true;
                 dispose();
             }
         });
@@ -158,8 +156,7 @@ public class LoginDialog extends JDialog {
                             "Hi " + getUsername() + "! Du hast dich erfolgreich neu angemeldet",
                             "Anmeldung",
                             JOptionPane.INFORMATION_MESSAGE);
-                    succeeded = false;
-                    test= true;
+                    test = false;
                     tfUsername.setText("");
                     pfPassword.setText("");
         		} else {      			
@@ -168,7 +165,7 @@ public class LoginDialog extends JDialog {
                             "Der Benutzername ist bereits vergeben!",
                             "Login",
                             JOptionPane.ERROR_MESSAGE);
-        			succeeded = false;
+        			test = false;
         		}
         	}
       
@@ -223,9 +220,7 @@ public class LoginDialog extends JDialog {
         return new String(pfPassword.getPassword());
     }
  
-    public boolean isSucceeded() {
-        return succeeded;
-    }
+   
     
   /*  public static class Loginn {
     	static int a;

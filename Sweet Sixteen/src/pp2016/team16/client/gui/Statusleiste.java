@@ -58,33 +58,33 @@ public class Statusleiste extends JPanel {
 			g.drawImage(hintergrund, i*fenster.BOX, 0, null);
 		}		
 		// male ein Bild des Spieler auf die Statusleiste
-		g.drawImage(fenster.spieler.getImage(), 4, 4, fenster.BOX - 8, fenster.BOX - 8, null);
+		g.drawImage(fenster.engine.spieler.getImage(), 4, 4, fenster.BOX - 8, fenster.BOX - 8, null);
 		// male ein Bild des Schluessels
-		if(fenster.spieler.hatSchluessel()){
+		if(fenster.engine.spieler.hatSchluessel()){
 			g.drawImage(schluessel, fenster.BOX * (fenster.Width - 1), 0, null);
 		}
 		
 		// die Zeite wird mitlaufen angezeigt, sowie das Level
 		g.setColor(Color.WHITE);	
-		g.drawString(fenster.spieler.getName(), fenster.BOX + 5, 20);
+		g.drawString(fenster.engine.spieler.getName(), fenster.BOX + 5, 20);
 		g.drawString("Zeit: " + (System.currentTimeMillis() - fenster.startZeit)/1000, fenster.BOX * (fenster.Width - 6), 20);
-		g.drawString("Level " + fenster.currentLevel + "/" + fenster.MAXLEVEL, fenster.BOX * (fenster.Width - 4)-5, 20);
+		g.drawString("Level " + fenster.engine.map.levelzaehler + "/" + fenster.MAXLEVEL, fenster.BOX * (fenster.Width - 4)-5, 20);
 		
 		// Heiltrankanzeige
-		int anzahlHeiltraenke = fenster.spieler.getAnzahlHeiltraenke();
+		int anzahlHeiltraenke = fenster.engine.spieler.getAnzahlHeiltraenke();
 		String s;
 		if (anzahlHeiltraenke < 10) s = "  "+anzahlHeiltraenke;
 		else s = String.valueOf(anzahlHeiltraenke);
 		g.drawString(s, fenster.BOX*(fenster.Width-2)-8, 20);
 		g.drawImage(heiltrank,fenster.BOX * (fenster.Width-2),0,null);
 
-		Spielelement feld = fenster.level[fenster.spieler.getXPos()][fenster.spieler.getYPos()];
+		Spielelement feld = fenster.engine.map.karte[fenster.engine.spieler.getXPos()][fenster.engine.spieler.getYPos()];
 		// falls ein Schluessel aufgehoben wird, wird dieser auch in die Statusleiste gezeichnet
 		if(feld instanceof Schluessel){
 			g.drawString("Leertaste zum Aufnehmen", fenster.BOX * (fenster.Width - 11) - 5, 20);
 		}else if(feld instanceof Tuer){
 			if(!((Tuer) feld).istOffen()){
-				if(fenster.spieler.hatSchluessel())
+				if(fenster.engine.spieler.hatSchluessel())
 					g.drawString("Leertaste zum \u00d6ffnen", fenster.BOX * (fenster.Width - 11) - 5, 20);
 				else
 					g.drawString("T\u00fcr verschlossen!", fenster.BOX * (fenster.Width - 11) - 5, 20);
@@ -95,9 +95,9 @@ public class Statusleiste extends JPanel {
 		
 		// zeige die Lebensanzeige des Spielers an
 		g.setColor(Color.RED);
-		g.fillRect((fenster.Width / 2) * fenster.BOX - 80, getHeight() - 8, fenster.spieler.getMaxHealth(), 5);
+		g.fillRect((fenster.Width / 2) * fenster.BOX - 80, getHeight() - 8, fenster.engine.spieler.getMaxHealth(), 5);
 		g.setColor(Color.GREEN);
-		g.fillRect((fenster.Width / 2) * fenster.BOX - 80, getHeight() - 8, fenster.spieler.getHealth(), 5);
+		g.fillRect((fenster.Width / 2) * fenster.BOX - 80, getHeight() - 8, fenster.engine.spieler.getHealth(), 5);
 	
 	}
 	

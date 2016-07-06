@@ -93,24 +93,24 @@ public class MiniMap extends JPanel{
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
 		for (int i = 0; i < fenster.WIDTH; i++) {
 			for (int j = 0; j < fenster.HEIGHT; j++) {
-				if (fenster.level[i][j] instanceof Wand) {
+				if (fenster.engine.map.karte[i][j] instanceof Wand) {
 					 // Hier kommt eine Wand hin
 					g.drawImage(scaledWand, i*size, j*size,	null);
-				} else if (fenster.level[i][j] instanceof Boden) {
+				} else if (fenster.engine.map.karte[i][j] instanceof Boden) {
 					// Das Feld ist begehbar
 					g.drawImage(scaledBoden, i*size,j*size, null);
-				} else if (fenster.level[i][j] instanceof Schluessel) {
+				} else if (fenster.engine.map.karte[i][j] instanceof Schluessel) {
 					// Hier liegt der Schluessel
 					g.drawImage(scaledBoden, i*size,j*size , null);
 					g.drawImage(scaledSchluessel, i*size,j*size, null);
-				} else if (fenster.level[i][j] instanceof Tuer) {
+				} else if (fenster.engine.map.karte[i][j] instanceof Tuer) {
 					// Hier ist die Tür
 					g.drawImage(scaledBoden, i*size,j*size, null);
-					if (((Tuer) fenster.level[i][j]).istOffen())
+					if (((Tuer) fenster.engine.map.karte[i][j]).istOffen())
 						g.drawImage(scaledTuerOffen, i*size,j*size, null);
 					else
 						g.drawImage(scaledTuerZu, i*size,j*size, null);
-				} else if (fenster.level[i][j] instanceof Heiltrank) {
+				} else if (fenster.engine.map.karte[i][j] instanceof Heiltrank) {
 					// Hier ist die Tür
 					g.drawImage(scaledBoden, i*size,j*size, null);
 					// Hier liegt ein Heiltrank
@@ -123,12 +123,12 @@ public class MiniMap extends JPanel{
 		
 		// zeichne auch den Spieler aber als gruenen Punkt
 		g.setColor(Color.GREEN);
-		g.fillOval(fenster.spieler.getXPos()* size+2, fenster.spieler.getYPos() * size+
+		g.fillOval(fenster.engine.spieler.getXPos()* size+2, fenster.engine.spieler.getYPos() * size+
 				2, 8,8);
 		
-		for (int i = 0; i < fenster.monsterListe.size(); i++) {
-			Monster m = fenster.monsterListe.get(i);
-			boolean event = fenster.spieler.hatSchluessel();
+		for (int i = 0; i < fenster.engine.monsterListe.size(); i++) {
+			Monster m = fenster.engine.monsterListe.get(i);
+			boolean event = fenster.engine.spieler.hatSchluessel();
 		// zeichne die Monster als roten Punkt	
 			if(!m.attackiereSpieler(event)){
 				m.move();

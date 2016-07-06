@@ -43,7 +43,7 @@ public class Leser {
 		// erzeuge zunächste ein Datentyp Spielelement
 		// erzeuge  LinkedList
 			karte = new Spielelement[fenster.WIDTH][fenster.HEIGHT];
-			fenster.monsterListe = new LinkedList<Monster>();		
+			fenster.engine.monsterListe = new LinkedList<Monster>();		
 			
 	
 		// Lese das übergebene Array aus und Speicher es im Datentyp Spielelement
@@ -55,11 +55,11 @@ public class Leser {
 			case 1: karte[i][j] = new Boden(); break;
 //			case 3: karte[i][j] = new Schluessel(); break;
 			case 6: karte[i][j] = new Tuer(false); break;
-			case 4: karte[i][j] = new Tuer(true); fenster.spieler.setPos(i, j); break;
-			case 2: karte[i][j] = new Boden(); fenster.monsterListe.add(new Monster(i,j, fenster, 0)); break;
+			case 4: karte[i][j] = new Tuer(true); fenster.engine.spieler.setPos(i, j); break;
+			case 2: karte[i][j] = new Boden(); fenster.engine.monsterListe.add(new Monster(i,j, fenster, 0)); break;
 			// Monster, welche erst nach dem Aufheben des Schluessels erscheinen
-			case 3: karte[i][j] = new Boden(); fenster.monsterListe.add(new Monster(i,j, fenster, 2)); break;
-			case 8: karte[i][j] = new Boden(); fenster.monsterListe.add(new Monster(i,j, fenster, 1)); break;
+			case 3: karte[i][j] = new Boden(); fenster.engine.monsterListe.add(new Monster(i,j, fenster, 2)); break;
+			case 8: karte[i][j] = new Boden(); fenster.engine.monsterListe.add(new Monster(i,j, fenster, 1)); break;
 		}	
 				
 			}

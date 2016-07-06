@@ -43,12 +43,12 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 	
 
 	
-	public AlleLevel level2 = new AlleLevel();
+	//public AlleLevel level2 = new AlleLevel();
 	public int [][] laby ;
 	public LinkedList<Monster> monsterListe;
 	public Spieler spieler;
 	public Spielelement[][] level;
-	public ClientEngine engine;
+	public ClientEngine engine = new ClientEngine();
 	public int currentLevel = 0;
 	public boolean spielende = false;
 	public boolean verloren = false;

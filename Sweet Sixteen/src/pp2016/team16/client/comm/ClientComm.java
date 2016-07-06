@@ -72,7 +72,7 @@ public class ClientComm extends Thread{
 			
 			
 		}catch(IOException e){
-			
+			System.out.println("sendeanServer");
 		} 
 		
 	}

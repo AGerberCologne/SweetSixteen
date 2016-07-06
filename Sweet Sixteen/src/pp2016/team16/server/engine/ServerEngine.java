@@ -20,6 +20,7 @@ public class ServerEngine extends Thread
 { 
 	MessageObject serverDatenbestand = new MessageObject();
 	ServerComm server;
+	Konstanten konstante =new Konstanten();
 	public Map map = new Map();
 	public Spieler spieler = new Spieler();
 	public LinkedList<Monster> monsterListe;
@@ -72,13 +73,15 @@ public class ServerEngine extends Thread
 		{
 			System.out.println("Server Shutdown");
 			break; // Aufforderung zum runterfahren
+			
 		} else */if (eingehendeNachricht instanceof ChangeLevelMessage) {
 			System.out.println("Server hat Level-Anfrage erhalten");
 			map.levelzaehler = ((ChangeLevelMessage) eingehendeNachricht).levelzaehler;
-			AlleLevel levelObject = new AlleLevel();
-			map.levelzaehler = 1;
+			map.breite = konstante.WIDTH;
+			map.hoehe = konstante.HEIGHT;
+			AlleLevel levelObject = new AlleLevel(map.hoehe, map.breite);
 			map.level =levelObject.setzeInhalt(map.levelzaehler);
-			Leser l = new Leser(map.level);
+			Leser l = new Leser(map.level, this);
 			this.spieler = l.sengine.spieler;
 			this.monsterListe = l.sengine.monsterListe;
 			map.karte = l.getLevel();
@@ -98,7 +101,33 @@ public class ServerEngine extends Thread
 			answer.richtung = richtung;
 			server.gebeWeiterAnClient(answer);
 			
-		} /*else if (eingehendeNachricht instanceof CheatMessage) {
+		} else if (eingehendeNachricht instanceof ItemUseMessage){
+			ItemUseMessage answer = new ItemUseMessage();
+			// Schluessel aufnehmen
+			if (map.karte[spieler.getXPos()][spieler.getYPos()] instanceof Schluessel) {
+				spieler.nimmSchluessel();
+				map.karte[spieler.getXPos()][spieler.getYPos()] = new Boden();
+				answer.art = 1;
+				
+			}
+			// Heiltrank aufnehmen
+			else if (map.karte[spieler.getXPos()][spieler.getYPos()] instanceof Heiltrank) {
+				spieler.nimmHeiltrank((Heiltrank) map.karte[spieler.getXPos()][spieler.getYPos()]);		
+				map.karte[spieler.getXPos()][spieler.getYPos()] = new Boden();
+				answer.art = 0;
+			}
+			// Schluessel benutzen
+			if (map.karte[spieler.getXPos()][spieler.getYPos()] instanceof Tuer) {
+				if (!((Tuer) map.karte[spieler.getXPos()][spieler.getYPos()]).istOffen() && spieler.hatSchluessel()) {
+					((Tuer) map.karte[spieler.getXPos()][spieler.getYPos()]).setOffen();
+					// Nach dem Oeffnen der Tuer ist der Schluessel wieder weg
+					spieler.entferneSchluessel();
+					answer.art =2;
+				}
+			}
+			server.gebeWeiterAnClient(answer);
+			
+		}/*else if (eingehendeNachricht instanceof CheatMessage) {
 			int i = ((CheatMessage) eingehendeNachricht).i;
 			switch (i) {
 			case 1:

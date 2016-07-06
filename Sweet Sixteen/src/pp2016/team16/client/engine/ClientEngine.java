@@ -21,16 +21,15 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 {
 	// In diesem Objekt speichert der Client interne Daten
 	ClientComm com;
+	public Konstanten konstante = new Konstanten();
 	public Map map = new Map();
 	public Spieler spieler = new Spieler();
 	public LinkedList<Monster> monsterListe;
 	public boolean eingeloggt = false;
+	public boolean login=false;
 	public boolean neuesLevel = false;
+	public int itemBenutzen = 4;
 	
-	public final int MAXLEVEL = 5;
-	public final int WIDTH = 21;
-	public final int HEIGHT = 21;
-
 	 public ClientEngine()  {
 		System.out.println("Starte Client");
 		com = new ClientComm();
@@ -70,16 +69,18 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 			  spieler.setName(l.name);
 			  spieler.setPasswort(l.passwort);
 			  this.eingeloggt= l.eingeloggt;
+			  this.login = true;
 			
 		} else  if (daten instanceof ChangeLevelMessage) {
 			ChangeLevelMessage c = (ChangeLevelMessage) daten;
-			Leser l = new Leser(c.level);
-			this.spieler = l.sengine.spieler;
-			this.monsterListe = l.sengine.monsterListe;
+			Leser l = new Leser(c.level, this);
+			this.spieler = l.cengine.spieler;
+			this.monsterListe = l.cengine.monsterListe;
 			map.karte = l.getLevel();
 			map.levelzaehler = c.levelzaehler;
 			this.neuesLevel = true;
 			System.out.println("Neues Level gespeichert");
+			
 
 		} else if (daten instanceof MoveMessage) {
 			int richtung = ((MoveMessage) daten).richtung;
@@ -99,7 +100,35 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 			}
 			
 			
-		} /*else if (daten instanceof CheatMessage) {
+		} else if (daten instanceof ItemUseMessage){
+			// Schluessel aufnehmen
+			if(((ItemUseMessage) daten).art == 1) {
+				spieler.nimmSchluessel();
+				map.karte[spieler.getXPos()][spieler.getYPos()] = new Boden();
+				this.itemBenutzen = 1;
+
+			}
+			// Heiltrank aufnehmen
+			else if (((ItemUseMessage) daten).art == 0) {
+				spieler.nimmHeiltrank((Heiltrank) map.karte[spieler.getXPos()][spieler.getYPos()]);		
+				map.karte[spieler.getXPos()][spieler.getYPos()] = new Boden();
+				this.itemBenutzen = 0;
+			}
+			// Schluessel benutzen
+			if (((ItemUseMessage) daten).art == 2) {
+				if (!((Tuer) map.karte[spieler.getXPos()][spieler.getYPos()]).istOffen() && spieler.hatSchluessel()) {
+					((Tuer) map.karte[spieler.getXPos()][spieler.getYPos()]).setOffen();
+					// Nach dem Oeffnen der Tuer ist der Schluessel wieder weg
+					spieler.entferneSchluessel();
+					if(map.levelzaehler <= konstante.MAXLEVEL){
+						this.itemBenutzen = 2;
+					}
+					else this.itemBenutzen = 3;
+				}
+			}
+		}
+		  
+		  /*else if (daten instanceof CheatMessage) {
 			int i = ((CheatMessage) daten).i;
 			System.out.println("Der Cheat wurde angenommen & zwar Nr. " + i
 					+ "\n");
@@ -113,6 +142,8 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 	public boolean login(int i, String n, String p) throws InterruptedException  { 
 		LoginMessage anfrage = new LoginMessage(i, n, p);
 		com.bekommeVonClient(anfrage);
+		while(login == false){}
+		this.login = false;
 		return eingeloggt;
 	}
 
@@ -120,8 +151,7 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 		LogoutMessage anfrage = new LogoutMessage();
 	}
 
-	// Diese Methode wird entweder eine Liste/Array etc. zurückgeben, in dem der
-	// von Astern berechnete Weg gespeicher tist
+	// kann , wenn notwendig , neues x oder y zurückgeben...
 	void wegAnfragen(int x, int y) throws InterruptedException {
 		spieler.zielX = x;
 		spieler.zielY = y;
@@ -136,7 +166,7 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 	}
 
 	
-
+// evtl besser kein reurn, sondern abruf über map.karte
 	public Spielelement[][] changeLevel() throws Exception{
 		System.out.println("Der Client fragt ein neues Level an");
 		ChangeLevelMessage anfrage = new ChangeLevelMessage();
@@ -146,35 +176,16 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 		//	System.out.println("Neues Level wurde noch nicht geladen");
 		}
 		this.neuesLevel = false;
-		System.out.println("Endlch geschafft");
+		System.out.println("Endlich geschafft");
 		return map.karte;
 	}
-
-	void benutzeItem() {
-		// Schluessel aufnehmen
-		if (map.karte[spieler.getXPos()][spieler.getYPos()] instanceof Schluessel) {
-			spieler.nimmSchluessel();
-			map.karte[spieler.getXPos()][spieler.getYPos()] = new Boden();
-		}
-		// Heiltrank aufnehmen
-		else if (map.karte[spieler.getXPos()][spieler.getYPos()] instanceof Heiltrank) {
-			spieler.nimmHeiltrank((Heiltrank) map.karte[spieler.getXPos()][spieler.getYPos()]);		
-			map.karte[spieler.getXPos()][spieler.getYPos()] = new Boden();
-		}
-		// Schluessel benutzen
-		if (map.karte[spieler.getXPos()][spieler.getYPos()] instanceof Tuer) {
-			if (!((Tuer) map.karte[spieler.getXPos()][spieler.getYPos()]).istOffen() && spieler.hatSchluessel()) {
-				((Tuer) map.karte[spieler.getXPos()][spieler.getYPos()]).setOffen();
-				// Nach dem Oeffnen der Tuer ist der Schluessel wieder weg
-				spieler.entferneSchluessel();
-				if (map.levelzaehler < MAXLEVEL)
-					nextLevel();
-				else {
-					spielende = true;
-				}
-			}
-		}
-
+// 0, 1 = aufnehmen, 2 = neues level, 3 = spiel beenden
+	public int benutzeItem() {
+		itemBenutzen= 4;
+		ItemUseMessage  anfrage = new ItemUseMessage();
+		com.bekommeVonClient(anfrage);
+		while(itemBenutzen == 4){}
+		return itemBenutzen;
 	}
 
 

@@ -18,9 +18,9 @@ public class AlleLevel implements IServerEngine {
 /**
 * <Zweidimensionales Array stellt die Grundlage des jeweiligen Levels dar >
 * @author <Noll , Markus , 5812500 > */
-	public AlleLevel() { // Konstruktor
-		hoehe = 21; // initialisiere hoehe und breite
-		breite = 21;
+	public AlleLevel(int hoehe, int breite) { // Konstruktor
+		this.hoehe = hoehe; // initialisiere hoehe und breite
+		this.breite = breite;
 		level = new int[hoehe][breite]; // weise hoehe und breite dem Array zu
 	}
 

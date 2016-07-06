@@ -14,7 +14,6 @@ public class ChangeLevelMessage extends MessageObject {
 	//public LinkedList<Monster> monsterListe;
 	
 	public ChangeLevelMessage(){
-		this.level = new int[21][21];
 	}
 	
 

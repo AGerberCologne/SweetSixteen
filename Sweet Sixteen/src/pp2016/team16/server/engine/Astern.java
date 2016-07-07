@@ -11,7 +11,7 @@ import pp2016.team16.shared.*;
  * 
  * */
 public class Astern {
-	  HindiBones fenster;
+	  ServerEngine sengine;
 	  private int x;
 	  private int y;
 	  private boolean gefunden;
@@ -28,8 +28,8 @@ public class Astern {
 	  LinkedList<Wegpunkt> closedList;
 	  private Wegpunkt finish;
 	  
-	  public Astern(int monsterY,int monsterX,int zielX,int zielY,HindiBones fenster){
-		  this.fenster=fenster;
+	  public Astern(int monsterY,int monsterX,int zielX,int zielY,ServerEngine sengine){
+		  this.sengine=sengine;
 		  this.monsterX=monsterX;
 		  this.monsterY=monsterY;
 		  this.zielX=zielX;
@@ -50,7 +50,7 @@ public class Astern {
 		    
 		    for (int i = 0; i < ZELLEN; i++) {
 		      for (int j = 0; j < ZELLEN; j++) {
-		       if (fenster.level[i][j] instanceof Boden) {
+		       if (sengine.map.karte[i][j] instanceof Boden) {
 				field[i][j]=true;
 			}
 		      }

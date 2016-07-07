@@ -23,7 +23,7 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 	ClientComm com;
 	public Konstanten konstante = new Konstanten();
 	public Map map = new Map();
-	public Spieler spieler = new Spieler();
+	public Spieler spieler = new Spieler("img//spieler.png",this);
 	public LinkedList<Monster> monsterListe;
 	public boolean eingeloggt = false;
 	public boolean login=false;
@@ -73,6 +73,8 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 			
 		} else  if (daten instanceof ChangeLevelMessage) {
 			ChangeLevelMessage c = (ChangeLevelMessage) daten;
+			map.breite= konstante.WIDTH;
+			map.hoehe = konstante.HEIGHT;
 			Leser l = new Leser(c.level, this);
 			this.spieler = l.cengine.spieler;
 			this.monsterListe = l.cengine.monsterListe;

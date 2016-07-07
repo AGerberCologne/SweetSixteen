@@ -1,13 +1,14 @@
 package pp2016.team16.shared;
 
+import pp2016.team16.client.engine.ClientEngine;
 import pp2016.team16.client.gui.HindiBones;
 import pp2016.team16.client.gui.LoginDialog;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
 
 import pp2016.team16.server.engine.*;
-
 
 import javax.imageio.ImageIO;
 
@@ -27,10 +28,16 @@ public class Spieler extends Figur {
 	public int zielY = 0;
 	public boolean hatSchrittgemacht =false;
 	
-	private HindiBones fenster;
+	private ServerEngine sengine;
+	private ClientEngine cengine;
+	private Spielelement[][] karte ;
+	private LinkedList<Monster> monsterListe;
 	
-	public Spieler(String imgDatei, HindiBones fenster){
-		this.fenster = fenster;
+	
+	public Spieler(String imgDatei, ServerEngine sengine){
+		this.sengine = sengine;
+		this.karte = sengine.map.karte;
+		this.monsterListe = sengine.monsterListe;
 		
 		setAnzahlHeiltraenke(0);
 		setPos(0,0);		
@@ -51,7 +58,10 @@ public class Spieler extends Figur {
 		}
 	}
 	
-	public Spieler(){
+	public Spieler(String imgDatei, ClientEngine cengine){
+		this.cengine = cengine;
+		this.karte = cengine.map.karte;
+		this.monsterListe = cengine.monsterListe;
 		
 		setAnzahlHeiltraenke(0);
 		setPos(0,0);		
@@ -64,9 +74,13 @@ public class Spieler extends Figur {
 		setName("Hindi");
 		}
 		
-		
+		// Bild fuer den Spieler laden
+		try {
+			setImage(ImageIO.read(new File(imgDatei)));
+		} catch (IOException e) {
+			System.err.print("Das Bild "+ imgDatei + " konnte nicht geladen werden.");
+		}
 	}
-	
 
 	
 	// Methode, um den Schluessel aufzuheben
@@ -124,9 +138,10 @@ public class Spieler extends Figur {
 		this.passwort = passwort ;
 	}
 	
+	
 	public Monster angriffsMonster(){
-		for(int i = 0; i < fenster.monsterListe.size(); i++){
-			Monster m = fenster.monsterListe.get(i);
+		for(int i = 0; i < this.monsterListe.size(); i++){
+			Monster m = this.monsterListe.get(i);
 						
 			// Kann der Spieler angreifen?
 			boolean kannAngreifen = false;
@@ -142,7 +157,7 @@ public class Spieler extends Figur {
 	}
 	
 	public int geheZumZiel() {                                                                     // Spieler JAGEN (Angriffszustand)
-		Astern  astern= new Astern(getYPos(), getXPos(), this.zielX, this.zielY , fenster);
+		Astern  astern= new Astern(getYPos(), getXPos(), this.zielX, this.zielY, sengine);
 		Wegpunkt test = astern.starten();
 		System.out.println("Spieler:"+this.getXPos()+","+this.getYPos());
 		System.out.println("SZiel:"+this.zielX+","+this.zielY);

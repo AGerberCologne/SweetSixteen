@@ -49,7 +49,7 @@ public class Leser {
 	private void readLevelS(){
 
 		// erzeuge  LinkedList
-		    Spielelement[][] karte = sengine.map.karte;
+		    this.karte = new Spielelement[sengine.map.breite][sengine.map.hoehe];
 			sengine.monsterListe = new LinkedList<Monster>();		
 			
 	
@@ -63,10 +63,10 @@ public class Leser {
 //			case 3: karte[i][j] = new Schluessel(); break;
 			case 6: karte[i][j] = new Tuer(false); break;
 			case 4: karte[i][j] = new Tuer(true); sengine.spieler.setPos(i, j); break;
-			case 2: karte[i][j] = new Boden(); sengine.monsterListe.add(new Monster(i,j, 0)); break;
+			case 2: karte[i][j] = new Boden(); sengine.monsterListe.add(new Monster(i,j,sengine, 0)); break;
 			// Monster, welche erst nach dem Aufheben des Schluessels erscheinen
-			case 3: karte[i][j] = new Boden(); sengine.monsterListe.add(new Monster(i,j, 2)); break;
-			case 8: karte[i][j] = new Boden(); sengine.monsterListe.add(new Monster(i,j, 1)); break;
+			case 3: karte[i][j] = new Boden(); sengine.monsterListe.add(new Monster(i,j,sengine, 2)); break;
+			case 8: karte[i][j] = new Boden(); sengine.monsterListe.add(new Monster(i,j,sengine, 1)); break;
 		}	
 				
 			}
@@ -77,7 +77,7 @@ public class Leser {
 
 		// erzeuge zunächste ein Datentyp Spielelement
 		// erzeuge  LinkedList
-			Spielelement[][] karte  = cengine.map.karte;
+			this.karte = new Spielelement[cengine.map.breite][cengine.map.hoehe];
 			cengine.monsterListe = new LinkedList<Monster>();		
 			
 	
@@ -91,10 +91,10 @@ public class Leser {
 //			case 3: karte[i][j] = new Schluessel(); break;
 			case 6: karte[i][j] = new Tuer(false); break;
 			case 4: karte[i][j] = new Tuer(true); cengine.spieler.setPos(i, j); break;
-			case 2: karte[i][j] = new Boden(); cengine.monsterListe.add(new Monster(i,j, 0)); break;
+			case 2: karte[i][j] = new Boden(); cengine.monsterListe.add(new Monster(i,j,cengine, 0)); break;
 			// Monster, welche erst nach dem Aufheben des Schluessels erscheinen
-			case 3: karte[i][j] = new Boden(); cengine.monsterListe.add(new Monster(i,j, 2)); break;
-			case 8: karte[i][j] = new Boden(); cengine.monsterListe.add(new Monster(i,j, 1)); break;
+			case 3: karte[i][j] = new Boden(); cengine.monsterListe.add(new Monster(i,j,cengine, 2)); break;
+			case 8: karte[i][j] = new Boden(); cengine.monsterListe.add(new Monster(i,j,cengine, 1)); break;
 		}	
 				
 			}

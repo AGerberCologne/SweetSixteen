@@ -22,7 +22,7 @@ public class ServerEngine extends Thread
 	ServerComm server;
 	Konstanten konstante =new Konstanten();
 	public Map map = new Map();
-	public Spieler spieler = new Spieler();
+	public Spieler spieler = new Spieler("img//spieler.png",this);
 	public LinkedList<Monster> monsterListe;
 	public boolean eingeloggt;
 	

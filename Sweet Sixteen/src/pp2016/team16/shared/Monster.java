@@ -1,6 +1,8 @@
 package pp2016.team16.shared;
 
+import pp2016.team16.client.engine.ClientEngine;
 import pp2016.team16.client.gui.HindiBones;
+import pp2016.team16.server.engine.ServerEngine;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,24 +34,27 @@ public class Monster extends Figur {
 	 * */
 	private int zustand;// 1:ruhe,2:Spieler jagen;3:flüchten                       // STATES
 
-	private HindiBones fenster;
+	private ServerEngine sengine;
+	private ClientEngine cengine;
 	private Spieler spieler;
+	private Spielelement [][] karte;
 
-	public Monster(int x, int y, HindiBones fenster, int typ) {
-		this.fenster = fenster;
-		this.spieler = fenster.spieler;
+	public Monster(int x, int y, ServerEngine sengine, int typ) {
+		this.sengine = sengine;
+		this.karte = sengine.map.karte;
+		this.spieler = sengine.spieler;
 		this.typ = typ;
 		setPos(x, y);
 		setHealth(32);
 		setMaxHealth(getHealth());
 		lastAttack = System.currentTimeMillis();
 		lastStep = System.currentTimeMillis();
-		cooldownAttack = 500 - 10 * fenster.currentLevel; // ms
+		cooldownAttack = 500 - 10 * sengine.map.levelzaehler; // ms
 		cooldownWalk = 1000;
 
 		zustand = 1;
 
-		setSchaden(5 + fenster.currentLevel * 2);
+		setSchaden(5 + sengine.map.levelzaehler * 2);
 		Random r = new Random();
 		changeDir();
 
@@ -63,22 +68,33 @@ public class Monster extends Figur {
 		}
 	}
 	
-	public Monster(int x, int y, int typ) {
+	public Monster(int x, int y, ClientEngine cengine, int typ) {
+		this.cengine = cengine;
+		this.karte = cengine.map.karte;
+		this.spieler = cengine.spieler;
 		this.typ = typ;
 		setPos(x, y);
 		setHealth(32);
 		setMaxHealth(getHealth());
 		lastAttack = System.currentTimeMillis();
 		lastStep = System.currentTimeMillis();
-	//	cooldownAttack = 500 - 10 * fenster.currentLevel; // ms
+		cooldownAttack = 500 - 10 * cengine.map.levelzaehler; // ms
 		cooldownWalk = 1000;
 
 		zustand = 1;
 
-	//	setSchaden(5 + fenster.currentLevel * 2);
+		setSchaden(5 + cengine.map.levelzaehler * 2);
 		Random r = new Random();
 		changeDir();
 
+		// Bild fuer das Monster laden
+		int i = r.nextInt(3) + 1;
+
+		try {
+			setImage(ImageIO.read(new File("img//drache" + i + ".png")));
+		} catch (IOException e) {
+			System.err.print("Das Bild drache.png konnte nicht geladen werden.");
+		}
 	}
 
 	public boolean attackiereSpieler(boolean hatSchluessel) {
@@ -105,12 +121,23 @@ public class Monster extends Figur {
 		super.changeHealth(change);
 		if (getHealth() <= 0) {
 			if(typ==0 || typ==1){
-			fenster.level[getXPos()][getYPos()] = new Heiltrank(30);
-			fenster.monsterListe.remove(this);
+			karte[getXPos()][getYPos()] = new Heiltrank(30);
+			try{
+				sengine.monsterListe.remove(this);
+			}
+			catch(NullPointerException e){
+				cengine.monsterListe.remove(this);
+			}
+
 			}
 			if(typ == 2){
-			fenster.level[getXPos()][getYPos()] = new Schluessel();
-			fenster.monsterListe.remove(this);
+			karte[getXPos()][getYPos()] = new Schluessel();
+			try{
+				sengine.monsterListe.remove(this);
+			}
+			catch(NullPointerException e){
+				cengine.monsterListe.remove(this);
+			}
 			}
 			
 		}
@@ -163,21 +190,21 @@ public class Monster extends Figur {
 			return true;
 
 		if (dir == 0 && getYPos() - 1 > 0) {
-			return !(fenster.level[getXPos()][getYPos() - 1] instanceof Wand)
-					&& !(fenster.level[getXPos()][getYPos() - 1] instanceof Tuer)
-					&& !(fenster.level[getXPos()][getYPos() - 1] instanceof Schluessel);
-		} else if (dir == 1 && getXPos() + 1 < fenster.WIDTH) {
-			return !(fenster.level[getXPos() + 1][getYPos()] instanceof Wand)
-					&& !(fenster.level[getXPos() + 1][getYPos()] instanceof Tuer)
-					&& !(fenster.level[getXPos() + 1][getYPos()] instanceof Schluessel);
-		} else if (dir == 2 && getYPos() + 1 < fenster.HEIGHT) {
-			return !(fenster.level[getXPos()][getYPos() + 1] instanceof Wand)
-					&& !(fenster.level[getXPos()][getYPos() + 1] instanceof Tuer)
-					&& !(fenster.level[getXPos()][getYPos() + 1] instanceof Schluessel);
+			return !(karte[getXPos()][getYPos() - 1] instanceof Wand)
+					&& !(karte[getXPos()][getYPos() - 1] instanceof Tuer)
+					&& !(karte[getXPos()][getYPos() - 1] instanceof Schluessel);
+		} else if (dir == 1 && getXPos() + 1 < karte.length) {
+			return !(karte[getXPos() + 1][getYPos()] instanceof Wand)
+					&& !(karte[getXPos() + 1][getYPos()] instanceof Tuer)
+					&& !(karte[getXPos() + 1][getYPos()] instanceof Schluessel);
+		} else if (dir == 2 && getYPos() + 1 < karte.length) {
+			return !(karte[getXPos()][getYPos() + 1] instanceof Wand)
+					&& !(karte[getXPos()][getYPos() + 1] instanceof Tuer)
+					&& !(karte[getXPos()][getYPos() + 1] instanceof Schluessel);
 		} else if (dir == 3 && getXPos() > 0) {
-			return !(fenster.level[getXPos() - 1][getYPos()] instanceof Wand)
-					&& !(fenster.level[getXPos() - 1][getYPos()] instanceof Tuer)
-					&& !(fenster.level[getXPos() - 1][getYPos()] instanceof Schluessel);
+			return !(karte[getXPos() - 1][getYPos()] instanceof Wand)
+					&& !(karte[getXPos() - 1][getYPos()] instanceof Tuer)
+					&& !(karte[getXPos() - 1][getYPos()] instanceof Schluessel);
 		} else
 			return false;
 	}
@@ -254,19 +281,19 @@ public class Monster extends Figur {
 		int monsterX = this.getXPos();
 		int monsterY = this.getYPos();
 		// Monster nimmt erstbesten Fluchtweg (Es ist ja auch in Panik)
-		if(fenster.level[monsterX][monsterY+1] instanceof Boden && spielerY<=monsterY) {
+		if(karte[monsterX][monsterY+1] instanceof Boden && spielerY<=monsterY) {
 			dir = 2; 
 			move();
 		}
-		if(fenster.level[monsterX+1][monsterY] instanceof Boden && spielerX<=monsterX) {
+		if(karte[monsterX+1][monsterY] instanceof Boden && spielerX<=monsterX) {
 			dir = 1; 
 			move();
 		}
-		if(fenster.level[monsterX-1][monsterY] instanceof Boden && spielerX>=monsterX) {
+		if(karte[monsterX-1][monsterY] instanceof Boden && spielerX>=monsterX) {
 			dir = 3; 
 			move();
 		}
-		if(fenster.level[monsterX][monsterY-1] instanceof Boden && spielerY>=monsterY) {
+		if(karte[monsterX][monsterY-1] instanceof Boden && spielerY>=monsterY) {
 			dir = 0; 
 			move();
 		}

@@ -70,11 +70,19 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 	 */
 
 	public HindiBones(int width, int height, String title) {
-		zeigeLogin();
+		/*zeigeLogin();
 		if(LoginDialog.test == true){
 			initialisiereJFrame(width, height, title);
 			starteNeuesSpiel();
+		}*/
+		try {
+			engine.changeLevel();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		initialisiereJFrame(width, height, title);
+		starteNeuesSpiel();
 	}	
 
 	/**

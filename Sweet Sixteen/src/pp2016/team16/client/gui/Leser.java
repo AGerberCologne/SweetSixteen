@@ -18,7 +18,7 @@ import pp2016.team16.shared.Wand;
 
 public class Leser {
 
-	private int [][] dateiname;
+/*	private int [][] dateiname;
 //	private String dateiname;
 	private Spielelement[][] karte;
 	private HindiBones fenster;
@@ -27,7 +27,7 @@ public class Leser {
 	 * @author Simon Nietz, Matr_Nr: 5823560
 	 * @param a das übergebene zwei dimensionale Array
 	 * @param fenster das HindiBones JFrame
-	 */
+	 *
 	
 	public Leser(int [][] a, HindiBones fenster){
 		this.fenster = fenster;
@@ -69,8 +69,9 @@ public class Leser {
 	/**
 	 * @author Simon Nietz, Matr_Nr: 5823560
 	 * @return gebe das Spielelement zurück
-	 */
+	 *
 	public Spielelement[][] getLevel(){
 		return karte;
 	}
+	*/
 }

@@ -208,6 +208,8 @@ public void setHighScore(){
 //Ann-Catherine Hartmann,37658
 public void abmelden(){
 	
+	
+	
 }
 //Ann-Catherine Hartmann,37658
  /*es wird immer name, passwort und levelnr gespeichert

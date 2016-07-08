@@ -41,6 +41,7 @@ public class ClientComm extends Thread{
 				break;
 			}
 			empfangeVomServer();
+			schickeIchBinDaNachricht();
 			try {
 				sleep(1000);
 			} catch (InterruptedException e) {
@@ -109,6 +110,11 @@ public class ClientComm extends Thread{
 		oos.close();
 		c.close();
 		
+	}
+	
+	public void schickeIchBinDaNachricht(){
+		IchBinDa i= new IchBinDa();
+		bekommeVonClient(i);
 	}
 }
 	

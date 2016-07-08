@@ -33,20 +33,20 @@ public ServerComm(){
 
 		
 		public void run() {
-			
+			try {
+				s = serverS.accept();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				System.out.println("FEHLER");
+			}
 			while (serverOpen){
 				System.out.println("Server Run");
 				//serverS.setSoTimeout(60000);
-				try {
-					s = serverS.accept();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					System.out.println("FEHLER");
-				}
+				
 				verarbeiteNachricht();
 				try {
-					sleep(1000);
+					sleep(10000);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

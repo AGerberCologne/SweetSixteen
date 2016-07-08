@@ -32,6 +32,9 @@ public class ServerEngine extends Thread
 		System.out.println("Starte Server");
 		
 	}
+	public ServerEngine(String n){
+		
+	}
 	public void run(){
 		server = new ServerComm();
 		while(server.serverOpen){
@@ -156,9 +159,32 @@ public class ServerEngine extends Thread
   * auch noch die levelnr ausgelesen werden ( die speichern wir mit), und an this.map.levelzaehler übergeben werden*/
 public void logIn(int i, String name, String passwort){
 	String abgleich = name + " "+ passwort;
+	boolean namegibtesschon = false;
 	if (i ==1){ //Neuanmeldung	
-		System.out.println("angekommen");
-		String initiallevel = "Level 1";
+		try {
+		FileReader fr;
+		fr=new FileReader("Spielerdaten");
+		System.out.println("File wird gelesen");
+		BufferedReader br = new BufferedReader(fr);
+		String zeile=br.readLine();
+		while((zeile = br.readLine()) != null){
+			System.out.println("Zeile wird gelesen");
+			if (zeile.equals(abgleich)){
+				eingeloggt = false;
+				namegibtesschon=true;
+				System.out.println("Name und Passwort gibt es schon");
+				break;
+			}
+		}
+		
+		br.close();
+		fr.close();
+		
+	}catch( IOException e){}finally{
+		
+	}
+	if(namegibtesschon==false){
+		String initiallevel = "1";
 		FileWriter fw;
 		try {
 			fw = new FileWriter ("Spielerdaten",true);
@@ -177,20 +203,29 @@ public void logIn(int i, String name, String passwort){
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} 
-	}else if(i==2){
-		
+	}}else if (i==2){
+		System.out.println("Fall 2");
 		try {
 			FileReader fr;
 			fr=new FileReader("Spielerdaten");
+			System.out.println("File wird gelesen");
 			BufferedReader br = new BufferedReader(fr);
+			System.out.println("Fall 3");
 			String zeile;
-			do {
-				zeile =br.readLine();
-				if (zeile == abgleich){
+			while((zeile=br.readLine())!=null){
+				System.out.println("Zeile wird gelesen");
+				if (zeile.equals(abgleich)){
 					eingeloggt = true;
+					String level =br.readLine();
+					char c = level.charAt(6);
+					System.out.println("Level wird gelesen");
+					this.map.levelzaehler =(int) c-48;
+					System.out.println(level);
+					System.out.println(c);
+					System.out.println(this.map.levelzaehler);
+					break;
 				}
-			}while(zeile!=null);
-			
+			}
 			br.close();
 			fr.close();
 			

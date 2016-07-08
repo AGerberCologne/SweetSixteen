@@ -56,7 +56,7 @@ public class ServerEngine extends Thread
 	void nachrichtenVerarbeiten(MessageObject eingehendeNachricht) {
 		if (eingehendeNachricht instanceof LoginMessage) 
 		{  LoginMessage l = (LoginMessage) eingehendeNachricht;
-		  // this.logIn(l.artVonAnmeldung, l.name, l.passwort);
+		  	this.logIn(l.artVonAnmeldung, l.name, l.passwort);
 			LoginAnswerMessage answer =new LoginAnswerMessage();
 			if(this.eingeloggt){
 				spieler.setName(l.name);
@@ -64,11 +64,9 @@ public class ServerEngine extends Thread
 				answer.eingeloggt= eingeloggt;
 				answer.name = l.name;
 				answer.passwort = l.passwort;
-				answer.levelzaehler = map.levelzaehler;
-				
-				
+				answer.levelzaehler = map.levelzaehler;	
 			}
-		   
+		   server.gebeWeiterAnClient(answer);
 		}/* else if (eingehendeNachricht instanceof LogoutMessage)
 		{
 			System.out.println("Server Shutdown");

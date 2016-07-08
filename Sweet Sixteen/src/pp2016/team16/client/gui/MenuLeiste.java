@@ -34,10 +34,11 @@ public class MenuLeiste extends JMenuBar implements ActionListener {
     private JMenuItem beenden;
     private JMenuItem karteaufdecken;
     private JMenuItem steuerung;
-    private JMenuItem ausloggen;
+    private JMenuItem wechsel;
     private JMenuItem minimapzeigen;
     private JMenuItem minimapverstecken;
-    
+    private JMenuItem speicher;
+    private JMenuItem cheats;
     /**
      * 
      */
@@ -65,13 +66,15 @@ public class MenuLeiste extends JMenuBar implements ActionListener {
         beenden = new JMenuItem("Beenden");
         karteaufdecken = new JMenuItem("Karte aufdecken");
         steuerung = new JMenuItem("Steuerung");
-        ausloggen = new JMenuItem("Ausloggen");
+        wechsel = new JMenuItem("Benutzer wechseln");
         minimapzeigen = new JMenuItem("Minimap zeigen");
         minimapverstecken = new JMenuItem("Minimap verstecken");
+        speicher = new JMenuItem("Speichern");
+        cheats = new JMenuItem("Cheats");
         
         neuesSpiel.addActionListener(this);
         einloggen.addActionListener(this);
-        ausloggen.addActionListener(this);
+        wechsel.addActionListener(this);
         highscore.addActionListener(this);
         beenden.addActionListener(this);
         karteaufdecken.addActionListener(this);
@@ -79,14 +82,18 @@ public class MenuLeiste extends JMenuBar implements ActionListener {
         hilfe.addActionListener(this);
         minimapzeigen.addActionListener(this);
         minimapverstecken.addActionListener(this);
+        speicher.addActionListener(this);
+        cheats.addActionListener(this);
         
         spiel.add(neuesSpiel);
         spiel.add(einloggen);
-        spiel.add(ausloggen);
+        spiel.add(wechsel);
         spiel.add(beenden);
+        spiel.add(speicher);
         anzeige.add(highscore);
         anzeige.add(karteaufdecken);
         hilfe.add(steuerung);
+        hilfe.add(cheats);
         minimap.add(minimapzeigen);
         minimap.add(minimapverstecken);
         
@@ -101,10 +108,14 @@ public class MenuLeiste extends JMenuBar implements ActionListener {
 		if(e.getSource() == neuesSpiel){
 			// Popup schwierigkeit wird gelöscht Message
 			//Methode von Client zum loeschen der Daten
-			fenster.spielZuruecksetzen();
-			fenster.zeigeSpielfeld();
+			//fenster.spielZuruecksetzen();
+			//fenster.zeigeSpielfeld();
 			
+		}else if(e.getSource() == speicher){
 			
+		}else if(e.getSource() == cheats){
+		
+			fenster.zeigeCheats();
 	/*	}else if(e.getSource() == einloggen){
 			if(LoginDialog.test==true){
 				JOptionPane.showMessageDialog(null,
@@ -116,13 +127,14 @@ public class MenuLeiste extends JMenuBar implements ActionListener {
 			//
 			//
 			
-		}else if(e.getSource() == ausloggen){
+		}else if(e.getSource() == wechsel){
+			HindiBones.zeigeLogin();
 			
-			// Benutzer wechseln  dann Login Fenster
+			/* Benutzer wechseln  dann Login Fenster
 			if(LoginDialog.succeeded==true){
 				LoginDialog.succeeded = false;
 				fenster.spielZuruecksetzen();
-		//		fenster.engine.spieler.setName("Hindi");
+				fenster.engine.spieler.setName("Hindi");
 				JOptionPane.showMessageDialog(null,							
                         "Du wurdest ausgeloggt"
                         );
@@ -131,7 +143,7 @@ public class MenuLeiste extends JMenuBar implements ActionListener {
 					JOptionPane.showMessageDialog(null,							
 	                        "Du musst eingeloggt sein"
 	                        );
-				}
+				}*/
 		}else if(e.getSource() == highscore){
 			if(fenster.highscoreAngezeigt){
 				fenster.zeigeSpielfeld();

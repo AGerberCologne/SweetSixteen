@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 
 import pp2016.team16.shared.Boden;
 import pp2016.team16.shared.Heiltrank;
+import pp2016.team16.shared.Konstanten;
 import pp2016.team16.shared.Monster;
 import pp2016.team16.shared.Schluessel;
 import pp2016.team16.shared.Spieler;
@@ -88,8 +89,8 @@ public class Spielflaeche extends JPanel {
 		
 		// Male die einzelnen Felder
 		// falls der Spieler eine gewisse Position ueberschreitet wird mitgescrollt
-		for (int i = 0; i < fenster.Width; i++) {
-			for (int j = 0; j < fenster.Height; j++) {
+		for (int i = 0; i < Konstanten.BREITE; i++) {
+			for (int j = 0; j < Konstanten.HOEHE; j++) {
 				if (inRange(i+zaehler1,j+zaehler2)) {
 
 					if (fenster.engine.map.karte[i+zaehler1][j+zaehler2] instanceof Wand) {

@@ -39,8 +39,9 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 	private Highscore highscore;
 	private MenuLeiste menuLeiste;
 	private Steuerung steuerung;
+	public Cheats cheats;
 	//	public boolean test;
-
+	
 
 
 	//public AlleLevel level2 = new AlleLevel();
@@ -59,8 +60,8 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 	public final int WIDTH = 21;
 	public final int HEIGHT = 21;
 	public final int BOX = 32;
-	public final int Width = 17;
-	public final int Height = 17;
+	//public final int Width = 17;
+	//public final int Height = 17;
 
 	/**
 	 * @author Simon Nietz, Matr_Nr: 5823560
@@ -70,8 +71,10 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 	 */
 
 	public HindiBones(int width, int height, String title) {
-		//zeigeLogin();
-		//if(LoginDialog.isSucceded()){
+		
+	
+		zeigeLogin();
+		if(LoginDialog.isSucceded()){
 		//	System.out.println(LoginDialog.isSucceded());
 		//	initialisiereJFrame(width, height, title);
 		//	starteNeuesSpiel();
@@ -84,6 +87,7 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 		//}
 		initialisiereJFrame(width, height, title);
 		starteNeuesSpiel();
+		}
 		
 	}	
 
@@ -102,12 +106,14 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 		this.statusleiste = new Statusleiste(this);
 		this.steuerung = new Steuerung();
 		this.highscore = new Highscore();
+		this.cheats = new Cheats();
 		// Erzeuge Menuleiste
 		this.menuLeiste = new MenuLeiste(this);
 		// Es wird die gewuenschte Groesse angegeben
 		spielflaeche.setPreferredSize(new Dimension(width, height));
 		statusleiste.setPreferredSize(new Dimension(width, BOX));
 		steuerung.setPreferredSize(new Dimension(width, height + BOX));
+		cheats.setPreferredSize(new Dimension(width, height + BOX));
 		highscore.setPreferredSize(new Dimension(width, height + BOX));
 
 		// Erstelle das Spielfeld
@@ -130,6 +136,7 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 		highscoreAngezeigt = false;
 		this.remove(highscore);
 		this.remove(steuerung);
+		this.remove(cheats);
 		// erstelle das Spielfeld
 		this.add(spielflaeche, BorderLayout.CENTER);
 		this.add(statusleiste, BorderLayout.SOUTH);
@@ -139,7 +146,7 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 		this.pack();
 	}
 
-	public void zeigeLogin() {
+	public static void zeigeLogin() {
 		// erstelle das Fenster für den Login     	
 		LoginDialog loginDlg = new LoginDialog(frame);
 		loginDlg.setVisible(true);
@@ -159,6 +166,7 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 		this.remove(spielflaeche);
 		this.remove(statusleiste);
 		this.remove(steuerung);
+		this.remove(cheats);
 		// erstelle die Highscoreanzeige
 		this.add(highscore, BorderLayout.CENTER);
 		// aktiviere die Highscoreanzeige
@@ -173,12 +181,26 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 		this.remove(spielflaeche);
 		this.remove(statusleiste);
 		this.remove(highscore);
+		this.remove(cheats);
 		// erstelle die Steuerungsanzeige
 		this.add(steuerung, BorderLayout.CENTER);
 		// aktiviere die Steuerungsanzeige
 		this.requestFocus();
 		this.pack();
 		steuerung.repaint();
+	}
+	public void zeigeCheats(){
+		highscoreAngezeigt = false;
+		this.remove(spielflaeche);
+		this.remove(statusleiste);
+		this.remove(highscore);
+		this.remove(steuerung);
+		// erstelle die Steuerungsanzeige
+		this.add(cheats, BorderLayout.CENTER);
+		// aktiviere die Steuerungsanzeige
+		this.requestFocus();
+		this.pack();
+		cheats.repaint();
 	}
 
 	// Getter fuer die Spielflaeche bzw. Statusleiste
@@ -214,10 +236,14 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 				if (xPos < WIDTH + 4 && !(engine.map.karte[xPos + 1][yPos] instanceof Wand))
 					engine.spieler.rechts();
 			} else if (e.getKeyCode() == KeyEvent.VK_Q) {
-				Monster m = engine.spieler.angriffsMonster();
+				System.out.println("Angreifen");
+			//	Monster	m = engine.spieler.angriffsMonster();
+			//	Monster m = engine.monsterListe.get(i);
+			Monster m = engine.spieler.angriffsMonster();
 				if (m != null)
 					m.changeHealth(-BOX / 4);
 				// B für 'Heiltrank benutzen'
+				
 			} else if (e.getKeyCode() == KeyEvent.VK_B){
 				if(engine.spieler.anzahlHeiltraenke>0){
 					int change = engine.spieler.benutzeHeiltrank();
@@ -254,10 +280,11 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 	// int aktuelleYPos = fenster.engine.spieler.getY();	
 
 	public void mouseClicked(MouseEvent e) {
+		int	zielX = e.getX() / 32; // Koordinaten des Klicks ...
+		int	zielY = e.getY() / 32; // auslesen und als Ziel setzen
 		if (e.getButton() == MouseEvent.BUTTON1) {
 			// Es war die linke Maustaste
-			int	zielX = e.getX() / 32; // Koordinaten des Klicks ...
-			int	zielY = e.getY() / 32; // auslesen und als Ziel setzen
+			if (!spielende) {
 			System.out.println(zielX+" "+zielY);
 		//	engine.wegAnfragen(zielX, zielY);
 			
@@ -268,7 +295,7 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 				e1.printStackTrace();
 			}
 			
-
+			}
 
 		}
 	}

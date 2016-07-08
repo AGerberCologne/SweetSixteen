@@ -35,13 +35,18 @@ public class ClientComm extends Thread{
 	
 	
 	public void run(){
+		int z=1;
 		while (clientOpen){
 			if (isInterrupted()){
 				System.out.println("FEHLER");
 				break;
 			}
 			empfangeVomServer();
+			if (z==10){
 			schickeIchBinDaNachricht();
+			z=1;
+			}
+			z++;
 			try {
 				sleep(1000);
 			} catch (InterruptedException e) {

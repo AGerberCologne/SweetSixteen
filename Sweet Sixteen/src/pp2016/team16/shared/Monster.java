@@ -25,14 +25,14 @@ public class Monster extends Figur {
 	private int cooldownWalk;
 
 	private int dir; // Laufrichtung: 0 Nord, 1 Ost, 2 Sued, 3 West
-	private int typ; // Von Beginn an anwesend: 0, Erscheint später: 1
+	private int typ; // Von Beginn an anwesend: 0, Erscheint spï¿½ter: 1
 	
 	
 	/* Team16: Sweet sixteen
 	 * Goekdag, Enes, 5615399
 	 * 
 	 * */
-	private int zustand;// 1:ruhe,2:Spieler jagen;3:flüchten                       // STATES
+	private int zustand;// 1:ruhe,2:Spieler jagen;3:flï¿½chten                       // STATES
 
 	private ServerEngine sengine;
 	private ClientEngine cengine;

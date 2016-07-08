@@ -142,7 +142,6 @@ public class Spieler extends Figur {
 	public Monster angriffsMonster(){
 		for(int i = 0; i < this.monsterListe.size(); i++){
 			Monster m = this.monsterListe.get(i);
-						
 			// Kann der Spieler angreifen?
 			boolean kannAngreifen = false;
 			if (m.getTyp() == 0) kannAngreifen = true; 

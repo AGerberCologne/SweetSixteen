@@ -40,7 +40,7 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 	private MenuLeiste menuLeiste;
 	private Steuerung steuerung;
 	//	public boolean test;
-
+	
 
 
 	//public AlleLevel level2 = new AlleLevel();
@@ -214,10 +214,14 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 				if (xPos < WIDTH + 4 && !(engine.map.karte[xPos + 1][yPos] instanceof Wand))
 					engine.spieler.rechts();
 			} else if (e.getKeyCode() == KeyEvent.VK_Q) {
-				Monster m = engine.spieler.angriffsMonster();
+				System.out.println("Angreifen");
+			//	Monster	m = engine.spieler.angriffsMonster();
+			//	Monster m = engine.monsterListe.get(i);
+			Monster m = engine.spieler.angriffsMonster();
 				if (m != null)
 					m.changeHealth(-BOX / 4);
 				// B für 'Heiltrank benutzen'
+				
 			} else if (e.getKeyCode() == KeyEvent.VK_B){
 				if(engine.spieler.anzahlHeiltraenke>0){
 					int change = engine.spieler.benutzeHeiltrank();
@@ -254,10 +258,11 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 	// int aktuelleYPos = fenster.engine.spieler.getY();	
 
 	public void mouseClicked(MouseEvent e) {
+		int	zielX = e.getX() / 32; // Koordinaten des Klicks ...
+		int	zielY = e.getY() / 32; // auslesen und als Ziel setzen
 		if (e.getButton() == MouseEvent.BUTTON1) {
 			// Es war die linke Maustaste
-			int	zielX = e.getX() / 32; // Koordinaten des Klicks ...
-			int	zielY = e.getY() / 32; // auslesen und als Ziel setzen
+			if (!spielende) {
 			System.out.println(zielX+" "+zielY);
 		//	engine.wegAnfragen(zielX, zielY);
 			
@@ -268,7 +273,7 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 				e1.printStackTrace();
 			}
 			
-
+			}
 
 		}
 	}

@@ -147,7 +147,7 @@ public class LoginDialog extends JDialog {
         btnAnmelden.addActionListener(new ActionListener(){
         	public void actionPerformed(ActionEvent e){
         		try {
-					test2 = engine.login(2, getUsername(), getPassword());
+					test2 = engine.login(1, getUsername(), getPassword());
 				} catch (InterruptedException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

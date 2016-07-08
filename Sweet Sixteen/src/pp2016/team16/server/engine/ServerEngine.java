@@ -236,33 +236,48 @@ public void leseHighScore(){
 }
 //Ann-Catherine Hartmann,37658; Methode funktioniert noch nicht
 public void setHighScore(int zeit, String name){
-		try {
-		FileReader fr;
-		fr=new FileReader("HighScore");
+	String z = "Zeit: "+String.valueOf(zeit)+"   Name des Spielers: "+ name;
+	try {
+		File original =new File( "HighScore");
+		File kopie = new File("HighScore2");
+		FileReader fr =new FileReader(original);
 		BufferedReader br = new BufferedReader(fr);
-		int c = br.read()-48;
-		
-		String zeile=br.readLine();
+		FileWriter fw = new FileWriter(kopie);
+		BufferedWriter bw = new BufferedWriter(fw);
+		StringBuffer sb = new StringBuffer();
+		String zeile;
+		while((zeile=br.readLine())!=null){
+			if(zeile.equals("")==false){
+			int i = 6;
+			char k = zeile.charAt(i);
+			i++;
+			String h=String.valueOf(k);
+			while(((int)(k=zeile.charAt(i)))!=32){
+				h=h+k;
+				i++;
+			}
+			Integer l =Integer.valueOf(h);
+			if (l>zeit){
+				bw.write(z);
+				bw.newLine();
+				bw.newLine();
+			}}
+			bw.write(zeile);
+			bw.newLine();
+		}
+		bw.write(sb.toString());
+		bw.flush();
+		fw.close();
+		bw.close();
 		br.close();
 		fr.close();
+		original.delete();
+		kopie.renameTo(original);
 		
-	}catch( IOException e){}
-		FileWriter fw;
-		try {
-			fw = new FileWriter ("Spielerdaten",true);
-			System.out.println("Filewriter klappt");
-			BufferedWriter bw = new BufferedWriter (fw);
-			bw.newLine();
-			bw.write(String.valueOf(zeit) + ""+ name);
-			bw.close();//Schlieﬂt die Datei
-			fw.close();
-			eingeloggt = true;
-			System.out.println("Eingeloggt true");
-		} catch (IOException e1) {
-			System.out.println("Fehler gefunden");
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} 
+	} catch ( IOException e) {
+	}
+	
+
 	
 }
 //Ann-Catherine Hartmann,37658

@@ -164,11 +164,9 @@ public void logIn(int i, String name, String passwort){
 		try {
 		FileReader fr;
 		fr=new FileReader("Spielerdaten");
-		System.out.println("File wird gelesen");
 		BufferedReader br = new BufferedReader(fr);
 		String zeile=br.readLine();
 		while((zeile = br.readLine()) != null){
-			System.out.println("Zeile wird gelesen");
 			if (zeile.equals(abgleich)){
 				eingeloggt = false;
 				namegibtesschon=true;
@@ -192,12 +190,12 @@ public void logIn(int i, String name, String passwort){
 		FileWriter fw;
 		try {
 			fw = new FileWriter ("Spielerdaten",true);
-			System.out.println("Filewriter klappt");
 			BufferedWriter bw = new BufferedWriter (fw);
 			bw.newLine();
 			bw.write(abgleich);
 			bw.newLine();
 			bw.write (initiallevel);
+			bw.newLine();
 			bw.close();//Schließt die Datei
 			fw.close();
 			eingeloggt = true;
@@ -208,13 +206,10 @@ public void logIn(int i, String name, String passwort){
 			e1.printStackTrace();
 		} 
 	}}else if (i==2){
-		System.out.println("Fall 2");
 		try {
 			FileReader fr;
 			fr=new FileReader("Spielerdaten");
-			System.out.println("File wird gelesen");
 			BufferedReader br = new BufferedReader(fr);
-			System.out.println("Fall 3");
 			String zeile;
 			while((zeile=br.readLine())!=null){
 				System.out.println("Zeile wird gelesen");
@@ -222,11 +217,7 @@ public void logIn(int i, String name, String passwort){
 					eingeloggt = true;
 					String level =br.readLine();
 					char c = level.charAt(6);
-					System.out.println("Level wird gelesen");
 					this.map.levelzaehler =(int) c-48;
-					System.out.println(level);
-					System.out.println(c);
-					System.out.println(this.map.levelzaehler);
 					break;
 				}
 			}
@@ -243,7 +234,7 @@ public void logIn(int i, String name, String passwort){
 public void leseHighScore(){
 	
 }
-//Ann-Catherine Hartmann,37658
+//Ann-Catherine Hartmann,37658; Methode funktioniert noch nicht
 public void setHighScore(int zeit, String name){
 		try {
 		FileReader fr;
@@ -275,15 +266,48 @@ public void setHighScore(int zeit, String name){
 	
 }
 //Ann-Catherine Hartmann,37658
-public void abmelden(){
-	
-	
+public void abmelden(String name, String passwort, int levelNr){
+	this.speichern(name,passwort,levelNr);
 	
 }
 //Ann-Catherine Hartmann,37658
  /*es wird immer name, passwort und levelnr gespeichert
   wichtig ist, dass die bereits bestehenden eintragungen entweder überschrieben oder gelöscht werden*/
 public void speichern( String name, String passwort, int levelNr){
+	String abgleich = name + " "+ passwort;
+	String neuesLevel = "Level " +String.valueOf(levelNr);
+	try {
+		File original =new File( "Spielerdaten");
+		File kopie = new File("Spielerdaten2");
+		FileReader fr =new FileReader("Spielerdaten");
+		BufferedReader br = new BufferedReader(fr);
+		FileWriter fw = new FileWriter("Spielerdaten2");
+		BufferedWriter bw = new BufferedWriter(fw);
+		StringBuffer sb = new StringBuffer();
+		String zeile;
+		while((zeile=br.readLine())!=null){
+			if (zeile.equals(abgleich)){
+				bw.write(zeile);
+				bw.newLine();
+				bw.write(neuesLevel);
+				bw.newLine();
+				br.readLine();
+				zeile=br.readLine();
+			}
+			bw.write(zeile);
+			bw.newLine();
+		}
+		bw.write(sb.toString());
+		bw.flush();
+		fw.close();
+		bw.close();
+		br.close();
+		fr.close();
+		original.delete();
+		kopie.renameTo(original);
+		
+	} catch ( IOException e) {
+	}
 	
 }
 }

@@ -146,9 +146,9 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 		this.pack();
 	}
 
-	public static void zeigeLogin() {
+	public  void zeigeLogin() {
 		// erstelle das Fenster für den Login     	
-		LoginDialog loginDlg = new LoginDialog(frame);
+		LoginDialog loginDlg = new LoginDialog(frame, this);
 		loginDlg.setVisible(true);
 		
 			//     engine.spieler.setName(LoginDialog.getUsername());

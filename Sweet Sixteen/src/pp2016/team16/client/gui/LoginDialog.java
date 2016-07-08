@@ -20,7 +20,7 @@ public class LoginDialog extends JDialog {
  
 	//public static ArrayList<String> User = new ArrayList<String>();
 	//public static ArrayList<String> Passwort = new ArrayList<String>();
-	//public ClientEngine engine;
+	public ClientEngine engine;
 	
 	private HindiBones fenster;
 	private static final long serialVersionUID = 1L;
@@ -39,9 +39,9 @@ public class LoginDialog extends JDialog {
      * @author Simon Nietz, Matr_Nr: 5823560
      * @param parent erweitere das LoginFenster aus HindiBones
      */
-    public LoginDialog(Frame parent) {
+    public LoginDialog(Frame parent, HindiBones fenster) {
         super(parent, "Login", true);
-        
+        this.fenster = fenster;
     
         // erzeuge ein neues JPanel
         // ordne die Buttons mithilfe GridBagLayout
@@ -146,6 +146,7 @@ public class LoginDialog extends JDialog {
         btnAnmelden = new JButton("Neu Anmelden");
         btnAnmelden.addActionListener(new ActionListener(){
         	public void actionPerformed(ActionEvent e){
+        		System.out.println("hallo");
         		try {
 					test2 = fenster.engine.login(1, getUsername(), getPassword());
 				} catch (InterruptedException e1) {

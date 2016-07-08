@@ -124,7 +124,7 @@ public class MenuLeiste extends JMenuBar implements ActionListener {
 			//
 			
 		}else if(e.getSource() == wechsel){
-			HindiBones.zeigeLogin();
+			fenster.zeigeLogin();
 			
 			/* Benutzer wechseln  dann Login Fenster
 			if(LoginDialog.succeeded==true){

@@ -64,7 +64,8 @@ public class ServerEngine extends Thread
 				answer.eingeloggt= eingeloggt;
 				answer.name = l.name;
 				answer.passwort = l.passwort;
-				answer.levelzaehler = map.levelzaehler;	
+				answer.levelzaehler = map.levelzaehler;
+				System.out.println("Login If");
 			}
 		   server.gebeWeiterAnClient(answer);
 		}/* else if (eingehendeNachricht instanceof LogoutMessage)
@@ -156,10 +157,12 @@ public class ServerEngine extends Thread
 public void logIn(int i, String name, String passwort){
 	String abgleich = name + " "+ passwort;
 	if (i ==1){ //Neuanmeldung	
+		System.out.println("angekommen");
 		String initiallevel = "Level 1";
 		FileWriter fw;
 		try {
 			fw = new FileWriter ("Spielerdaten",true);
+			System.out.println("Filewriter klappt");
 			BufferedWriter bw = new BufferedWriter (fw);
 			bw.newLine();
 			bw.write(abgleich);
@@ -168,7 +171,9 @@ public void logIn(int i, String name, String passwort){
 			bw.close();//Schlieﬂt die Datei
 			fw.close();
 			eingeloggt = true;
+			System.out.println("Eingeloggt true");
 		} catch (IOException e1) {
+			System.out.println("Fehler gefunden");
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} 

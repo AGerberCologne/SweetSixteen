@@ -69,6 +69,7 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 			  spieler.setName(l.name);
 			  spieler.setPasswort(l.passwort);
 			  this.eingeloggt= l.eingeloggt;
+			  System.out.println("Login wurde empfangen");
 			  this.login = true;
 			
 		} else  if (daten instanceof ChangeLevelMessage) {
@@ -144,7 +145,10 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 	public boolean login(int i, String n, String p) throws InterruptedException  { 
 		LoginMessage anfrage = new LoginMessage(i, n, p);
 		com.bekommeVonClient(anfrage);
-		while(login == false){}
+		while(login == false){
+			System.out.println("Warte auf Login Antwort");
+			sleep(600);
+		}
 		this.login = false;
 		return eingeloggt;
 	}

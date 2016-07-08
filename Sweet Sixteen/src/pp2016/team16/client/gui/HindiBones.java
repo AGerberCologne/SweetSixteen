@@ -70,19 +70,21 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 	 */
 
 	public HindiBones(int width, int height, String title) {
-		/*zeigeLogin();
-		if(LoginDialog.test == true){
-			initialisiereJFrame(width, height, title);
-			starteNeuesSpiel();
-		}*/
+		//zeigeLogin();
+		//if(LoginDialog.isSucceded()){
+		//	System.out.println(LoginDialog.isSucceded());
+		//	initialisiereJFrame(width, height, title);
+		//	starteNeuesSpiel();
+		
 		try {
 			engine.changeLevel();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		//}
 		initialisiereJFrame(width, height, title);
 		starteNeuesSpiel();
+		
 	}	
 
 	/**
@@ -116,6 +118,7 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 				(int) ((d.getHeight() - this.getHeight()) / 2));
 		// Standardsetup
 		this.addKeyListener(this);
+		this.addMouseListener(this);
 		this.setResizable(false);
 		this.setTitle(title);
 		this.setVisible(true);
@@ -251,19 +254,20 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 	// int aktuelleYPos = fenster.engine.spieler.getY();	
 
 	public void mouseClicked(MouseEvent e) {
-		// Linke Taste: Den Drachen auf die Reise schicken.
 		if (e.getButton() == MouseEvent.BUTTON1) {
 			// Es war die linke Maustaste
 			int	zielX = e.getX() / 32; // Koordinaten des Klicks ...
 			int	zielY = e.getY() / 32; // auslesen und als Ziel setzen
+			System.out.println(zielX+" "+zielY);
 		//	engine.wegAnfragen(zielX, zielY);
-			int startX = engine.spieler.getXPos();
-			int startY = engine.spieler.getYPos();
 			
-			// angreifen auf Button3
-			Monster m = engine.spieler.angriffsMonster();
-			if (m != null)
-				m.changeHealth(-BOX / 4);
+			try {
+				engine.wegAnfragen(zielX, zielY);
+			} catch (InterruptedException e1) {
+				System.out.println("Es ist was schief gelaufen");
+				e1.printStackTrace();
+			}
+			
 
 
 		}
@@ -303,7 +307,7 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 		spielende = false;
 		verloren = false;
 		nebelAn = true;
-		nextLevel();
+		//nextLevel();
 		spielerInHighscore = false;
 		startZeit = System.currentTimeMillis();
 	}

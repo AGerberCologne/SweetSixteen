@@ -40,20 +40,13 @@ public class ClientComm extends Thread{
 				System.out.println("FEHLER");
 				break;
 			}
-			//IchBinDa i =new IchBinDa();
-			//bekommeVonClient(i);
+			empfangeVomServer();
 			try {
 				sleep(1000);
 			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			try {
-				empfangeVomServer();
-			} catch (ClassNotFoundException | IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
 		}
 	}
 	public void sendeAnServer(){
@@ -62,10 +55,14 @@ public class ClientComm extends Thread{
 		try{
 			
 			MessageObject msg = sendeAnServer.removeFirst();
+			System.out.println("Clientest 1");
 			oos = new ObjectOutputStream(c.getOutputStream());
+			System.out.println("Clientest 2");
 			oos.writeObject(msg);
+			System.out.println("Clientest 3");
 			oos.flush();
-			ois=new ObjectInputStream(c.getInputStream());
+			System.out.println("Clientest 4");
+			//ois=new ObjectInputStream(c.getInputStream());
 			//empfangeVomServer();
 			if(msg instanceof LogoutMessage)
 				beende();
@@ -76,17 +73,24 @@ public class ClientComm extends Thread{
 		} 
 		
 	}
-	public void empfangeVomServer() throws IOException, ClassNotFoundException{
-		oos=new ObjectOutputStream(c.getOutputStream());
-		oos.flush();
-		ois=new ObjectInputStream(c.getInputStream());
-		MessageObject bmsg = (MessageObject)ois.readObject();
-		empfangeVomServer.addLast(bmsg);
+	public void empfangeVomServer() {
+		
+		try {
+			ois=new ObjectInputStream(c.getInputStream());
+			MessageObject bmsg = (MessageObject)ois.readObject();
+			empfangeVomServer.addLast(bmsg);
+		} catch (IOException e) {
+			System.out.println("Test 7");
+		} catch (ClassNotFoundException e) {
+			
+		}
+		
 	}
 	
 	public void bekommeVonClient(MessageObject cmsg){
 		sendeAnServer.addLast(cmsg);
 		sendeAnServer();
+		
 	}
 	
 	public MessageObject gebeWeiterAnClient(){

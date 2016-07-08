@@ -25,6 +25,7 @@ public class ServerComm extends Thread {
 public ServerComm(){
 		try {
 			serverS = new ServerSocket(port);
+			
 			serverOpen=true;
 			this.start();
 		}catch(IOException e){}
@@ -34,11 +35,23 @@ public ServerComm(){
 		public void run() {
 			
 			while (serverOpen){
-				try {
+				System.out.println("Server Run");
 				//serverS.setSoTimeout(60000);
-				s = serverS.accept();
+				try {
+					s = serverS.accept();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					System.out.println("FEHLER");
+				}
 				verarbeiteNachricht();
-			}catch(IOException e){}
+				try {
+					sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				System.out.println("Server Run 2");
 			}
 		}
 		
@@ -63,7 +76,7 @@ public ServerComm(){
 					System.out.println("Test 5");
 				}
 			} catch (IOException | ClassNotFoundException e) {
-				System.out.println("Test 7");
+				e.printStackTrace();
 			}
 			
 		}
@@ -86,7 +99,6 @@ public ServerComm(){
 			try {
 				
 				MessageObject m = sendeAnClient.removeFirst();
-				ost = new ObjectOutputStream(s.getOutputStream());
 				ost.writeObject(m);
 				ost.flush();	
 			} catch (IOException e) {

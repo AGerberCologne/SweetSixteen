@@ -137,7 +137,9 @@ public class LoginDialog extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 test = true;
                 dispose();
+               
             }
+         
         });
         
         //neuen Benutzer erstellen
@@ -220,7 +222,9 @@ public class LoginDialog extends JDialog {
         return new String(pfPassword.getPassword());
     }
  
-   
+    public static boolean isSucceded(){
+    	return test;
+    }
     
   /*  public static class Loginn {
     	static int a;

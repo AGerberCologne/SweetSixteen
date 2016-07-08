@@ -154,7 +154,8 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 	}
 
 	// kann , wenn notwendig , neues x oder y zurückgeben...
-	void wegAnfragen(int x, int y) throws InterruptedException {
+	public void wegAnfragen(int x, int y) throws InterruptedException {
+		System.out.println("Der Spieler möchte sich bewegen");
 		spieler.zielX = x;
 		spieler.zielY = y;
 		MoveMessage anfrage = new MoveMessage();
@@ -162,8 +163,12 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 		anfrage.altY = spieler.getYPos();
 		anfrage.neuX = spieler.zielX;
 		anfrage.neuY = spieler.zielY;
+		System.out.println("Bevor");
 		com.bekommeVonClient(anfrage);
-		while(spieler.hatSchrittgemacht ==false){}
+		System.out.println("Danach");
+		while(spieler.hatSchrittgemacht ==false){
+			System.out.println("Noch keine Antwort");
+		}
 		spieler.hatSchrittgemacht =false;
 	}
 

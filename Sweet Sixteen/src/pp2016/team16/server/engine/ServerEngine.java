@@ -154,29 +154,49 @@ public class ServerEngine extends Thread
   * eine anmeldung oder einen login durchgeführt hat;
   * außerdem sollte wenn es eine neue anmeldung ist 1 bei this.map.levelzaehler gespeichert werden
   * wenn man sich einlogt, dann soll nicht nur geprüft werden ob name und passwort zusammen passen sondern 
-  * auch noch die levelnr ausgelesen werden ( die speichern wir mit), und an this.map.levelzaehler übergeben werden
+  * auch noch die levelnr ausgelesen werden ( die speichern wir mit), und an this.map.levelzaehler übergeben werden*/
 public void logIn(int i, String name, String passwort){
-	if (i ==1){
-	//neuer	
-		FileWriter fw = new FileWriter ("Anmeldung"); //zum Abspeichern als Textdatei
-		BufferedWriter bw = new BufferedWriter (fw);
-		try{
-			bw.write(String name);
+	String abgleich = name + " "+ passwort;
+	if (i ==1){ //Neuanmeldung	
+		String initiallevel = "Level 1";
+		FileWriter fw;
+		try {
+			fw = new FileWriter ("Spielerdaten",true);
+			BufferedWriter bw = new BufferedWriter (fw);
 			bw.newLine();
-			}
-		bw.write(ergebnisb);
-		System.out.println(ergebnisb);
-		bw.close();//Schließt die Datei
-		}catch(FileNotFoundException e){
-			System.err.println("Fehler");
-		
-		}
+			bw.write(abgleich);
+			bw.newLine();
+			bw.write (initiallevel);
+			bw.close();//Schließt die Datei
+			fw.close();
+			eingeloggt = true;
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} 
 	}else if(i==2){
 		
-	}else{
+		try {
+			FileReader fr;
+			fr=new FileReader("Spielerdaten");
+			BufferedReader br = new BufferedReader(fr);
+			String zeile;
+			do {
+				zeile =br.readLine();
+				if (zeile == abgleich){
+					eingeloggt = true;
+				}
+			}while(zeile!=null);
+			
+			br.close();
+			fr.close();
+			
+		} catch ( IOException e) {
+		}
 		
 	}
 }
+
 //Ann-Catherine Hartmann,37658
 public void leseHighScore(){
 	
@@ -190,9 +210,9 @@ public void abmelden(){
 	
 }
 //Ann-Catherine Hartmann,37658
- //es wird immer name, passwort und levelnr gespeichert
-  * wichtig ist, dass die bereits bestehenden eintragungen entweder überschrieben oder gelöscht werden
+ /*es wird immer name, passwort und levelnr gespeichert
+  wichtig ist, dass die bereits bestehenden eintragungen entweder überschrieben oder gelöscht werden*/
 public void speichern( String name, String passwort, int levelNr){
 	
-}*/
+}
 }

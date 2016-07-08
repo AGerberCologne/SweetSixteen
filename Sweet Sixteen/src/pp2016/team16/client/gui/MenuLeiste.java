@@ -29,7 +29,6 @@ public class MenuLeiste extends JMenuBar implements ActionListener {
 	
     //die Unterpunkte der Menues
     private JMenuItem neuesSpiel;
-    private JMenuItem einloggen;
     private JMenuItem highscore;
     private JMenuItem beenden;
     private JMenuItem karteaufdecken;
@@ -61,7 +60,6 @@ public class MenuLeiste extends JMenuBar implements ActionListener {
         
 		// dieses sind die Unterpunkte
         neuesSpiel = new JMenuItem("Neues Spiel starten");
-        einloggen = new JMenuItem("Einloggen");
         highscore = new JMenuItem("Highscore anzeigen");
         beenden = new JMenuItem("Beenden");
         karteaufdecken = new JMenuItem("Karte aufdecken");
@@ -73,7 +71,6 @@ public class MenuLeiste extends JMenuBar implements ActionListener {
         cheats = new JMenuItem("Cheats");
         
         neuesSpiel.addActionListener(this);
-        einloggen.addActionListener(this);
         wechsel.addActionListener(this);
         highscore.addActionListener(this);
         beenden.addActionListener(this);
@@ -86,7 +83,6 @@ public class MenuLeiste extends JMenuBar implements ActionListener {
         cheats.addActionListener(this);
         
         spiel.add(neuesSpiel);
-        spiel.add(einloggen);
         spiel.add(wechsel);
         spiel.add(beenden);
         spiel.add(speicher);

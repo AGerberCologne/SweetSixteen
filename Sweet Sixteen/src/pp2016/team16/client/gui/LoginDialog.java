@@ -18,9 +18,9 @@ import pp2016.team16.client.gui.HindiBones;
 
 public class LoginDialog extends JDialog {
  
-	public static ArrayList<String> User = new ArrayList<String>();
-	public static ArrayList<String> Passwort = new ArrayList<String>();
-	public ClientEngine engine;
+	//public static ArrayList<String> User = new ArrayList<String>();
+	//public static ArrayList<String> Passwort = new ArrayList<String>();
+	//public ClientEngine engine;
 	
 	private HindiBones fenster;
 	private static final long serialVersionUID = 1L;
@@ -83,7 +83,7 @@ public class LoginDialog extends JDialog {
  
         	public void actionPerformed(ActionEvent e){
         		try {
-					test2 = engine.login(2, getUsername(), getPassword());
+					test2 = fenster.engine.login(2, getUsername(), getPassword());
 				} catch (InterruptedException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -147,7 +147,7 @@ public class LoginDialog extends JDialog {
         btnAnmelden.addActionListener(new ActionListener(){
         	public void actionPerformed(ActionEvent e){
         		try {
-					test2 = engine.login(1, getUsername(), getPassword());
+					test2 = fenster.engine.login(1, getUsername(), getPassword());
 				} catch (InterruptedException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

@@ -174,17 +174,21 @@ public void logIn(int i, String name, String passwort){
 				namegibtesschon=true;
 				System.out.println("Name und Passwort gibt es schon");
 				break;
+			}else if (zeile.startsWith(name+"")){
+				eingeloggt = false;
+				namegibtesschon=true;
+				System.out.println("Name ist vergeben");
+				break;
 			}
 		}
 		
 		br.close();
 		fr.close();
 		
-	}catch( IOException e){}finally{
+	}catch( IOException e){}
 		
-	}
 	if(namegibtesschon==false){
-		String initiallevel = "1";
+		String initiallevel = "Level 1";
 		FileWriter fw;
 		try {
 			fw = new FileWriter ("Spielerdaten",true);
@@ -240,7 +244,34 @@ public void leseHighScore(){
 	
 }
 //Ann-Catherine Hartmann,37658
-public void setHighScore(){
+public void setHighScore(int zeit, String name){
+		try {
+		FileReader fr;
+		fr=new FileReader("HighScore");
+		BufferedReader br = new BufferedReader(fr);
+		int c = br.read()-48;
+		
+		String zeile=br.readLine();
+		br.close();
+		fr.close();
+		
+	}catch( IOException e){}
+		FileWriter fw;
+		try {
+			fw = new FileWriter ("Spielerdaten",true);
+			System.out.println("Filewriter klappt");
+			BufferedWriter bw = new BufferedWriter (fw);
+			bw.newLine();
+			bw.write(String.valueOf(zeit) + ""+ name);
+			bw.close();//Schlieﬂt die Datei
+			fw.close();
+			eingeloggt = true;
+			System.out.println("Eingeloggt true");
+		} catch (IOException e1) {
+			System.out.println("Fehler gefunden");
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} 
 	
 }
 //Ann-Catherine Hartmann,37658

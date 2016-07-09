@@ -46,7 +46,7 @@ public ServerComm(){
 				
 				verarbeiteNachricht();
 				try {
-					sleep(10000);
+					sleep(600);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

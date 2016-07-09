@@ -2,7 +2,9 @@ package pp2016.team16.shared;
 
 import pp2016.team16.client.engine.ClientEngine;
 import pp2016.team16.client.gui.HindiBones;
+import pp2016.team16.server.engine.Astern;
 import pp2016.team16.server.engine.ServerEngine;
+import pp2016.team16.server.engine.Wegpunkt;
 
 import java.io.File;
 import java.io.IOException;
@@ -85,7 +87,6 @@ public class Monster extends Figur {
 
 		setSchaden(5 + cengine.map.levelzaehler * 2);
 		Random r = new Random();
-		changeDir();
 
 		// Bild fuer das Monster laden
 		int i = r.nextInt(3) + 1;
@@ -96,6 +97,9 @@ public class Monster extends Figur {
 			System.err.print("Das Bild drache.png konnte nicht geladen werden.");
 		}
 	}
+	
+	
+	
 
 	public boolean attackiereSpieler(boolean hatSchluessel) {
 		// Ist der Spieler im Radius des Monsters?
@@ -239,8 +243,8 @@ public class Monster extends Figur {
 	 * Goekdag, Enes, 5615399
 	 * 
 	 * */
-/*	public void jagen() {                                                                      // Spieler JAGEN (Angriffszustand)
-		Astern  astern= new Astern(getYPos(), getXPos(), spieler.getXPos(),spieler.getYPos() , fenster);
+	public void jagen() {                                                                      // Spieler JAGEN (Angriffszustand)
+		Astern  astern= new Astern(getYPos(), getXPos(), spieler.getXPos(),spieler.getYPos() , sengine);
 		Wegpunkt test = astern.starten();
 		System.out.println("Monster:"+this.getXPos()+","+this.getYPos());
 		System.out.println("Spieler:"+spieler.getXPos()+","+spieler.getYPos());
@@ -265,7 +269,8 @@ public class Monster extends Figur {
 		    
 		
 		
-	}*/
+	}
+	
 	/* Team16: Sweet sixteen
 	 * Goekdag, Enes, 5615399
 	 * 

@@ -43,7 +43,7 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 			 if(m == null){
 				 System.out.println("Test 2");
 				 try {
-					sleep(6000);
+					sleep(600);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -85,9 +85,12 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 			System.out.println("Neues Level gespeichert");
 			
 
-		} else if (daten instanceof MoveMessage) {
-			int richtung = ((MoveMessage) daten).richtung;
+		} else if (daten instanceof SBewegungMessage) {
+			int richtung = ((SBewegungMessage) daten).richtung;
 			switch(richtung){
+				case 0: spieler.hoch();
+						spieler.hatSchrittgemacht = true;
+						break;
 				case 1: spieler.rechts();
 						spieler.hatSchrittgemacht = true;
 						break;
@@ -97,28 +100,26 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 				case 3: spieler.runter(); 
 						spieler.hatSchrittgemacht = true;
 						break;
-				case 0: spieler.hoch();
-						spieler.hatSchrittgemacht = true;
-						break;
+
 			}
-			
-			
-		} else if (daten instanceof ItemUseMessage){
+
+
+		} else if (daten instanceof ItemStatusMessage){
 			// Schluessel aufnehmen
-			if(((ItemUseMessage) daten).art == 1) {
+			if(((ItemStatusMessage) daten).art == 1) {
 				spieler.nimmSchluessel();
 				map.karte[spieler.getXPos()][spieler.getYPos()] = new Boden();
 				this.itemBenutzen = 1;
 
 			}
 			// Heiltrank aufnehmen
-			else if (((ItemUseMessage) daten).art == 0) {
+			else if (((ItemStatusMessage) daten).art == 0) {
 				spieler.nimmHeiltrank((Heiltrank) map.karte[spieler.getXPos()][spieler.getYPos()]);		
 				map.karte[spieler.getXPos()][spieler.getYPos()] = new Boden();
 				this.itemBenutzen = 0;
 			}
 			// Schluessel benutzen
-			if (((ItemUseMessage) daten).art == 2) {
+			if (((ItemStatusMessage) daten).art == 2) {
 				if (!((Tuer) map.karte[spieler.getXPos()][spieler.getYPos()]).istOffen() && spieler.hatSchluessel()) {
 					((Tuer) map.karte[spieler.getXPos()][spieler.getYPos()]).setOffen();
 					// Nach dem Oeffnen der Tuer ist der Schluessel wieder weg
@@ -162,16 +163,15 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 		System.out.println("Der Spieler möchte sich bewegen");
 		spieler.zielX = x;
 		spieler.zielY = y;
-		MoveMessage anfrage = new MoveMessage();
+		SBewegungMessage anfrage = new SBewegungMessage();
 		anfrage.altX = spieler.getXPos();
 		anfrage.altY = spieler.getYPos();
 		anfrage.neuX = spieler.zielX;
 		anfrage.neuY = spieler.zielY;
-		System.out.println("Bevor");
 		com.bekommeVonClient(anfrage);
-		System.out.println("Danach");
 		while(spieler.hatSchrittgemacht ==false){
 			System.out.println("Noch keine Antwort");
+			sleep(600);
 		}
 		spieler.hatSchrittgemacht =false;
 	}
@@ -186,18 +186,20 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 		com.bekommeVonClient(anfrage);
 		while(this.neuesLevel == false){
 			System.out.println("Neues Level wurde noch nicht geladen");
-			sleep(6000);
+			sleep(600);
 		}
 		this.neuesLevel = false;
 		System.out.println("Endlich geschafft");
 		return map.karte;
 	}
 // 0, 1 = aufnehmen, 2 = neues level, 3 = spiel beenden
-	public int benutzeItem() {
+	public int benutzeItem() throws InterruptedException {
 		itemBenutzen= 4;
-		ItemUseMessage  anfrage = new ItemUseMessage();
+		ItemStatusMessage  anfrage = new ItemStatusMessage();
 		com.bekommeVonClient(anfrage);
-		while(itemBenutzen == 4){}
+		while(itemBenutzen == 4){
+			sleep(600);
+		}
 		return itemBenutzen;
 	}
 

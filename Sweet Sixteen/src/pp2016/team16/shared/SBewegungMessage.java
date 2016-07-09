@@ -1,6 +1,6 @@
 package pp2016.team16.shared;
 
-public class MoveMessage extends MessageObject {
+public class SBewegungMessage extends MessageObject {
 	/**
 	 * 
 	 */

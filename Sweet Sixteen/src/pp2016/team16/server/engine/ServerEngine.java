@@ -19,8 +19,8 @@ import pp2016.team16.server.map.Leser;
 public class ServerEngine extends Thread
 { 
 	MessageObject serverDatenbestand = new MessageObject();
-	ServerComm server;
-	Konstanten konstante =new Konstanten();
+	public ServerComm server;
+	public Konstanten konstante =new Konstanten();
 	public Map map = new Map();
 	public Spieler spieler = new Spieler("img//spieler.png",this);
 	public LinkedList<Monster> monsterListe;
@@ -42,7 +42,7 @@ public class ServerEngine extends Thread
 			if(m == null){
 				System.out.println("Test1");
 				try {
-					sleep(6000);
+					sleep(600);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -92,19 +92,19 @@ public class ServerEngine extends Thread
 			answer.levelzaehler = map.levelzaehler;
 			server.gebeWeiterAnClient(answer);
 			
-		} else if (eingehendeNachricht instanceof MoveMessage) {
+		} else if (eingehendeNachricht instanceof SBewegungMessage) {
 			System.out.println("Der Spieler möchte sich bewegen");
-			MoveMessage m = (MoveMessage) eingehendeNachricht;
+			SBewegungMessage m = (SBewegungMessage) eingehendeNachricht;
 			spieler.setPos(m.altX, m.altY);
 			spieler.zielX = m.neuX;
 			spieler.zielY = m.neuY;
 			int richtung = spieler.geheZumZiel();
-			MoveMessage answer = new MoveMessage();
+			SBewegungMessage answer = new SBewegungMessage();
 			answer.richtung = richtung;
 			server.gebeWeiterAnClient(answer);
 			
-		} else if (eingehendeNachricht instanceof ItemUseMessage){
-			ItemUseMessage answer = new ItemUseMessage();
+		} else if (eingehendeNachricht instanceof ItemStatusMessage){
+			ItemStatusMessage answer = new ItemStatusMessage();
 			// Schluessel aufnehmen
 			if (map.karte[spieler.getXPos()][spieler.getYPos()] instanceof Schluessel) {
 				spieler.nimmSchluessel();
@@ -324,5 +324,33 @@ public void speichern( String name, String passwort, int levelNr){
 	} catch ( IOException e) {
 	}
 	
+}
+
+void bewegung(){
+	for (int i = 0; i < this.monsterListe.size(); i++) {
+		Monster m = this.monsterListe.get(i);
+		boolean event = this.spieler.hatSchluessel();
+		// Da hier alle Monster aufgerufen werden, wird an dieser
+		// Stelle auch ein Angriffsbefehl fuer die Monster
+		// abgegeben, falls der Spieler in der Naehe ist.
+		// Ansonsten soll das Monster laufen
+		if(m.aktuellenZustandBestimmen()==1){
+			m.ruhe();
+			
+		}else if(m.aktuellenZustandBestimmen()==3){
+			m.fluechten();
+		}
+		else {
+			m.jagen();
+			m.attackiereSpieler(event);
+			int box = this.konstante.BOX;
+			Spieler s = this.spieler;
+
+		/*	double p = m.cooldownProzent();
+			g.setColor(Color.RED);
+			g.drawImage(feuerball, (int)(((1-p) * m.getXPos() + (p) * s.getXPos())*box) + box/2,
+					(int)(((1-p) * m.getYPos() + (p) * s.getYPos())*box) + box/2, 8, 8, null);
+		*/}
+	}
 }
 }

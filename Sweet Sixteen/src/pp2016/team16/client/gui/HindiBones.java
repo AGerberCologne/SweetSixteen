@@ -259,7 +259,7 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 		}
 
 		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-			// Schluessel aufnehmen
+		/*	// Schluessel aufnehmen
 			int a = engine.benutzeItem();				
 			// Heiltrank aufnehmen
 
@@ -269,7 +269,7 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 				nextLevel();
 			}else if(a == 3) {
 				spielende = true;
-			}
+			}*/
 		}
 	}
 

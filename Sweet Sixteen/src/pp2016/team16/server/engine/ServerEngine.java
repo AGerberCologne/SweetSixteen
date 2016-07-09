@@ -13,7 +13,6 @@ import pp2016.team16.shared.Map;
 import pp2016.team16.server.comm.ServerComm;
 import pp2016.team16.server.engine.IServerEngine;
 import pp2016.team16.server.map.AlleLevel;
-import pp2016.team16.server.map.Leser;
 
 
 public class ServerEngine extends Thread
@@ -22,9 +21,10 @@ public class ServerEngine extends Thread
 	public ServerComm server;
 	public Konstanten konstante =new Konstanten();
 	public Map map = new Map();
-	public Spieler spieler = new Spieler("img//spieler.png",this);
-	public LinkedList<Monster> monsterListe;
+	public Spieler spieler = new Spieler("img//spieler.png");
+	public LinkedList<Monster> monsterListe = new LinkedList<Monster>();
 	public boolean eingeloggt;
+	public Astern astern;
 	
 
 
@@ -84,30 +84,32 @@ public class ServerEngine extends Thread
 			map.hoehe = konstante.HEIGHT;
 			AlleLevel levelObject = new AlleLevel(map.hoehe, map.breite);
 			map.level =levelObject.setzeInhalt(map.levelzaehler);
-			Leser l = new Leser(map.level, this);
-			this.spieler = l.sengine.spieler;
-			this.monsterListe = l.sengine.monsterListe;
-			map.karte = l.getLevel();
+			for(int i=0;i<map.level.length;i++){
+				for(int j=0;j<map.level.length;j++){
+					int Variable = map.level[i][j];
+					switch(Variable){
+				case 0: map.karte[i][j] = new Wand(); break;
+				case 1: map.karte[i][j] = new Boden(); break;
+//				case 3: map.karte[i][j] = new Schluessel(); break;
+				case 6: map.karte[i][j] = new Tuer(false); break;
+				case 4: map.karte[i][j] = new Tuer(true); this.spieler.setPos(i, j); break;
+				case 2: map.karte[i][j] = new Boden(); this.monsterListe.add(new Monster(i,j,0)); break;
+				// Monster, welche erst nach dem Aufheben des Schluessels erscheinen
+				case 3: map.karte[i][j] = new Boden(); this.monsterListe.add(new Monster(i,j,2)); break;
+				case 8: map.karte[i][j] = new Boden(); this.monsterListe.add(new Monster(i,j,1)); break;
+			}	
 			ChangeLevelMessage answer = new ChangeLevelMessage();
 			answer.level = map.level;
 			answer.levelzaehler = map.levelzaehler;
 			server.gebeWeiterAnClient(answer);
-			
+				}}
 		} else if (eingehendeNachricht instanceof SBewegungMessage) {
 			System.out.println("Der Spieler möchte sich bewegen");
 			SBewegungMessage m = (SBewegungMessage) eingehendeNachricht;
-			System.out.println("Test vor start");
 			spieler.setPos(m.altX, m.altY);
-			System.out.println("Test vor ziel");
 			spieler.zielX = m.neuX;
 			spieler.zielY = m.neuY;
-			spieler.geheZumZiel();
-			try {
-				sleep(600);
-			} catch (InterruptedException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			this.geheZumZiel();
 			System.out.println("abgeschlossen");
 			try {
 				this.spielermacheSchritt();
@@ -339,7 +341,7 @@ public void speichern( String name, String passwort, int levelNr){
 	
 }
 
-void monsterBewegung(){
+/*void monsterBewegung(){
 	for (int i = 0; i < this.monsterListe.size(); i++) {
 		Monster m = this.monsterListe.get(i);
 		boolean event = this.spieler.hatSchluessel();
@@ -363,22 +365,46 @@ void monsterBewegung(){
 			g.setColor(Color.RED);
 			g.drawImage(feuerball, (int)(((1-p) * m.getXPos() + (p) * s.getXPos())*box) + box/2,
 					(int)(((1-p) * m.getYPos() + (p) * s.getYPos())*box) + box/2, 8, 8, null);
-			 */}
+			 *//*}
 	}
+}
+public Monster angriffsMonster(){
+	for(int i = 0; i < this.monsterListe.size(); i++){
+		Monster m = this.monsterListe.get(i);
+		// Kann der Spieler angreifen?
+		boolean kannAngreifen = false;
+		if (m.getTyp() == 0) kannAngreifen = true; 
+		if (m.getTyp() == 1) kannAngreifen = spieler.hatSchluessel();
+		if (m.getTyp() == 2) kannAngreifen = true;
+		if((Math.sqrt(Math.pow(spieler.getXPos() - m.getXPos(), 2)+ Math.pow(spieler.getYPos() - m.getYPos(), 2)) < 2)&&kannAngreifen){
+			return m;
+		}
+	}
+	
+	return null;
+}*/
+
+public void geheZumZiel() {                                                                     // Spieler JAGEN (Angriffszustand)
+   astern= new Astern (spieler.getYPos(), spieler.getXPos(), spieler.zielX, spieler.zielY, map.karte);
+	Wegpunkt test = astern.starten();
+	System.out.println("Spieler:"+spieler.getXPos()+","+spieler.getYPos());
+	System.out.println("SZiel:"+spieler.zielX+","+spieler.zielY);
+
 }
 
 
 public void spielermacheSchritt() throws InterruptedException{
-	while(!spieler.astern.positionX.isEmpty()){
+	while(!astern.positionX.isEmpty()){
 		System.out.println("Neue Position wird verschickt");
-	int x = spieler.astern.positionX.removeFirst();
-	int y= spieler.astern.positionY.removeFirst();
+	int x = astern.positionX.removeFirst();
+	int y= astern.positionY.removeFirst();
 	spieler.setPos(x,y);
 	SBewegungMessage answer = new SBewegungMessage();
 	answer.neuX = x;
 	answer.neuY = y;
 	server.gebeWeiterAnClient(answer);
-	sleep(600);
+	sleep(60000);
+	
 	}
 }
 }

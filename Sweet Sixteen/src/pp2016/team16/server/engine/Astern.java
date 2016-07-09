@@ -12,7 +12,7 @@ import pp2016.team16.shared.*;
  * */
 public class Astern extends Thread {
 	 // ServerEngine sengine;
-	private Spielelement [][] karte = new Spielelement[21][21];
+	  private Spielelement [][] karte = new Spielelement[21][21];
 	  private int x;
 	  private int y;
 	  private boolean gefunden;

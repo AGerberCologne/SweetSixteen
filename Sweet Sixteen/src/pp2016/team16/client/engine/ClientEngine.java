@@ -7,7 +7,6 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
-import pp2016.team16.server.map.Leser;
 import pp2016.team16.shared.*;
 import pp2016.team16.shared.Map;
 import pp2016.team16.client.comm.ClientComm;
@@ -23,8 +22,8 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 	ClientComm com;
 	public Konstanten konstante = new Konstanten();
 	public Map map = new Map();
-	public Spieler spieler = new Spieler("img//spieler.png",this);
-	public LinkedList<Monster> monsterListe;
+	public Spieler spieler = new Spieler("img//spieler.png");
+	public LinkedList<Monster> monsterListe = new LinkedList<Monster>();
 	public boolean eingeloggt = false;
 	public boolean login=false;
 	public boolean neuesLevel = false;
@@ -76,10 +75,27 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 			ChangeLevelMessage c = (ChangeLevelMessage) daten;
 			map.breite= konstante.WIDTH;
 			map.hoehe = konstante.HEIGHT;
-			Leser l = new Leser(c.level, this);
-			this.spieler = l.cengine.spieler;
-			this.monsterListe = l.cengine.monsterListe;
-			map.karte = l.getLevel();
+			for(int i=0;i<c.level.length;i++){
+				for(int j=0;j<c.level.length;j++){
+					int Variable = c.level[i][j];
+					switch(Variable){
+				case 0: map.karte[i][j] = new Wand(); break;
+				case 1: map.karte[i][j] = new Boden(); break;
+//				case 3: map.karte[i][j] = new Schluessel(); break;
+				case 6: map.karte[i][j] = new Tuer(false); break;
+				case 4: map.karte[i][j] = new Tuer(true); this.spieler.setPos(i, j); break;
+				case 2: map.karte[i][j] = new Boden(); this.monsterListe.add(new Monster(i,j,0)); break;
+				// Monster, welche erst nach dem Aufheben des Schluessels erscheinen
+				case 3: map.karte[i][j] = new Boden(); this.monsterListe.add(new Monster(i,j,2)); break;
+				case 8: map.karte[i][j] = new Boden(); this.monsterListe.add(new Monster(i,j,1)); break;
+			}	
+					
+				}
+				
+			}
+			
+			
+			
 			map.levelzaehler = c.levelzaehler;
 			this.neuesLevel = true;
 			System.out.println("Neues Level gespeichert");
@@ -155,7 +171,7 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 		anfrage.neuX = spieler.zielX;
 		anfrage.neuY = spieler.zielY;
 		com.bekommeVonClient(anfrage);
-		sleep(10000);
+		sleep(600);
 	}
 
 	

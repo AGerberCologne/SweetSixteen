@@ -132,7 +132,7 @@ public class Spielflaeche extends JPanel {
 		}
 
 		// Male die Monster an ihrer Position
-		for (int i = 0; i < fenster.engine.monsterListe.size(); i++) {
+		/*for (int i = 0; i < fenster.engine.monsterListe.size(); i++) {
 			Monster m = fenster.engine.monsterListe.get(i);
 			boolean event = fenster.engine.spieler.hatSchluessel();
 			// Da hier alle Monster aufgerufen werden, wird an dieser
@@ -157,8 +157,7 @@ public class Spielflaeche extends JPanel {
 			// Male das Monster, falls es erst durch das Event 'Schluessel aufheben' erscheint
 			else if (event && m.getTyp() == 1) drawMonster(g,m);
 			
-		}
-
+		}*/
 		
 		// Male den Spieler an seiner Position
 	//	g.drawImage(fenster.spieler.getImage(), fenster.spieler.getXPos()

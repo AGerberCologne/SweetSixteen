@@ -83,6 +83,7 @@ public class ClientComm extends Thread{
 		
 		try {
 			ois=new ObjectInputStream(c.getInputStream());
+			System.out.println("Leere Nachricht");
 			MessageObject bmsg = (MessageObject)ois.readObject();
 			empfangeVomServer.addLast(bmsg);
 		} catch (IOException e) {

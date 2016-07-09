@@ -36,57 +36,25 @@ public class Monster extends Figur {
 	 * */
 	private int zustand;// 1:ruhe,2:Spieler jagen;3:fl�chten                       // STATES
 
-	private ServerEngine sengine;
-	private ClientEngine cengine;
-	private Spieler spieler;
+	
 	private Spielelement [][] karte;
 
-	public Monster(int x, int y, ServerEngine sengine, int typ) {
-		this.sengine = sengine;
-		this.karte = sengine.map.karte;
-		this.spieler = sengine.spieler;
+	public Monster(int x, int y, int typ) {
+	//	this.karte = karte;
 		this.typ = typ;
 		setPos(x, y);
 		setHealth(32);
 		setMaxHealth(getHealth());
 		lastAttack = System.currentTimeMillis();
 		lastStep = System.currentTimeMillis();
-		cooldownAttack = 500 - 10 * sengine.map.levelzaehler; // ms
+		cooldownAttack = 500 - 10 * 1; // ms
 		cooldownWalk = 1000;
 
 		zustand = 1;
 
-		setSchaden(5 + sengine.map.levelzaehler * 2);
+		setSchaden(5 + 1 * 2);
 		Random r = new Random();
-		changeDir();
-
-		// Bild fuer das Monster laden
-		int i = r.nextInt(3) + 1;
-
-		try {
-			setImage(ImageIO.read(new File("img//drache" + i + ".png")));
-		} catch (IOException e) {
-			System.err.print("Das Bild drache.png konnte nicht geladen werden.");
-		}
-	}
-	
-	public Monster(int x, int y, ClientEngine cengine, int typ) {
-		this.cengine = cengine;
-		this.karte = cengine.map.karte;
-		this.spieler = cengine.spieler;
-		this.typ = typ;
-		setPos(x, y);
-		setHealth(32);
-		setMaxHealth(getHealth());
-		lastAttack = System.currentTimeMillis();
-		lastStep = System.currentTimeMillis();
-		cooldownAttack = 500 - 10 * cengine.map.levelzaehler; // ms
-		cooldownWalk = 1000;
-
-		zustand = 1;
-
-		setSchaden(5 + cengine.map.levelzaehler * 2);
-		Random r = new Random();
+		//changeDir();
 
 		// Bild fuer das Monster laden
 		int i = r.nextInt(3) + 1;
@@ -100,8 +68,10 @@ public class Monster extends Figur {
 	
 	
 	
+	
+	
 
-	public boolean attackiereSpieler(boolean hatSchluessel) {
+/*	public boolean attackiereSpieler(boolean hatSchluessel) {
 		// Ist der Spieler im Radius des Monsters?
 		boolean spielerImRadius = (Math
 				.sqrt(Math.pow(spieler.getXPos() - getXPos(), 2) + Math.pow(spieler.getYPos() - getYPos(), 2)) < 2);
@@ -223,6 +193,7 @@ public class Monster extends Figur {
 	 * Goekdag, Enes, 5615399
 	 * 
 	 * */
+	/*
 	public int aktuellenZustandBestimmen() {
 		// Ist der Spieler im Radius des Monsters?                                             // endlicher AUTOMAT- 3 STATES
 		boolean spielerImRadius = (Math.sqrt(Math.pow(spieler.getXPos() - getXPos(), 2)
@@ -242,7 +213,7 @@ public class Monster extends Figur {
 	/* Team16: Sweet sixteen
 	 * Goekdag, Enes, 5615399
 	 * 
-	 * */
+	 * *//*
 	public void jagen() {                                                                      // Spieler JAGEN (Angriffszustand)
 		Astern  astern= new Astern(getYPos(), getXPos(), spieler.getXPos(),spieler.getYPos() , this.karte);
 		Wegpunkt test = astern.starten();
@@ -274,7 +245,7 @@ public class Monster extends Figur {
 	/* Team16: Sweet sixteen
 	 * Goekdag, Enes, 5615399
 	 * 
-	 * */
+	 * *//*
 	public void fluechten() {                                                                 // von Spieler FLUECHTEN (Defensivzustand)
 		
 		System.out.println("Monster:"+this.getXPos()+","+this.getYPos());
@@ -310,7 +281,7 @@ public class Monster extends Figur {
 				setHealth(getHealth()+1);	
 				}
 				move();
-	}
+	}*/
 	}
 	
 	

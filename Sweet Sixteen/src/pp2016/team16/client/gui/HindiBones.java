@@ -239,10 +239,10 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 				System.out.println("Angreifen");
 			//	Monster	m = engine.spieler.angriffsMonster();
 			//	Monster m = engine.monsterListe.get(i);
-			Monster m = engine.spieler.angriffsMonster();
+			/*Monster m = engine.spieler.angriffsMonster();
 				if (m != null)
 					m.changeHealth(-BOX / 4);
-				// B für 'Heiltrank benutzen'
+				// B für 'Heiltrank benutzen'*/
 				
 			} else if (e.getKeyCode() == KeyEvent.VK_B){
 				if(engine.spieler.anzahlHeiltraenke>0){
@@ -290,6 +290,7 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 			
 			try {
 				engine.wegAnfragen(zielX, zielY);
+				System.out.println("Anfrage wurde verschickt");
 			} catch (InterruptedException e1) {
 				System.out.println("Es ist was schief gelaufen");
 				e1.printStackTrace();

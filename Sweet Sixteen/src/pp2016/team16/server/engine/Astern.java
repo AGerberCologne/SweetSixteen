@@ -10,14 +10,17 @@ import pp2016.team16.shared.*;
  * Goekdag, Enes, 5615399
  * 
  * */
-public class Astern {
-	  ServerEngine sengine;
+public class Astern extends Thread {
+	 // ServerEngine sengine;
+	private Spielelement [][] karte = new Spielelement[21][21];
 	  private int x;
 	  private int y;
 	  private boolean gefunden;
+	  public LinkedList<Integer> positionX = new LinkedList<Integer>();
+	  public LinkedList<Integer> positionY = new LinkedList<Integer>();
 	  
 	  private boolean[][] field;
-	  private final int ZELLEN = 16;
+	  private final int ZELLEN = 21;
 	  private int monsterX;
 	  private int monsterY;
 	  private int zielX;
@@ -28,8 +31,8 @@ public class Astern {
 	  LinkedList<Wegpunkt> closedList;
 	  private Wegpunkt finish;
 	  
-	  public Astern(int monsterY,int monsterX,int zielX,int zielY,ServerEngine sengine){
-		  this.sengine=sengine;
+	  public Astern(int monsterY,int monsterX,int zielX,int zielY, Spielelement[][] karte){
+		  this.karte =karte;
 		  this.monsterX=monsterX;
 		  this.monsterY=monsterY;
 		  this.zielX=zielX;
@@ -50,7 +53,7 @@ public class Astern {
 		    
 		    for (int i = 0; i < ZELLEN; i++) {
 		      for (int j = 0; j < ZELLEN; j++) {
-		       if (sengine.map.karte[i][j] instanceof Boden) {
+		       if (karte[i][j] instanceof Boden) {
 				field[i][j]=true;
 			}
 		      }
@@ -79,7 +82,7 @@ public class Astern {
 	      
 	      //wenn der beste punkt das ziel ist, ist der beste weg gefunden
 	      if (bestWegpunkt.x == this.zielX && bestWegpunkt.y == this.zielY) {
-	        bestWegpunkt.print();
+	        this.print(bestWegpunkt);
 	        this.finish = bestWegpunkt;
 	        gefunden=true;
 	        return bestWegpunkt;
@@ -100,6 +103,20 @@ public class Astern {
 
 	    return bestWegpunkt;
 	  }
+	  
+	  public void print(Wegpunkt punkt) {
+		  Wegpunkt vorgaenger = punkt.vorgaenger;
+			if (vorgaenger != null) {
+				print(vorgaenger);
+			}
+			this.speichereWeg(punkt.x, punkt.y);
+			System.out.println("x:" + punkt.x + " y:" + punkt.y);
+		}
+	  public void speichereWeg(int x, int y){
+		  System.out.println("Es wurde etwas gespeichert");
+			positionX.addLast(x);
+			positionY.addLast(y);
+		}
 	  
 	  // �berpr�ft ob das Feld schon untersucht wurde, 
 	  //pr�ft auch ob da das Feld begehbar ist und obs schon in der openlist ist

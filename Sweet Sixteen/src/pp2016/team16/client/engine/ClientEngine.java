@@ -86,24 +86,10 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 			
 
 		} else if (daten instanceof SBewegungMessage) {
-			int richtung = ((SBewegungMessage) daten).richtung;
-			switch(richtung){
-				case 0: spieler.hoch();
-						spieler.hatSchrittgemacht = true;
-						break;
-				case 1: spieler.rechts();
-						spieler.hatSchrittgemacht = true;
-						break;
-				case 2: spieler.links(); 
-						spieler.hatSchrittgemacht = true;
-						break;
-				case 3: spieler.runter(); 
-						spieler.hatSchrittgemacht = true;
-						break;
-
-			}
-
-
+			System.out.println("Neue Position");
+			SBewegungMessage position = (SBewegungMessage) daten;
+			this.spieler.setPos(position.neuX, position.neuY);
+			
 		} else if (daten instanceof ItemStatusMessage){
 			// Schluessel aufnehmen
 			if(((ItemStatusMessage) daten).art == 1) {
@@ -169,11 +155,7 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 		anfrage.neuX = spieler.zielX;
 		anfrage.neuY = spieler.zielY;
 		com.bekommeVonClient(anfrage);
-		while(spieler.hatSchrittgemacht ==false){
-			System.out.println("Noch keine Antwort");
-			sleep(600);
-		}
-		spieler.hatSchrittgemacht =false;
+		sleep(10000);
 	}
 
 	

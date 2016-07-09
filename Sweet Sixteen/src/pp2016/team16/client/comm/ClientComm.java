@@ -87,6 +87,7 @@ public class ClientComm extends Thread{
 			empfangeVomServer.addLast(bmsg);
 		} catch (IOException e) {
 			System.out.println("Test 7");
+			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			
 		}

@@ -244,7 +244,7 @@ public class Monster extends Figur {
 	 * 
 	 * */
 	public void jagen() {                                                                      // Spieler JAGEN (Angriffszustand)
-		Astern  astern= new Astern(getYPos(), getXPos(), spieler.getXPos(),spieler.getYPos() , sengine);
+		Astern  astern= new Astern(getYPos(), getXPos(), spieler.getXPos(),spieler.getYPos() , this.karte);
 		Wegpunkt test = astern.starten();
 		System.out.println("Monster:"+this.getXPos()+","+this.getYPos());
 		System.out.println("Spieler:"+spieler.getXPos()+","+spieler.getYPos());

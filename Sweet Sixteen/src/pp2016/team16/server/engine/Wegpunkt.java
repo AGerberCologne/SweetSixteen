@@ -35,14 +35,13 @@ public class Wegpunkt {
 		this.vorgaenger = neuer;
 	}
 
-	public void print() {
+	/*public void print() {
 		if (this.vorgaenger != null) {
 			this.vorgaenger.print();
 		}
-
+		
 		System.out.println("x:" + x + " y:" + y);
-	}
-
+	}*/
 	public Wegpunkt getLastWegpunkt() {
 		Wegpunkt aktuellerPunkt = this;
 		while (aktuellerPunkt.vorgaenger != null) {

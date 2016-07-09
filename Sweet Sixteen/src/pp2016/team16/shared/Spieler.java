@@ -32,6 +32,7 @@ public class Spieler extends Figur {
 	private ClientEngine cengine;
 	private Spielelement[][] karte ;
 	private LinkedList<Monster> monsterListe;
+	public Astern  astern;
 	
 	
 	public Spieler(String imgDatei, ServerEngine sengine){
@@ -155,12 +156,12 @@ public class Spieler extends Figur {
 		return null;
 	}
 	
-	public int geheZumZiel() {                                                                     // Spieler JAGEN (Angriffszustand)
-		Astern  astern= new Astern(getYPos(), getXPos(), this.zielX, this.zielY, sengine);
+	public void geheZumZiel() {                                                                     // Spieler JAGEN (Angriffszustand)
+	   astern= new Astern (getYPos(), getXPos(), this.zielX, this.zielY, this.karte);
 		Wegpunkt test = astern.starten();
 		System.out.println("Spieler:"+this.getXPos()+","+this.getYPos());
 		System.out.println("SZiel:"+this.zielX+","+this.zielY);
-		if (test.x<getXPos()&&test.y==getYPos()) {
+	/*	if (test.x<getXPos()&&test.y==getYPos()) {
 			links();
 			return 3;
 		}
@@ -176,7 +177,9 @@ public class Spieler extends Figur {
 			runter();
 			return 2;
 		}
-		return -1;
+		return -1;*/
 	}
+	
+	
 	
 }

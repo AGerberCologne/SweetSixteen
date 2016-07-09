@@ -27,6 +27,7 @@ public class ServerEngine extends Thread
 	public boolean eingeloggt;
 	
 
+
 	public ServerEngine() {
 		this.start();
 		System.out.println("Starte Server");
@@ -95,13 +96,25 @@ public class ServerEngine extends Thread
 		} else if (eingehendeNachricht instanceof SBewegungMessage) {
 			System.out.println("Der Spieler möchte sich bewegen");
 			SBewegungMessage m = (SBewegungMessage) eingehendeNachricht;
+			System.out.println("Test vor start");
 			spieler.setPos(m.altX, m.altY);
+			System.out.println("Test vor ziel");
 			spieler.zielX = m.neuX;
 			spieler.zielY = m.neuY;
-			int richtung = spieler.geheZumZiel();
-			SBewegungMessage answer = new SBewegungMessage();
-			answer.richtung = richtung;
-			server.gebeWeiterAnClient(answer);
+			spieler.geheZumZiel();
+			try {
+				sleep(600);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			System.out.println("abgeschlossen");
+			try {
+				this.spielermacheSchritt();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 		} else if (eingehendeNachricht instanceof ItemStatusMessage){
 			ItemStatusMessage answer = new ItemStatusMessage();
@@ -326,7 +339,7 @@ public void speichern( String name, String passwort, int levelNr){
 	
 }
 
-void bewegung(){
+void monsterBewegung(){
 	for (int i = 0; i < this.monsterListe.size(); i++) {
 		Monster m = this.monsterListe.get(i);
 		boolean event = this.spieler.hatSchluessel();
@@ -336,7 +349,7 @@ void bewegung(){
 		// Ansonsten soll das Monster laufen
 		if(m.aktuellenZustandBestimmen()==1){
 			m.ruhe();
-			
+
 		}else if(m.aktuellenZustandBestimmen()==3){
 			m.fluechten();
 		}
@@ -346,11 +359,26 @@ void bewegung(){
 			int box = this.konstante.BOX;
 			Spieler s = this.spieler;
 
-		/*	double p = m.cooldownProzent();
+			/*	double p = m.cooldownProzent();
 			g.setColor(Color.RED);
 			g.drawImage(feuerball, (int)(((1-p) * m.getXPos() + (p) * s.getXPos())*box) + box/2,
 					(int)(((1-p) * m.getYPos() + (p) * s.getYPos())*box) + box/2, 8, 8, null);
-		*/}
+			 */}
+	}
+}
+
+
+public void spielermacheSchritt() throws InterruptedException{
+	while(!spieler.astern.positionX.isEmpty()){
+		System.out.println("Neue Position wird verschickt");
+	int x = spieler.astern.positionX.removeFirst();
+	int y= spieler.astern.positionY.removeFirst();
+	spieler.setPos(x,y);
+	SBewegungMessage answer = new SBewegungMessage();
+	answer.neuX = x;
+	answer.neuY = y;
+	server.gebeWeiterAnClient(answer);
+	sleep(600);
 	}
 }
 }

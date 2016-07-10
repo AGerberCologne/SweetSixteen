@@ -11,12 +11,13 @@ import pp2016.team16.shared.*;
 import pp2016.team16.shared.Map;
 import pp2016.team16.client.comm.ClientComm;
 import pp2016.team16.client.gui.HindiBones;
+import pp2016.team16.shared.Heiltrank;
 
 public class ClientEngine extends Thread// entweder extends Thread oder implements
 // Runnable sind notwendig um mehrere
 // Threads gleichzeitig laufen zu lassen.
 // Dies ist notwendig, da Server um Client
-// natürlich parallel aktiv sein müssen
+// natï¿½rlich parallel aktiv sein mï¿½ssen
 {
 	// In diesem Objekt speichert der Client interne Daten
 	ClientComm com;
@@ -82,6 +83,7 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 				case 0: map.karte[i][j] = new Wand(); break;
 				case 1: map.karte[i][j] = new Boden(); break;
 //				case 3: map.karte[i][j] = new Schluessel(); break;
+				case 5: map.karte[i][j] = new Heiltrank(20); break;
 				case 6: map.karte[i][j] = new Tuer(false); break;
 				case 4: map.karte[i][j] = new Tuer(true); this.spieler.setPos(i, j); break;
 				case 2: map.karte[i][j] = new Boden(); this.monsterListe.add(new Monster(i,j,0)); break;
@@ -142,7 +144,7 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 	}
 
 
-	// Methoden für GUI
+	// Methoden fï¿½r GUI
 	
 	
 	public boolean login(int i, String n, String p) throws InterruptedException  { 
@@ -160,9 +162,9 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 		LogoutMessage anfrage = new LogoutMessage();
 	}
 
-	// kann , wenn notwendig , neues x oder y zurückgeben...
+	// kann , wenn notwendig , neues x oder y zurï¿½ckgeben...
 	public void wegAnfragen(int x, int y) throws InterruptedException {
-		System.out.println("Der Spieler möchte sich bewegen");
+		System.out.println("Der Spieler mï¿½chte sich bewegen");
 		spieler.zielX = x;
 		spieler.zielY = y;
 		SBewegungMessage anfrage = new SBewegungMessage();
@@ -175,7 +177,7 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 	}
 
 	
-// evtl besser kein reurn, sondern abruf über map.karte
+// evtl besser kein reurn, sondern abruf ï¿½ber map.karte
 	public Spielelement[][] changeLevel() throws Exception{
 		System.out.println("Der Client fragt ein neues Level an");
 		ChangeLevelMessage anfrage = new ChangeLevelMessage();

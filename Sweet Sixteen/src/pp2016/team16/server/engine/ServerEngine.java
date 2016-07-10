@@ -91,6 +91,7 @@ public class ServerEngine extends Thread
 				case 0: map.karte[i][j] = new Wand(); break;
 				case 1: map.karte[i][j] = new Boden(); break;
 //				case 3: map.karte[i][j] = new Schluessel(); break;
+				case 5: map.karte[i][j] = new Heiltrank(20); break;
 				case 6: map.karte[i][j] = new Tuer(false); break;
 				case 4: map.karte[i][j] = new Tuer(true); this.spieler.setPos(i, j); break;
 				case 2: map.karte[i][j] = new Boden(); this.monsterListe.add(new Monster(i,j,0)); break;
@@ -104,7 +105,7 @@ public class ServerEngine extends Thread
 			server.gebeWeiterAnClient(answer);
 				
 		} else if (eingehendeNachricht instanceof SBewegungMessage) {
-			System.out.println("Der Spieler möchte sich bewegen");
+			System.out.println("Der Spieler mï¿½chte sich bewegen");
 			SBewegungMessage m = (SBewegungMessage) eingehendeNachricht;
 			spieler.setPos(m.altX, m.altY);
 			spieler.zielX = m.neuX;
@@ -148,13 +149,13 @@ public class ServerEngine extends Thread
 			int i = ((CheatMessage) eingehendeNachricht).i;
 			switch (i) {
 			case 1:
-				System.out.println("Cheat Nummer 1, zB Leben erhöhen");
+				System.out.println("Cheat Nummer 1, zB Leben erhï¿½hen");
 				break;
 			case 2:
-				System.out.println("Cheat Nummer 2, zB Monster schwächen");
+				System.out.println("Cheat Nummer 2, zB Monster schwï¿½chen");
 				break;
 			case 3:
-				System.out.println("Cheat Nummer 3, zB Schusszahl erhöhen");
+				System.out.println("Cheat Nummer 3, zB Schusszahl erhï¿½hen");
 			}
 			CheatMessage answer = new CheatMessage(i);
 			nachrichtSchicken(answer);
@@ -168,10 +169,10 @@ public class ServerEngine extends Thread
 /*Ann-Catherine Hartmann,37658
  * 
  //Die Methode sollte im boolean eingeloggt true speichern, falls man erfolgreich 
-  * eine anmeldung oder einen login durchgeführt hat;
-  * außerdem sollte wenn es eine neue anmeldung ist 1 bei this.map.levelzaehler gespeichert werden
-  * wenn man sich einlogt, dann soll nicht nur geprüft werden ob name und passwort zusammen passen sondern 
-  * auch noch die levelnr ausgelesen werden ( die speichern wir mit), und an this.map.levelzaehler übergeben werden*/
+  * eine anmeldung oder einen login durchgefï¿½hrt hat;
+  * auï¿½erdem sollte wenn es eine neue anmeldung ist 1 bei this.map.levelzaehler gespeichert werden
+  * wenn man sich einlogt, dann soll nicht nur geprï¿½ft werden ob name und passwort zusammen passen sondern 
+  * auch noch die levelnr ausgelesen werden ( die speichern wir mit), und an this.map.levelzaehler ï¿½bergeben werden*/
 public void logIn(int i, String name, String passwort){
 	String abgleich = name + " "+ passwort;
 	boolean namegibtesschon = false;
@@ -211,7 +212,7 @@ public void logIn(int i, String name, String passwort){
 			bw.newLine();
 			bw.write (initiallevel);
 			bw.newLine();
-			bw.close();//Schließt die Datei
+			bw.close();//Schlieï¿½t die Datei
 			fw.close();
 			eingeloggt = true;
 			System.out.println("Eingeloggt true");
@@ -302,7 +303,7 @@ public void abmelden(String name, String passwort, int levelNr){
 }
 //Ann-Catherine Hartmann,37658
  /*es wird immer name, passwort und levelnr gespeichert
-  wichtig ist, dass die bereits bestehenden eintragungen entweder überschrieben oder gelöscht werden*/
+  wichtig ist, dass die bereits bestehenden eintragungen entweder ï¿½berschrieben oder gelï¿½scht werden*/
 public void speichern( String name, String passwort, int levelNr){
 	String abgleich = name + " "+ passwort;
 	String neuesLevel = "Level " +String.valueOf(levelNr);

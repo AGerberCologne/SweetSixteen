@@ -132,14 +132,14 @@ public class Spielflaeche extends JPanel {
 		}
 
 		// Male die Monster an ihrer Position
-		/*for (int i = 0; i < fenster.engine.monsterListe.size(); i++) {
+		for (int i = 0; i < fenster.engine.monsterListe.size(); i++) {
 			Monster m = fenster.engine.monsterListe.get(i);
 			boolean event = fenster.engine.spieler.hatSchluessel();
 			// Da hier alle Monster aufgerufen werden, wird an dieser
 			// Stelle auch ein Angriffsbefehl fuer die Monster
 			// abgegeben, falls der Spieler in der Naehe ist.
 			// Ansonsten soll das Monster laufen
-			if(!m.attackiereSpieler(event)){
+			/*if(!m.attackiereSpieler(event)){
 				m.move();
 			}else{
 				int box = fenster.BOX;
@@ -149,15 +149,15 @@ public class Spielflaeche extends JPanel {
 				g.setColor(Color.RED);
 				g.drawImage(feuerball, (int)(((1-p) * m.getXPos() + (p) * s.getXPos()-zaehler1)*box) + box/2, 
 						   (int)(((1-p) * m.getYPos() + (p) * s.getYPos()-zaehler2)*box) + box/2, 8, 8, null);
-			}	
-
+			}	*/
+		
 			// Male das Monster, falls es von anfang an anwesend ist
 			if (m.getTyp() == 0) drawMonster(g,m);
 			else if (m.getTyp() == 2) drawMonster(g,m);
 			// Male das Monster, falls es erst durch das Event 'Schluessel aufheben' erscheint
 			else if (event && m.getTyp() == 1) drawMonster(g,m);
 			
-		}*/
+		}
 		
 		// Male den Spieler an seiner Position
 	//	g.drawImage(fenster.spieler.getImage(), fenster.spieler.getXPos()

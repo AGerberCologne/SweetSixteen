@@ -107,6 +107,24 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 			System.out.println("Neue Position");
 			SBewegungMessage position = (SBewegungMessage) daten;
 			this.spieler.setPos(position.neuX, position.neuY);
+		}else if (daten instanceof MBewegungMessage){
+			System.out.println("Monster-Bewegung");
+			int richtung = ((MBewegungMessage) daten).richtung;
+			Monster m = monsterListe.get(((MBewegungMessage) daten).monsterNummer);
+			switch (richtung) {
+			case 0:
+				m.hoch();
+				break;
+			case 1:
+				m.rechts();
+				break;
+			case 2:
+				m.runter();
+				break;
+			case 3:
+				m.links();
+				break;
+			}
 			
 		} else if (daten instanceof ItemStatusMessage){
 			// Schluessel aufnehmen

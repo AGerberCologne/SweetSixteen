@@ -25,20 +25,26 @@ public class ServerEngine extends Thread
 	public LinkedList<Monster> monsterListe = new LinkedList<Monster>();
 	public boolean eingeloggt;
 	public Astern astern;
-	
+
 
 
 	public ServerEngine() {
 		this.start();
 		System.out.println("Starte Server");
-		
+
 	}
 	public ServerEngine(String n){
-		
+
 	}
 	public void run(){
 		server = new ServerComm();
 		while(server.serverOpen){
+			try {
+				this.monsterBewegung();
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			MessageObject m = server.gebeWeiterAnServer();
 			if(m == null){
 				System.out.println("Test1");
@@ -52,7 +58,7 @@ public class ServerEngine extends Thread
 			else this.nachrichtenVerarbeiten(m);
 		}
 	}
-	
+
 
 	/**
 	 * Message-Handling @ Gerber, Alina , 5961246
@@ -60,23 +66,23 @@ public class ServerEngine extends Thread
 	void nachrichtenVerarbeiten(MessageObject eingehendeNachricht) {
 		if (eingehendeNachricht instanceof LoginMessage) 
 		{  LoginMessage l = (LoginMessage) eingehendeNachricht;
-		  	this.logIn(l.artVonAnmeldung, l.name, l.passwort);
-			LoginAnswerMessage answer =new LoginAnswerMessage();
-			if(this.eingeloggt){
-				spieler.setName(l.name);
-				spieler.setPasswort(l.passwort);
-				answer.eingeloggt= eingeloggt;
-				answer.name = l.name;
-				answer.passwort = l.passwort;
-				answer.levelzaehler = map.levelzaehler;
-				System.out.println("Login If");
-			}
-		   server.gebeWeiterAnClient(answer);
+		this.logIn(l.artVonAnmeldung, l.name, l.passwort);
+		LoginAnswerMessage answer =new LoginAnswerMessage();
+		if(this.eingeloggt){
+			spieler.setName(l.name);
+			spieler.setPasswort(l.passwort);
+			answer.eingeloggt= eingeloggt;
+			answer.name = l.name;
+			answer.passwort = l.passwort;
+			answer.levelzaehler = map.levelzaehler;
+			System.out.println("Login If");
+		}
+		server.gebeWeiterAnClient(answer);
 		}/* else if (eingehendeNachricht instanceof LogoutMessage)
 		{
 			System.out.println("Server Shutdown");
 			break; // Aufforderung zum runterfahren
-			
+
 		} else */if (eingehendeNachricht instanceof ChangeLevelMessage) {
 			System.out.println("Server hat Level-Anfrage erhalten");
 			map.levelzaehler = ((ChangeLevelMessage) eingehendeNachricht).levelzaehler;
@@ -88,29 +94,29 @@ public class ServerEngine extends Thread
 				for(int j=0;j<map.level.length;j++){
 					int Variable = map.level[i][j];
 					switch(Variable){
-				case 0: map.karte[i][j] = new Wand(); break;
-				case 1: map.karte[i][j] = new Boden(); break;
-//				case 3: map.karte[i][j] = new Schluessel(); break;
-				case 5: map.karte[i][j] = new Heiltrank(20); break;
-				case 6: map.karte[i][j] = new Tuer(false); break;
-				case 4: map.karte[i][j] = new Tuer(true); this.spieler.setPos(i, j); break;
-				case 2: map.karte[i][j] = new Boden(); this.monsterListe.add(new Monster(i,j,0)); break;
-				// Monster, welche erst nach dem Aufheben des Schluessels erscheinen
-				case 3: map.karte[i][j] = new Boden(); this.monsterListe.add(new Monster(i,j,2)); break;
-				case 8: map.karte[i][j] = new Boden(); this.monsterListe.add(new Monster(i,j,1)); break;
-			}}}	
+					case 0: map.karte[i][j] = new Wand(); break;
+					case 1: map.karte[i][j] = new Boden(); break;
+					//				case 3: map.karte[i][j] = new Schluessel(); break;
+					case 5: map.karte[i][j] = new Heiltrank(20); break;
+					case 6: map.karte[i][j] = new Tuer(false); break;
+					case 4: map.karte[i][j] = new Tuer(true); this.spieler.setPos(i, j); break;
+					case 2: map.karte[i][j] = new Boden(); this.monsterListe.add(new Monster(i,j,0)); break;
+					// Monster, welche erst nach dem Aufheben des Schluessels erscheinen
+					case 3: map.karte[i][j] = new Boden(); this.monsterListe.add(new Monster(i,j,2)); break;
+					case 8: map.karte[i][j] = new Boden(); this.monsterListe.add(new Monster(i,j,1)); break;
+					}}}	
 			ChangeLevelMessage answer = new ChangeLevelMessage();
 			answer.level = map.level;
 			answer.levelzaehler = map.levelzaehler;
 			server.gebeWeiterAnClient(answer);
-				
+
 		} else if (eingehendeNachricht instanceof SBewegungMessage) {
 			System.out.println("Der Spieler m�chte sich bewegen");
 			SBewegungMessage m = (SBewegungMessage) eingehendeNachricht;
 			spieler.setPos(m.altX, m.altY);
 			spieler.zielX = m.neuX;
 			spieler.zielY = m.neuY;
-			this.geheZumZiel();
+			this.berechneWeg();
 			System.out.println("abgeschlossen");
 			try {
 				this.spielermacheSchritt();
@@ -118,7 +124,7 @@ public class ServerEngine extends Thread
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+
 		} else if (eingehendeNachricht instanceof ItemStatusMessage){
 			ItemStatusMessage answer = new ItemStatusMessage();
 			// Schluessel aufnehmen
@@ -126,7 +132,7 @@ public class ServerEngine extends Thread
 				spieler.nimmSchluessel();
 				map.karte[spieler.getXPos()][spieler.getYPos()] = new Boden();
 				answer.art = 1;
-				
+
 			}
 			// Heiltrank aufnehmen
 			else if (map.karte[spieler.getXPos()][spieler.getYPos()] instanceof Heiltrank) {
@@ -144,7 +150,7 @@ public class ServerEngine extends Thread
 				}
 			}
 			server.gebeWeiterAnClient(answer);
-			
+
 		}/*else if (eingehendeNachricht instanceof CheatMessage) {
 			int i = ((CheatMessage) eingehendeNachricht).i;
 			switch (i) {
@@ -165,211 +171,393 @@ public class ServerEngine extends Thread
 					"Server hat eine Nachricht erhalten, die nicht verarbeitet werden kann");
 		}*/
 	}
-	
-/*Ann-Catherine Hartmann,37658
- * 
+
+
+	// Spieler Datenbank Verwaltung
+
+
+	/*Ann-Catherine Hartmann,37658
+	 * 
  //Die Methode sollte im boolean eingeloggt true speichern, falls man erfolgreich 
-  * eine anmeldung oder einen login durchgef�hrt hat;
-  * au�erdem sollte wenn es eine neue anmeldung ist 1 bei this.map.levelzaehler gespeichert werden
-  * wenn man sich einlogt, dann soll nicht nur gepr�ft werden ob name und passwort zusammen passen sondern 
-  * auch noch die levelnr ausgelesen werden ( die speichern wir mit), und an this.map.levelzaehler �bergeben werden*/
-public void logIn(int i, String name, String passwort){
-	String abgleich = name + " "+ passwort;
-	boolean namegibtesschon = false;
-	if (i ==1){ //Neuanmeldung	
-		try {
-		FileReader fr;
-		fr=new FileReader("Spielerdaten");
-		BufferedReader br = new BufferedReader(fr);
-		String zeile=br.readLine();
-		while((zeile = br.readLine()) != null){
-			if (zeile.equals(abgleich)){
-				eingeloggt = false;
-				namegibtesschon=true;
-				System.out.println("Name und Passwort gibt es schon");
-				break;
-			}else if (zeile.startsWith(name+"")){
-				eingeloggt = false;
-				namegibtesschon=true;
-				System.out.println("Name ist vergeben");
-				break;
+	 * eine anmeldung oder einen login durchgef�hrt hat;
+	 * au�erdem sollte wenn es eine neue anmeldung ist 1 bei this.map.levelzaehler gespeichert werden
+	 * wenn man sich einlogt, dann soll nicht nur gepr�ft werden ob name und passwort zusammen passen sondern 
+	 * auch noch die levelnr ausgelesen werden ( die speichern wir mit), und an this.map.levelzaehler �bergeben werden*/
+	public void logIn(int i, String name, String passwort){
+		String abgleich = name + " "+ passwort;
+		boolean namegibtesschon = false;
+		if (i ==1){ //Neuanmeldung	
+			try {
+				FileReader fr;
+				fr=new FileReader("Spielerdaten");
+				BufferedReader br = new BufferedReader(fr);
+				String zeile=br.readLine();
+				while((zeile = br.readLine()) != null){
+					if (zeile.equals(abgleich)){
+						eingeloggt = false;
+						namegibtesschon=true;
+						System.out.println("Name und Passwort gibt es schon");
+						break;
+					}else if (zeile.startsWith(name+"")){
+						eingeloggt = false;
+						namegibtesschon=true;
+						System.out.println("Name ist vergeben");
+						break;
+					}
+				}
+
+				br.close();
+				fr.close();
+
+			}catch( IOException e){}
+
+			if(namegibtesschon==false){
+				String initiallevel = "Level 1";
+				FileWriter fw;
+				try {
+					fw = new FileWriter ("Spielerdaten",true);
+					BufferedWriter bw = new BufferedWriter (fw);
+					bw.newLine();
+					bw.write(abgleich);
+					bw.newLine();
+					bw.write (initiallevel);
+					bw.newLine();
+					bw.close();//Schlie�t die Datei
+					fw.close();
+					eingeloggt = true;
+					System.out.println("Eingeloggt true");
+				} catch (IOException e1) {
+					System.out.println("Fehler gefunden");
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} 
+			}}else if (i==2){
+				try {
+					FileReader fr;
+					fr=new FileReader("Spielerdaten");
+					BufferedReader br = new BufferedReader(fr);
+					String zeile;
+					while((zeile=br.readLine())!=null){
+						System.out.println("Zeile wird gelesen");
+						if (zeile.equals(abgleich)){
+							eingeloggt = true;
+							String level =br.readLine();
+							char c = level.charAt(6);
+							this.map.levelzaehler =(int) c-48;
+							break;
+						}
+					}
+					br.close();
+					fr.close();
+
+				} catch ( IOException e) {
+				}
+
 			}
-		}
-		
-		br.close();
-		fr.close();
-		
-	}catch( IOException e){}
-		
-	if(namegibtesschon==false){
-		String initiallevel = "Level 1";
-		FileWriter fw;
+	}
+
+	//Ann-Catherine Hartmann,37658
+	public void leseHighScore(){
+
+	}
+	//Ann-Catherine Hartmann,37658; Methode funktioniert noch nicht
+	public void setHighScore(int zeit, String name){
+		String z = "Zeit: "+String.valueOf(zeit)+"   Name des Spielers: "+ name;
 		try {
-			fw = new FileWriter ("Spielerdaten",true);
-			BufferedWriter bw = new BufferedWriter (fw);
-			bw.newLine();
-			bw.write(abgleich);
-			bw.newLine();
-			bw.write (initiallevel);
-			bw.newLine();
-			bw.close();//Schlie�t die Datei
-			fw.close();
-			eingeloggt = true;
-			System.out.println("Eingeloggt true");
-		} catch (IOException e1) {
-			System.out.println("Fehler gefunden");
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} 
-	}}else if (i==2){
-		try {
-			FileReader fr;
-			fr=new FileReader("Spielerdaten");
+			File original =new File( "HighScore");
+			File kopie = new File("HighScore2");
+			FileReader fr =new FileReader(original);
 			BufferedReader br = new BufferedReader(fr);
+			FileWriter fw = new FileWriter(kopie);
+			BufferedWriter bw = new BufferedWriter(fw);
+			StringBuffer sb = new StringBuffer();
 			String zeile;
 			while((zeile=br.readLine())!=null){
-				System.out.println("Zeile wird gelesen");
-				if (zeile.equals(abgleich)){
-					eingeloggt = true;
-					String level =br.readLine();
-					char c = level.charAt(6);
-					this.map.levelzaehler =(int) c-48;
-					break;
-				}
-			}
-			br.close();
-			fr.close();
-			
-		} catch ( IOException e) {
-		}
-		
-	}
-}
-
-//Ann-Catherine Hartmann,37658
-public void leseHighScore(){
-	
-}
-//Ann-Catherine Hartmann,37658; Methode funktioniert noch nicht
-public void setHighScore(int zeit, String name){
-	String z = "Zeit: "+String.valueOf(zeit)+"   Name des Spielers: "+ name;
-	try {
-		File original =new File( "HighScore");
-		File kopie = new File("HighScore2");
-		FileReader fr =new FileReader(original);
-		BufferedReader br = new BufferedReader(fr);
-		FileWriter fw = new FileWriter(kopie);
-		BufferedWriter bw = new BufferedWriter(fw);
-		StringBuffer sb = new StringBuffer();
-		String zeile;
-		while((zeile=br.readLine())!=null){
-			if(zeile.equals("")==false){
-			int i = 6;
-			char k = zeile.charAt(i);
-			i++;
-			String h=String.valueOf(k);
-			while(((int)(k=zeile.charAt(i)))!=32){
-				h=h+k;
-				i++;
-			}
-			Integer l =Integer.valueOf(h);
-			if (l>zeit){
-				bw.write(z);
-				bw.newLine();
-				bw.newLine();
-			}}
-			bw.write(zeile);
-			bw.newLine();
-		}
-		bw.write(sb.toString());
-		bw.flush();
-		fw.close();
-		bw.close();
-		br.close();
-		fr.close();
-		original.delete();
-		kopie.renameTo(original);
-		
-	} catch ( IOException e) {
-	}
-	
-
-	
-}
-//Ann-Catherine Hartmann,37658
-public void abmelden(String name, String passwort, int levelNr){
-	this.speichern(name,passwort,levelNr);
-	
-}
-//Ann-Catherine Hartmann,37658
- /*es wird immer name, passwort und levelnr gespeichert
-  wichtig ist, dass die bereits bestehenden eintragungen entweder �berschrieben oder gel�scht werden*/
-public void speichern( String name, String passwort, int levelNr){
-	String abgleich = name + " "+ passwort;
-	String neuesLevel = "Level " +String.valueOf(levelNr);
-	try {
-		File original =new File( "Spielerdaten");
-		File kopie = new File("Spielerdaten2");
-		FileReader fr =new FileReader("Spielerdaten");
-		BufferedReader br = new BufferedReader(fr);
-		FileWriter fw = new FileWriter("Spielerdaten2");
-		BufferedWriter bw = new BufferedWriter(fw);
-		StringBuffer sb = new StringBuffer();
-		String zeile;
-		while((zeile=br.readLine())!=null){
-			if (zeile.equals(abgleich)){
+				if(zeile.equals("")==false){
+					int i = 6;
+					char k = zeile.charAt(i);
+					i++;
+					String h=String.valueOf(k);
+					while(((int)(k=zeile.charAt(i)))!=32){
+						h=h+k;
+						i++;
+					}
+					Integer l =Integer.valueOf(h);
+					if (l>zeit){
+						bw.write(z);
+						bw.newLine();
+						bw.newLine();
+					}}
 				bw.write(zeile);
 				bw.newLine();
-				bw.write(neuesLevel);
-				bw.newLine();
-				br.readLine();
-				zeile=br.readLine();
 			}
-			bw.write(zeile);
-			bw.newLine();
-		}
-		bw.write(sb.toString());
-		bw.flush();
-		fw.close();
-		bw.close();
-		br.close();
-		fr.close();
-		original.delete();
-		kopie.renameTo(original);
-		
-	} catch ( IOException e) {
-	}
-	
-}
+			bw.write(sb.toString());
+			bw.flush();
+			fw.close();
+			bw.close();
+			br.close();
+			fr.close();
+			original.delete();
+			kopie.renameTo(original);
 
-/*void monsterBewegung(){
-	for (int i = 0; i < this.monsterListe.size(); i++) {
-		Monster m = this.monsterListe.get(i);
-		boolean event = this.spieler.hatSchluessel();
+		} catch ( IOException e) {
+		}
+
+
+
+	}
+	//Ann-Catherine Hartmann,37658
+	public void abmelden(String name, String passwort, int levelNr){
+		this.speichern(name,passwort,levelNr);
+
+	}
+	//Ann-Catherine Hartmann,37658
+	/*es wird immer name, passwort und levelnr gespeichert
+  wichtig ist, dass die bereits bestehenden eintragungen entweder �berschrieben oder gel�scht werden*/
+	public void speichern( String name, String passwort, int levelNr){
+		String abgleich = name + " "+ passwort;
+		String neuesLevel = "Level " +String.valueOf(levelNr);
+		try {
+			File original =new File( "Spielerdaten");
+			File kopie = new File("Spielerdaten2");
+			FileReader fr =new FileReader("Spielerdaten");
+			BufferedReader br = new BufferedReader(fr);
+			FileWriter fw = new FileWriter("Spielerdaten2");
+			BufferedWriter bw = new BufferedWriter(fw);
+			StringBuffer sb = new StringBuffer();
+			String zeile;
+			while((zeile=br.readLine())!=null){
+				if (zeile.equals(abgleich)){
+					bw.write(zeile);
+					bw.newLine();
+					bw.write(neuesLevel);
+					bw.newLine();
+					br.readLine();
+					zeile=br.readLine();
+				}
+				bw.write(zeile);
+				bw.newLine();
+			}
+			bw.write(sb.toString());
+			bw.flush();
+			fw.close();
+			bw.close();
+			br.close();
+			fr.close();
+			original.delete();
+			kopie.renameTo(original);
+
+		} catch ( IOException e) {
+		}
+
+	}
+	// Monster Methoden
+
+	void monsterBewegung() throws InterruptedException{
+	for (int i = 0; i < monsterListe.size(); i++) {
+		Monster m = monsterListe.get(i);
+		boolean event = spieler.hatSchluessel();
 		// Da hier alle Monster aufgerufen werden, wird an dieser
 		// Stelle auch ein Angriffsbefehl fuer die Monster
 		// abgegeben, falls der Spieler in der Naehe ist.
 		// Ansonsten soll das Monster laufen
-		if(m.aktuellenZustandBestimmen()==1){
-			m.ruhe();
+		if(m.aktuellenZustandBestimmen(spieler.getXPos(), spieler.getYPos())==1){
+			this.ruhe(m);
+			MBewegungMessage answer = new MBewegungMessage();
+			answer.richtung = m.dir;
+			answer.monsterNummer =i;
+			server.gebeWeiterAnClient(answer);
+			sleep(600);
 
-		}else if(m.aktuellenZustandBestimmen()==3){
-			m.fluechten();
+		}else if(m.aktuellenZustandBestimmen(spieler.getXPos(), spieler.getYPos())==3){
+			this.fluechten(m);
+			MBewegungMessage answer =  new MBewegungMessage();
+			answer.richtung = m.dir;
+			answer.monsterNummer =i;
+			server.gebeWeiterAnClient(answer);
+			sleep(600);
 		}
 		else {
-			m.jagen();
-			m.attackiereSpieler(event);
+			this.jagen(m);
+			MBewegungMessage answer =  new MBewegungMessage();
+			answer.richtung = m.dir;
+			answer.monsterNummer =i;
+			server.gebeWeiterAnClient(answer);
+			sleep(600);
+			if(this.attackiereSpieler(event, m)){}
 			int box = this.konstante.BOX;
-			Spieler s = this.spieler;
 
 			/*	double p = m.cooldownProzent();
 			g.setColor(Color.RED);
 			g.drawImage(feuerball, (int)(((1-p) * m.getXPos() + (p) * s.getXPos())*box) + box/2,
 					(int)(((1-p) * m.getYPos() + (p) * s.getYPos())*box) + box/2, 8, 8, null);
-			 *//*}
+	 */}
 	}
 }
-public Monster angriffsMonster(){
+public boolean attackiereSpieler(boolean hatSchluessel, Monster m) {
+		// Ist der Spieler im Radius des Monsters?
+		boolean spielerImRadius = (Math
+				.sqrt(Math.pow(spieler.getXPos() - m.getXPos(), 2) + Math.pow(spieler.getYPos() - m.getYPos(), 2)) < 2);
+
+		// Kann das Monster angreifen?
+		boolean kannAngreifen = false;
+		if (m.getTyp() == 0)
+			kannAngreifen = ((System.currentTimeMillis() - m.lastAttack) >= m.cooldownAttack);
+		if (m.getTyp() == 1)
+			kannAngreifen = (hatSchluessel && ((System.currentTimeMillis() - m.lastAttack) >= m.cooldownAttack));
+		if (m.getTyp() == 2)
+			kannAngreifen = ((System.currentTimeMillis() - m.lastAttack) >= m.cooldownAttack);
+		if (spielerImRadius && kannAngreifen) {
+			m.lastAttack = System.currentTimeMillis();
+			spieler.changeHealth(-m.getSchaden());
+		}
+		return spielerImRadius;
+	}
+
+	public void monsterChangeHealth(Monster m,int change) {
+		if (m.getHealth() <= 0) {
+			if(m.getTyp()==0 || m.getTyp()==1){
+			map.karte[m.getXPos()][m.getYPos()] = new Heiltrank(30);
+				monsterListe.remove(m);
+			}
+			if(m.getTyp() == 2){
+			map.karte[m.getXPos()][m.getYPos()] = new Schluessel();
+				monsterListe.remove();
+
+			}
+
+		}
+	}
+	
+	boolean zulaessig(Monster m) {
+		if (m.dir == -1)
+			return true;
+
+		if (m.dir == 0 && m.getYPos() - 1 > 0) {
+			return !(map.karte[m.getXPos()][m.getYPos() - 1] instanceof Wand)
+					&& !(map.karte[m.getXPos()][m.getYPos() - 1] instanceof Tuer)
+					&& !(map.karte[m.getXPos()][m.getYPos() - 1] instanceof Schluessel);
+		} else if (m.dir == 1 && m.getXPos() + 1 < map.karte.length) {
+			return !(map.karte[m.getXPos() + 1][m.getYPos()] instanceof Wand)
+					&& !(map.karte[m.getXPos() + 1][m.getYPos()] instanceof Tuer)
+					&& !(map.karte[m.getXPos() + 1][m.getYPos()] instanceof Schluessel);
+		} else if (m.dir == 2 && m.getYPos() + 1 < map.karte.length) {
+			return !(map.karte[m.getXPos()][m.getYPos() + 1] instanceof Wand)
+					&& !(map.karte[m.getXPos()][m.getYPos() + 1] instanceof Tuer)
+					&& !(map.karte[m.getXPos()][m.getYPos() + 1] instanceof Schluessel);
+		} else if (m.dir == 3 && m.getXPos() > 0) {
+			return !(map.karte[m.getXPos() - 1][m.getYPos()] instanceof Wand)
+					&& !(map.karte[m.getXPos() - 1][m.getYPos()] instanceof Tuer)
+					&& !(map.karte[m.getXPos() - 1][m.getYPos()] instanceof Schluessel);
+		} else
+			return false;
+	}
+
+
+	/* Team16: Sweet sixteen
+	  * Goekdag, Enes, 5615399
+	  * 
+	  * */
+	public void jagen(Monster m) {                                                                      // Spieler JAGEN (Angriffszustand)
+		m.astern = new Astern(m.getYPos(), m.getXPos(), spieler.getXPos(),spieler.getYPos() , map.karte);
+		Wegpunkt test = astern.starten();
+		System.out.println("Monster:"+m.getXPos()+","+m.getYPos());
+		System.out.println("Spieler:"+spieler.getXPos()+","+spieler.getYPos());
+		if (test.x<m.getXPos()&&test.y==m.getYPos()) {
+			m.dir=3;
+			m.move(zulaessig(m));
+		}
+    	if (test.x>m.getXPos()&&test.y==m.getYPos()) {
+    		m.dir=1;
+			m.move(zulaessig(m));
+		}
+		if (test.x==m.getXPos()&&test.y<m.getYPos()) {
+			m.dir=0;
+			m.move(zulaessig(m));
+		}
+		if (test.x==m.getXPos()&&test.y>m.getYPos()) {
+			m.dir=02;
+			m.move(zulaessig(m));
+		}
+		
+	}
+
+	/* Team16: Sweet sixteen
+	   * Goekdag, Enes, 5615399
+	   * 
+	   * */
+	public void fluechten(Monster m) {                                                                 // von Spieler FLUECHTEN (Defensivzustand)
+
+		System.out.println("Monster:"+m.getXPos()+","+m.getYPos());
+		System.out.println("Spieler:"+spieler.getXPos()+","+spieler.getYPos());
+
+		// Daten speichern zum einfacheren Zugriff
+		int spielerX = spieler.getXPos();
+		int spielerY = spieler.getYPos();
+		int monsterX = m.getXPos();
+		int monsterY = m.getYPos();
+		// Monster nimmt erstbesten Fluchtweg (Es ist ja auch in Panik)
+		if(map.karte[monsterX][monsterY+1] instanceof Boden && spielerY<=monsterY) {
+			m.dir = 2; 
+			m.move(zulaessig(m));
+		}
+		if(map.karte[monsterX+1][monsterY] instanceof Boden && spielerX<=monsterX) {
+			m.dir = 1; 
+			m.move(zulaessig(m));
+		}
+		if(map.karte[monsterX-1][monsterY] instanceof Boden && spielerX>=monsterX) {
+			m.dir = 3; 
+			m.move(zulaessig(m));
+		}
+		if(map.karte[monsterX][monsterY-1] instanceof Boden && spielerY>=monsterY) {
+			m.dir = 0; 
+			m.move(zulaessig(m));
+		}
+
+	}
+	public void ruhe(Monster m){                                                             
+		//Heilt im "Ruhe" Zustand
+		if (m.getHealth()< m.getMaxHealth()) {
+			m.setHealth(m.getHealth()+1);	
+		}
+		m.move(this.zulaessig(m));
+	}
+
+
+
+	// Spieler Methoden
+
+	/*
+	 * Enes
+	 * */
+	public void berechneWeg() {                                                                     // Spieler JAGEN (Angriffszustand)
+		astern= new Astern (spieler.getYPos(), spieler.getXPos(), spieler.zielX, spieler.zielY, map.karte);
+		Wegpunkt test = astern.starten();
+		System.out.println("Spieler:"+spieler.getXPos()+","+spieler.getYPos());
+		System.out.println("SZiel:"+spieler.zielX+","+spieler.zielY);
+
+	}
+	/*
+	 * Alina
+	 * */
+	public void spielermacheSchritt() throws InterruptedException{
+		while(!astern.positionX.isEmpty()){
+			System.out.println("Neue Position wird verschickt");
+			int x = astern.positionX.removeFirst();
+			int y= astern.positionY.removeFirst();
+			spieler.setPos(x,y);
+			SBewegungMessage answer = new SBewegungMessage();
+			answer.neuX = x;
+			answer.neuY = y;
+			server.gebeWeiterAnClient(answer);
+			sleep(600);
+
+		}
+	}
+	/*Aus gegebenen Spiel
+	 * 
+	 */
+	/*public Monster angriffsMonster(){
 	for(int i = 0; i < this.monsterListe.size(); i++){
 		Monster m = this.monsterListe.get(i);
 		// Kann der Spieler angreifen?
@@ -381,31 +569,7 @@ public Monster angriffsMonster(){
 			return m;
 		}
 	}
-	
+
 	return null;
 }*/
-
-public void geheZumZiel() {                                                                     // Spieler JAGEN (Angriffszustand)
-   astern= new Astern (spieler.getYPos(), spieler.getXPos(), spieler.zielX, spieler.zielY, map.karte);
-	Wegpunkt test = astern.starten();
-	System.out.println("Spieler:"+spieler.getXPos()+","+spieler.getYPos());
-	System.out.println("SZiel:"+spieler.zielX+","+spieler.zielY);
-
-}
-
-
-public void spielermacheSchritt() throws InterruptedException{
-	while(!astern.positionX.isEmpty()){
-		System.out.println("Neue Position wird verschickt");
-	int x = astern.positionX.removeFirst();
-	int y= astern.positionY.removeFirst();
-	spieler.setPos(x,y);
-	SBewegungMessage answer = new SBewegungMessage();
-	answer.neuX = x;
-	answer.neuY = y;
-	server.gebeWeiterAnClient(answer);
-	sleep(6000);
-	
-	}
-}
 }

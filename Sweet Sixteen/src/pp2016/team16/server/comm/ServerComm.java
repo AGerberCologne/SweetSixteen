@@ -35,6 +35,9 @@ public ServerComm(){
 		public void run() {
 			try {
 				s = serverS.accept();
+				ost=new ObjectOutputStream(s.getOutputStream());
+				ost.flush();
+				in = new ObjectInputStream(s.getInputStream());
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -57,9 +60,7 @@ public ServerComm(){
 		
 		public void verarbeiteNachricht(){
 			try {
-				ost = new ObjectOutputStream(s.getOutputStream());
-				ost.flush();
-				in = new ObjectInputStream(s.getInputStream());
+				
 				MessageObject n;
 				System.out.println("InputStream");
 				n = (MessageObject)in.readObject();
@@ -97,7 +98,6 @@ public ServerComm(){
 		
 		public void sendeAnClient(){
 			try {
-				
 				MessageObject m = sendeAnClient.removeFirst();
 				ost.writeObject(m);
 				ost.flush();	

@@ -97,12 +97,12 @@ public class ServerEngine extends Thread
 				// Monster, welche erst nach dem Aufheben des Schluessels erscheinen
 				case 3: map.karte[i][j] = new Boden(); this.monsterListe.add(new Monster(i,j,2)); break;
 				case 8: map.karte[i][j] = new Boden(); this.monsterListe.add(new Monster(i,j,1)); break;
-			}	
+			}}}	
 			ChangeLevelMessage answer = new ChangeLevelMessage();
 			answer.level = map.level;
 			answer.levelzaehler = map.levelzaehler;
 			server.gebeWeiterAnClient(answer);
-				}}
+				
 		} else if (eingehendeNachricht instanceof SBewegungMessage) {
 			System.out.println("Der Spieler möchte sich bewegen");
 			SBewegungMessage m = (SBewegungMessage) eingehendeNachricht;
@@ -403,7 +403,7 @@ public void spielermacheSchritt() throws InterruptedException{
 	answer.neuX = x;
 	answer.neuY = y;
 	server.gebeWeiterAnClient(answer);
-	sleep(60000);
+	sleep(6000);
 	
 	}
 }

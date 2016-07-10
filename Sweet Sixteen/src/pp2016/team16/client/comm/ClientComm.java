@@ -25,6 +25,9 @@ public class ClientComm extends Thread{
 		try{
 			c = new Socket(host, port);
 			clientOpen=true;
+			oos = new ObjectOutputStream(c.getOutputStream());
+			oos.flush();
+			ois=new ObjectInputStream(c.getInputStream());
 			this.start();
 		}catch(IOException e){
 			
@@ -62,13 +65,12 @@ public class ClientComm extends Thread{
 			
 			MessageObject msg = sendeAnServer.removeFirst();
 			System.out.println("Clientest 1");
-			oos = new ObjectOutputStream(c.getOutputStream());
 			System.out.println("Clientest 2");
 			oos.writeObject(msg);
 			System.out.println("Clientest 3");
 			oos.flush();
 			System.out.println("Clientest 4");
-			//ois=new ObjectInputStream(c.getInputStream());
+			
 			//empfangeVomServer();
 			if(msg instanceof LogoutMessage)
 				beende();
@@ -82,7 +84,7 @@ public class ClientComm extends Thread{
 	public void empfangeVomServer() {
 		
 		try {
-			ois=new ObjectInputStream(c.getInputStream());
+			
 			System.out.println("Leere Nachricht");
 			MessageObject bmsg = (MessageObject)ois.readObject();
 			empfangeVomServer.addLast(bmsg);

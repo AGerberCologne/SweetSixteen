@@ -9,10 +9,12 @@ import pp2016.team16.shared.Monster;
 import pp2016.team16.shared.Spielelement;
 import pp2016.team16.shared.Tuer;
 import pp2016.team16.shared.Wand;
+import pp2016.team16.shared.Heiltrank;
 
 /**
- * Der Leser ließt ein array aus und speichert es in einem array des Spielelement
+ * Der Leser lieï¿½t ein array aus und speichert es in einem array des Spielelement
  * @author Simon Nietz, Matr_Nr: 5823560
+ *@author Markus Noll, Matr_Nr: 5812500
  *
  */
 
@@ -25,7 +27,7 @@ public class Leser {
 	public ClientEngine engine;
 	/**
 	 * @author Simon Nietz, Matr_Nr: 5823560
-	 * @param a das übergebene zwei dimensionale Array
+	 * @param a das ï¿½bergebene zwei dimensionale Array
 	 * @param fenster das HindiBones JFrame
 	 *
 	
@@ -40,19 +42,20 @@ public class Leser {
 	
 	private void readLevel(){
 
-		// erzeuge zunächste ein Datentyp Spielelement
+		// erzeuge zunï¿½chste ein Datentyp Spielelement
 		// erzeuge  LinkedList
 			karte = new Spielelement[fenster.WIDTH][fenster.HEIGHT];
 			fenster.engine.monsterListe = new LinkedList<Monster>();		
 			
 	
-		// Lese das übergebene Array aus und Speicher es im Datentyp Spielelement
+		// Lese das ï¿½bergebene Array aus und Speicher es im Datentyp Spielelement
 		for(int i=0;i<dateiname.length;i++){
 			for(int j=0;j<dateiname.length;j++){
 				int Variable = dateiname[i][j];
 				switch(Variable){
 			case 0: karte[i][j] = new Wand(); break;
 			case 1: karte[i][j] = new Boden(); break;
+			case 5: karte[i][j] = ne Heiltrank(20); break;
 //			case 3: karte[i][j] = new Schluessel(); break;
 			case 6: karte[i][j] = new Tuer(false); break;
 			case 4: karte[i][j] = new Tuer(true); fenster.engine.spieler.setPos(i, j); break;
@@ -68,7 +71,7 @@ public class Leser {
 		}
 	/**
 	 * @author Simon Nietz, Matr_Nr: 5823560
-	 * @return gebe das Spielelement zurück
+	 * @return gebe das Spielelement zurï¿½ck
 	 *
 	public Spielelement[][] getLevel(){
 		return karte;

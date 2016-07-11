@@ -48,8 +48,8 @@ public class ServerEngine extends Thread
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			MessageObject m = server.gebeWeiterAnServer();
-			if(m == null){
+			MessageObject n = server.gebeWeiterAnServer();
+			if(n == null){
 				System.out.println("Test1");
 				try {
 					sleep(600);
@@ -57,16 +57,22 @@ public class ServerEngine extends Thread
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			}
-			else this.nachrichtenVerarbeiten(m);
+			} else
+				try {
+					this.nachrichtenVerarbeiten(n);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 	}
 
 
 	/**
 	 * Message-Handling @ Gerber, Alina , 5961246
+	 *
 	 */
-	void nachrichtenVerarbeiten(MessageObject eingehendeNachricht) {
+	void nachrichtenVerarbeiten(MessageObject eingehendeNachricht) throws InterruptedException {
 		if (eingehendeNachricht instanceof LoginMessage) 
 		{  LoginMessage l = (LoginMessage) eingehendeNachricht;
 		this.logIn(l.artVonAnmeldung, l.name, l.passwort);
@@ -161,11 +167,15 @@ public class ServerEngine extends Thread
 			boolean b=true;
 			SpeicherAntwort antwort = new SpeicherAntwort(b);
 			server.gebeWeiterAnClient(antwort);
+			
 		}else if (eingehendeNachricht instanceof SAngriffMessage){
 			Monster m = angriffsMonster();
 			m.changeHealth(konstante.BOX/24);
 			MStatusMessage msm = new MStatusMessage(monsternr);
 			server.gebeWeiterAnClient(msm);
+			
+		}else if (eingehendeNachricht instanceof MBewegungMessage){
+			monsterBewegung();
 		}
 		
 		/*else if (eingehendeNachricht instanceof CheatMessage) {
@@ -381,7 +391,7 @@ public class ServerEngine extends Thread
 	}
 	// Monster Methoden
 
-	void monsterBewegung() throws InterruptedException{
+	public void monsterBewegung() throws InterruptedException{
 	for (int i = 0; i < monsterListe.size(); i++) {
 		Monster m = monsterListe.get(i);
 		boolean event = spieler.hatSchluessel();

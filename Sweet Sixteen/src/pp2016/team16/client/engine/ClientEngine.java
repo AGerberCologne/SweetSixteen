@@ -155,9 +155,11 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 			}
 		} else if (daten instanceof MAngriffMessage){
 			
+			
 		} else if (daten instanceof SpeicherMessage){
 			SpeicherAntwort k = (SpeicherAntwort) daten;
 			this.gespeichert=k.hatGeklappt;
+			
 		}else if(daten instanceof MStatusMessage){
 			MStatusMessage msm = (MStatusMessage) daten;
 			int j=msm.monsternummer;

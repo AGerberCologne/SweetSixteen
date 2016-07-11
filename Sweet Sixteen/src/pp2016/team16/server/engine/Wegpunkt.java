@@ -49,7 +49,7 @@ public class Wegpunkt {
 		}
 		return aktuellerPunkt;
 	}
-	public int anzahlVorgänger() {
+	public int anzahlVorgaenger() {
 		int anzahl=0;
 		Wegpunkt aktuellerWegpunkt=this;
 		while (aktuellerWegpunkt.vorgaenger!=null) {

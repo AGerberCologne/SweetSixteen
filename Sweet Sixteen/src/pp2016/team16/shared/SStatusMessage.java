@@ -6,6 +6,6 @@ public class SStatusMessage extends MessageObject {
 	 * 
 	 */
 	private static final long serialVersionUID = 1014955557935666577L;
-	int änderungshöhe;
+	int aenderungshoehe;
 
 }

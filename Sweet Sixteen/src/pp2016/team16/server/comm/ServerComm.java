@@ -3,6 +3,7 @@ import java.io.*;
 import java.net.*;
 import java.util.LinkedList;
 
+import pp2016.team16.shared.BeendeMessage;
 import pp2016.team16.shared.IchBinDa;
 import pp2016.team16.shared.LogoutMessage;
 import pp2016.team16.shared.MessageObject;
@@ -41,7 +42,6 @@ public ServerComm(){
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-				System.out.println("FEHLER");
 			}
 			while (serverOpen){
 				System.out.println("Server Run");
@@ -68,7 +68,7 @@ public ServerComm(){
 				if (n instanceof IchBinDa){
 					System.out.println("IchBinDa");
 				}
-				else if (n instanceof LogoutMessage){
+				else if (n instanceof BeendeMessage){
 					System.out.println("ost wird geschlossen");
 					schliesse();
 				}

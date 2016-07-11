@@ -87,9 +87,9 @@ public class ServerEngine extends Thread
 			System.out.println("Login If");
 		}
 		server.gebeWeiterAnClient(answer);
-		} else if (eingehendeNachricht instanceof LogoutMessage)
-		{
-			System.out.println("Server Shutdown");
+		} else if (eingehendeNachricht instanceof LogoutMessage){
+			LogoutMessage lm = (LogoutMessage)eingehendeNachricht;
+			speichern(lm.level);
 			
 		} else if (eingehendeNachricht instanceof ChangeLevelMessage) {
 			System.out.println("Server hat Level-Anfrage erhalten");

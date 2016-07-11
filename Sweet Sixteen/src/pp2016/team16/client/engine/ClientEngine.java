@@ -189,11 +189,15 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 		return eingeloggt;
 	}
 
-	public void logout() throws Exception {
-		LogoutMessage anfrage = new LogoutMessage();
+	public void logout(int level) throws Exception {
+		LogoutMessage anfrage = new LogoutMessage(level);
 		com.bekommeVonClient(anfrage);
 	}
-
+	 
+	public void beende(){
+		BeendeMessage bm = new BeendeMessage();
+		com.bekommeVonClient(bm);
+	}
 	// kann , wenn notwendig , neues x oder y zur�ckgeben...
 	public void wegAnfragen(int x, int y) throws InterruptedException {
 		System.out.println("Der Spieler m�chte sich bewegen");

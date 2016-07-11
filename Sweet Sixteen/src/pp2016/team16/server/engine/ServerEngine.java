@@ -203,6 +203,230 @@ public class ServerEngine extends Thread
 	// Spieler Datenbank Verwaltung
 
 
+	
+	// Monster Methoden
+
+	public void monsterBewegung() throws InterruptedException{
+	for (int i = 0; i < monsterListe.size(); i++) {
+		Monster m = monsterListe.get(i);
+		boolean event = spieler.hatSchluessel();
+		// Da hier alle Monster aufgerufen werden, wird an dieser
+		// Stelle auch ein Angriffsbefehl fuer die Monster
+		// abgegeben, falls der Spieler in der Naehe ist.
+		// Ansonsten soll das Monster laufen
+		if(m.aktuellenZustandBestimmen(spieler.getXPos(), spieler.getYPos())==1){
+			this.ruhe(m);
+			if(m.nachricht){MBewegungMessage answer = new MBewegungMessage();
+			answer.richtung = m.dir;
+			answer.monsterNummer =i;
+			server.gebeWeiterAnClient(answer);
+			sleep(600);
+			}
+
+		}else if(m.aktuellenZustandBestimmen(spieler.getXPos(), spieler.getYPos())==3){
+			this.fluechten(m);
+			if(m.nachricht){MBewegungMessage answer = new MBewegungMessage();
+			answer.richtung = m.dir;
+			answer.monsterNummer =i;
+			server.gebeWeiterAnClient(answer);
+			sleep(600);
+			}
+		}
+		else {
+			this.jagen(m);
+			if(m.nachricht){MBewegungMessage answer = new MBewegungMessage();
+			answer.richtung = m.dir;
+			answer.monsterNummer =i;
+			server.gebeWeiterAnClient(answer);
+			sleep(600);
+			}
+			if(this.attackiereSpieler(event, m)){}
+			int box = this.konstante.BOX;
+
+			/*	double p = m.cooldownProzent();
+			g.setColor(Color.RED);
+			g.drawImage(feuerball, (int)(((1-p) * m.getXPos() + (p) * s.getXPos())*box) + box/2,
+					(int)(((1-p) * m.getYPos() + (p) * s.getYPos())*box) + box/2, 8, 8, null);
+	 */}
+	}
+}
+public boolean attackiereSpieler(boolean hatSchluessel, Monster m) {
+		// Ist der Spieler im Radius des Monsters?
+		boolean spielerImRadius = (Math
+				.sqrt(Math.pow(spieler.getXPos() - m.getXPos(), 2) + Math.pow(spieler.getYPos() - m.getYPos(), 2)) < 2);
+
+		// Kann das Monster angreifen?
+		boolean kannAngreifen = false;
+		if (m.getTyp() == 0)
+			kannAngreifen = ((System.currentTimeMillis() - m.lastAttack) >= m.cooldownAttack);
+		if (m.getTyp() == 1)
+			kannAngreifen = (hatSchluessel && ((System.currentTimeMillis() - m.lastAttack) >= m.cooldownAttack));
+		if (m.getTyp() == 2)
+			kannAngreifen = ((System.currentTimeMillis() - m.lastAttack) >= m.cooldownAttack);
+		if (spielerImRadius && kannAngreifen) {
+			m.lastAttack = System.currentTimeMillis();
+			spieler.changeHealth(-m.getSchaden());
+		}
+		return spielerImRadius;
+	}
+
+	public void monsterChangeHealth(Monster m,int change) {
+		if (m.getHealth() <= 0) {
+			if(m.getTyp()==0 || m.getTyp()==1){
+			map.karte[m.getXPos()][m.getYPos()] = new Heiltrank(30);
+				monsterListe.remove(m);
+			}
+			if(m.getTyp() == 2){
+			map.karte[m.getXPos()][m.getYPos()] = new Schluessel();
+				monsterListe.remove();
+
+			}
+
+		}
+	}
+	
+	boolean zulaessig(Monster m) {
+		if (m.dir == 0 && m.getYPos() - 1 > 0) {
+			return !(map.karte[m.getXPos()][m.getYPos() - 1] instanceof Wand)
+					&& !(map.karte[m.getXPos()][m.getYPos() - 1] instanceof Tuer)
+					&& !(map.karte[m.getXPos()][m.getYPos() - 1] instanceof Schluessel);
+		} else if (m.dir == 1 && m.getXPos() + 1 < map.karte.length) {
+			return !(map.karte[m.getXPos() + 1][m.getYPos()] instanceof Wand)
+					&& !(map.karte[m.getXPos() + 1][m.getYPos()] instanceof Tuer)
+					&& !(map.karte[m.getXPos() + 1][m.getYPos()] instanceof Schluessel);
+		} else if (m.dir == 2 && m.getYPos() + 1 < map.karte.length) {
+			return !(map.karte[m.getXPos()][m.getYPos() + 1] instanceof Wand)
+					&& !(map.karte[m.getXPos()][m.getYPos() + 1] instanceof Tuer)
+					&& !(map.karte[m.getXPos()][m.getYPos() + 1] instanceof Schluessel);
+		} else if (m.dir == 3 && m.getXPos()-1 > 0) {
+			return !(map.karte[m.getXPos() - 1][m.getYPos()] instanceof Wand)
+					&& !(map.karte[m.getXPos() - 1][m.getYPos()] instanceof Tuer)
+					&& !(map.karte[m.getXPos() - 1][m.getYPos()] instanceof Schluessel);
+		} else
+			return false;
+	}
+
+
+	/* Team16: Sweet sixteen
+	  * Goekdag, Enes, 5615399
+	  * 
+	  * */
+	public void jagen(Monster m) {                                                                      // Spieler JAGEN (Angriffszustand)
+		m.astern = new Astern(m.getYPos(), m.getXPos(), spieler.getXPos(),spieler.getYPos() , map.karte);
+		Wegpunkt test = astern.starten();
+		System.out.println("Monster:"+m.getXPos()+","+m.getYPos());
+		System.out.println("Spieler:"+spieler.getXPos()+","+spieler.getYPos());
+		if (test.x<m.getXPos()&&test.y==m.getYPos()) {
+			m.dir=3;
+			m.move(zulaessig(m));
+		}
+    	if (test.x>m.getXPos()&&test.y==m.getYPos()) {
+    		m.dir=1;
+			m.move(zulaessig(m));
+		}
+		if (test.x==m.getXPos()&&test.y<m.getYPos()) {
+			m.dir=0;
+			m.move(zulaessig(m));
+		}
+		if (test.x==m.getXPos()&&test.y>m.getYPos()) {
+			m.dir=02;
+			m.move(zulaessig(m));
+		}
+		
+	}
+
+	/* Team16: Sweet sixteen
+	   * Goekdag, Enes, 5615399
+	   * 
+	   * */
+	public void fluechten(Monster m) {                                                                 // von Spieler FLUECHTEN (Defensivzustand)
+
+		System.out.println("Monster:"+m.getXPos()+","+m.getYPos());
+		System.out.println("Spieler:"+spieler.getXPos()+","+spieler.getYPos());
+
+		// Daten speichern zum einfacheren Zugriff
+		int spielerX = spieler.getXPos();
+		int spielerY = spieler.getYPos();
+		int monsterX = m.getXPos();
+		int monsterY = m.getYPos();
+		// Monster nimmt erstbesten Fluchtweg (Es ist ja auch in Panik)
+		if(map.karte[monsterX][monsterY+1] instanceof Boden && spielerY<=monsterY) {
+			m.dir = 2; 
+			m.move(zulaessig(m));
+		}
+		if(map.karte[monsterX+1][monsterY] instanceof Boden && spielerX<=monsterX) {
+			m.dir = 1; 
+			m.move(zulaessig(m));
+		}
+		if(map.karte[monsterX-1][monsterY] instanceof Boden && spielerX>=monsterX) {
+			m.dir = 3; 
+			m.move(zulaessig(m));
+		}
+		if(map.karte[monsterX][monsterY-1] instanceof Boden && spielerY>=monsterY) {
+			m.dir = 0; 
+			m.move(zulaessig(m));
+		}
+
+	}
+	public void ruhe(Monster m){                                                             
+		//Heilt im "Ruhe" Zustand
+		if (m.getHealth()< m.getMaxHealth()) {
+			m.setHealth(m.getHealth()+1);	
+		}
+		m.move(this.zulaessig(m));
+	}
+
+	// Spieler Methoden
+
+	/*
+	 * Enes
+	 * */
+	public void berechneWeg() {                                                                     // Spieler JAGEN (Angriffszustand)
+		astern= new Astern (spieler.getYPos(), spieler.getXPos(), spieler.zielX, spieler.zielY, map.karte);
+		Wegpunkt test = astern.starten();
+		System.out.println("Spieler:"+spieler.getXPos()+","+spieler.getYPos());
+		System.out.println("SZiel:"+spieler.zielX+","+spieler.zielY);
+
+	}
+	/*
+	 * Alina
+	 * */
+	public void spielermacheSchritt() throws InterruptedException{
+		while(!astern.positionX.isEmpty()){
+			System.out.println("Neue Position wird verschickt");
+			int x = astern.positionX.removeFirst();
+			int y= astern.positionY.removeFirst();
+			spieler.setPos(x,y);
+			SBewegungMessage answer = new SBewegungMessage();
+			answer.neuX = x;
+			answer.neuY = y;
+			server.gebeWeiterAnClient(answer);
+			this.monsterBewegung();
+			sleep(600);
+
+		}
+	}
+	/*Aus gegebenen Spiel
+	 * 
+	 */
+	public Monster angriffsMonster(){
+	for(int i = 0; i < this.monsterListe.size(); i++){
+		Monster m = this.monsterListe.get(i);
+		// Kann der Spieler angreifen?
+		boolean kannAngreifen = false;
+		if (m.getTyp() == 0) kannAngreifen = true; 
+		if (m.getTyp() == 1) kannAngreifen = spieler.hatSchluessel();
+		if (m.getTyp() == 2) kannAngreifen = true;
+		if((Math.sqrt(Math.pow(spieler.getXPos() - m.getXPos(), 2)+ Math.pow(spieler.getYPos() - m.getYPos(), 2)) < 2)&&kannAngreifen){
+			monsternr = i;
+			return m;
+			
+		}
+	}
+
+	return null;
+}
+	
 	/*Ann-Catherine Hartmann,37658
 	 * 
  //Die Methode sollte im boolean eingeloggt true speichern, falls man erfolgreich 
@@ -389,228 +613,4 @@ public class ServerEngine extends Thread
 		}
 
 	}
-	// Monster Methoden
-
-	public void monsterBewegung() throws InterruptedException{
-	for (int i = 0; i < monsterListe.size(); i++) {
-		Monster m = monsterListe.get(i);
-		boolean event = spieler.hatSchluessel();
-		// Da hier alle Monster aufgerufen werden, wird an dieser
-		// Stelle auch ein Angriffsbefehl fuer die Monster
-		// abgegeben, falls der Spieler in der Naehe ist.
-		// Ansonsten soll das Monster laufen
-		if(m.aktuellenZustandBestimmen(spieler.getXPos(), spieler.getYPos())==1){
-			this.ruhe(m);
-			if(m.nachricht){MBewegungMessage answer = new MBewegungMessage();
-			answer.richtung = m.dir;
-			answer.monsterNummer =i;
-			server.gebeWeiterAnClient(answer);
-			sleep(600);
-			}
-
-		}else if(m.aktuellenZustandBestimmen(spieler.getXPos(), spieler.getYPos())==3){
-			this.fluechten(m);
-			if(m.nachricht){MBewegungMessage answer = new MBewegungMessage();
-			answer.richtung = m.dir;
-			answer.monsterNummer =i;
-			server.gebeWeiterAnClient(answer);
-			sleep(600);
-			}
-		}
-		else {
-			this.jagen(m);
-			if(m.nachricht){MBewegungMessage answer = new MBewegungMessage();
-			answer.richtung = m.dir;
-			answer.monsterNummer =i;
-			server.gebeWeiterAnClient(answer);
-			sleep(600);
-			}
-			if(this.attackiereSpieler(event, m)){}
-			int box = this.konstante.BOX;
-
-			/*	double p = m.cooldownProzent();
-			g.setColor(Color.RED);
-			g.drawImage(feuerball, (int)(((1-p) * m.getXPos() + (p) * s.getXPos())*box) + box/2,
-					(int)(((1-p) * m.getYPos() + (p) * s.getYPos())*box) + box/2, 8, 8, null);
-	 */}
-	}
-}
-public boolean attackiereSpieler(boolean hatSchluessel, Monster m) {
-		// Ist der Spieler im Radius des Monsters?
-		boolean spielerImRadius = (Math
-				.sqrt(Math.pow(spieler.getXPos() - m.getXPos(), 2) + Math.pow(spieler.getYPos() - m.getYPos(), 2)) < 2);
-
-		// Kann das Monster angreifen?
-		boolean kannAngreifen = false;
-		if (m.getTyp() == 0)
-			kannAngreifen = ((System.currentTimeMillis() - m.lastAttack) >= m.cooldownAttack);
-		if (m.getTyp() == 1)
-			kannAngreifen = (hatSchluessel && ((System.currentTimeMillis() - m.lastAttack) >= m.cooldownAttack));
-		if (m.getTyp() == 2)
-			kannAngreifen = ((System.currentTimeMillis() - m.lastAttack) >= m.cooldownAttack);
-		if (spielerImRadius && kannAngreifen) {
-			m.lastAttack = System.currentTimeMillis();
-			spieler.changeHealth(-m.getSchaden());
-		}
-		return spielerImRadius;
-	}
-
-	public void monsterChangeHealth(Monster m,int change) {
-		if (m.getHealth() <= 0) {
-			if(m.getTyp()==0 || m.getTyp()==1){
-			map.karte[m.getXPos()][m.getYPos()] = new Heiltrank(30);
-				monsterListe.remove(m);
-			}
-			if(m.getTyp() == 2){
-			map.karte[m.getXPos()][m.getYPos()] = new Schluessel();
-				monsterListe.remove();
-
-			}
-
-		}
-	}
-	
-	boolean zulaessig(Monster m) {
-		if (m.dir == 0 && m.getYPos() - 1 > 0) {
-			return !(map.karte[m.getXPos()][m.getYPos() - 1] instanceof Wand)
-					&& !(map.karte[m.getXPos()][m.getYPos() - 1] instanceof Tuer)
-					&& !(map.karte[m.getXPos()][m.getYPos() - 1] instanceof Schluessel);
-		} else if (m.dir == 1 && m.getXPos() + 1 < map.karte.length) {
-			return !(map.karte[m.getXPos() + 1][m.getYPos()] instanceof Wand)
-					&& !(map.karte[m.getXPos() + 1][m.getYPos()] instanceof Tuer)
-					&& !(map.karte[m.getXPos() + 1][m.getYPos()] instanceof Schluessel);
-		} else if (m.dir == 2 && m.getYPos() + 1 < map.karte.length) {
-			return !(map.karte[m.getXPos()][m.getYPos() + 1] instanceof Wand)
-					&& !(map.karte[m.getXPos()][m.getYPos() + 1] instanceof Tuer)
-					&& !(map.karte[m.getXPos()][m.getYPos() + 1] instanceof Schluessel);
-		} else if (m.dir == 3 && m.getXPos()-1 > 0) {
-			return !(map.karte[m.getXPos() - 1][m.getYPos()] instanceof Wand)
-					&& !(map.karte[m.getXPos() - 1][m.getYPos()] instanceof Tuer)
-					&& !(map.karte[m.getXPos() - 1][m.getYPos()] instanceof Schluessel);
-		} else
-			return false;
-	}
-
-
-	/* Team16: Sweet sixteen
-	  * Goekdag, Enes, 5615399
-	  * 
-	  * */
-	public void jagen(Monster m) {                                                                      // Spieler JAGEN (Angriffszustand)
-		m.astern = new Astern(m.getYPos(), m.getXPos(), spieler.getXPos(),spieler.getYPos() , map.karte);
-		Wegpunkt test = astern.starten();
-		System.out.println("Monster:"+m.getXPos()+","+m.getYPos());
-		System.out.println("Spieler:"+spieler.getXPos()+","+spieler.getYPos());
-		if (test.x<m.getXPos()&&test.y==m.getYPos()) {
-			m.dir=3;
-			m.move(zulaessig(m));
-		}
-    	if (test.x>m.getXPos()&&test.y==m.getYPos()) {
-    		m.dir=1;
-			m.move(zulaessig(m));
-		}
-		if (test.x==m.getXPos()&&test.y<m.getYPos()) {
-			m.dir=0;
-			m.move(zulaessig(m));
-		}
-		if (test.x==m.getXPos()&&test.y>m.getYPos()) {
-			m.dir=02;
-			m.move(zulaessig(m));
-		}
-		
-	}
-
-	/* Team16: Sweet sixteen
-	   * Goekdag, Enes, 5615399
-	   * 
-	   * */
-	public void fluechten(Monster m) {                                                                 // von Spieler FLUECHTEN (Defensivzustand)
-
-		System.out.println("Monster:"+m.getXPos()+","+m.getYPos());
-		System.out.println("Spieler:"+spieler.getXPos()+","+spieler.getYPos());
-
-		// Daten speichern zum einfacheren Zugriff
-		int spielerX = spieler.getXPos();
-		int spielerY = spieler.getYPos();
-		int monsterX = m.getXPos();
-		int monsterY = m.getYPos();
-		// Monster nimmt erstbesten Fluchtweg (Es ist ja auch in Panik)
-		if(map.karte[monsterX][monsterY+1] instanceof Boden && spielerY<=monsterY) {
-			m.dir = 2; 
-			m.move(zulaessig(m));
-		}
-		if(map.karte[monsterX+1][monsterY] instanceof Boden && spielerX<=monsterX) {
-			m.dir = 1; 
-			m.move(zulaessig(m));
-		}
-		if(map.karte[monsterX-1][monsterY] instanceof Boden && spielerX>=monsterX) {
-			m.dir = 3; 
-			m.move(zulaessig(m));
-		}
-		if(map.karte[monsterX][monsterY-1] instanceof Boden && spielerY>=monsterY) {
-			m.dir = 0; 
-			m.move(zulaessig(m));
-		}
-
-	}
-	public void ruhe(Monster m){                                                             
-		//Heilt im "Ruhe" Zustand
-		if (m.getHealth()< m.getMaxHealth()) {
-			m.setHealth(m.getHealth()+1);	
-		}
-		m.move(this.zulaessig(m));
-	}
-
-
-
-	// Spieler Methoden
-
-	/*
-	 * Enes
-	 * */
-	public void berechneWeg() {                                                                     // Spieler JAGEN (Angriffszustand)
-		astern= new Astern (spieler.getYPos(), spieler.getXPos(), spieler.zielX, spieler.zielY, map.karte);
-		Wegpunkt test = astern.starten();
-		System.out.println("Spieler:"+spieler.getXPos()+","+spieler.getYPos());
-		System.out.println("SZiel:"+spieler.zielX+","+spieler.zielY);
-
-	}
-	/*
-	 * Alina
-	 * */
-	public void spielermacheSchritt() throws InterruptedException{
-		while(!astern.positionX.isEmpty()){
-			System.out.println("Neue Position wird verschickt");
-			int x = astern.positionX.removeFirst();
-			int y= astern.positionY.removeFirst();
-			spieler.setPos(x,y);
-			SBewegungMessage answer = new SBewegungMessage();
-			answer.neuX = x;
-			answer.neuY = y;
-			server.gebeWeiterAnClient(answer);
-			this.monsterBewegung();
-			sleep(600);
-
-		}
-	}
-	/*Aus gegebenen Spiel
-	 * 
-	 */
-	public Monster angriffsMonster(){
-	for(int i = 0; i < this.monsterListe.size(); i++){
-		Monster m = this.monsterListe.get(i);
-		// Kann der Spieler angreifen?
-		boolean kannAngreifen = false;
-		if (m.getTyp() == 0) kannAngreifen = true; 
-		if (m.getTyp() == 1) kannAngreifen = spieler.hatSchluessel();
-		if (m.getTyp() == 2) kannAngreifen = true;
-		if((Math.sqrt(Math.pow(spieler.getXPos() - m.getXPos(), 2)+ Math.pow(spieler.getYPos() - m.getYPos(), 2)) < 2)&&kannAngreifen){
-			monsternr = i;
-			return m;
-			
-		}
-	}
-
-	return null;
-}
 }

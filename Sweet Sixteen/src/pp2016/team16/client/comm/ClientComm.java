@@ -1,7 +1,7 @@
 package pp2016.team16.client.comm;
-/*
+/**
  * @author: Ann-Catherine Hartmann, Matrikelnr: 60038514/ Prüfungsnummer: 37658
- */
+ **/
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

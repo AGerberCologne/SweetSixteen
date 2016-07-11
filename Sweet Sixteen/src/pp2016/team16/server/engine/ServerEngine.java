@@ -25,6 +25,8 @@ public class ServerEngine extends Thread
 	public LinkedList<Monster> monsterListe = new LinkedList<Monster>();
 	public boolean eingeloggt;
 	public Astern astern;
+	public String spielername;
+	public String spielerpasswort;
 
 
 
@@ -78,12 +80,11 @@ public class ServerEngine extends Thread
 			System.out.println("Login If");
 		}
 		server.gebeWeiterAnClient(answer);
-		}/* else if (eingehendeNachricht instanceof LogoutMessage)
+		} else if (eingehendeNachricht instanceof LogoutMessage)
 		{
 			System.out.println("Server Shutdown");
-			break; // Aufforderung zum runterfahren
-
-		} else */if (eingehendeNachricht instanceof ChangeLevelMessage) {
+			
+		} else if (eingehendeNachricht instanceof ChangeLevelMessage) {
 			System.out.println("Server hat Level-Anfrage erhalten");
 			map.levelzaehler = ((ChangeLevelMessage) eingehendeNachricht).levelzaehler;
 			map.breite = konstante.WIDTH;
@@ -151,7 +152,17 @@ public class ServerEngine extends Thread
 			}
 			server.gebeWeiterAnClient(answer);
 
-		}/*else if (eingehendeNachricht instanceof CheatMessage) {
+		} else if (eingehendeNachricht instanceof SpeicherMessage){
+			int l = ((SpeicherMessage)eingehendeNachricht).level;
+			System.out.println("wird gespeichert");
+			this.speichern(l);
+			System.out.println("hat gespeichert");
+			boolean b=true;
+			SpeicherAntwort antwort = new SpeicherAntwort(b);
+			server.gebeWeiterAnClient(antwort);
+		}
+		
+		/*else if (eingehendeNachricht instanceof CheatMessage) {
 			int i = ((CheatMessage) eingehendeNachricht).i;
 			switch (i) {
 			case 1:
@@ -222,6 +233,8 @@ public class ServerEngine extends Thread
 					bw.newLine();
 					bw.write (initiallevel);
 					bw.newLine();
+					bw.newLine();
+					bw.newLine();
 					bw.close();//Schlie�t die Datei
 					fw.close();
 					eingeloggt = true;
@@ -233,6 +246,8 @@ public class ServerEngine extends Thread
 				} 
 			}}else if (i==2){
 				try {
+					spielername = name;
+					spielerpasswort = passwort;
 					FileReader fr;
 					fr=new FileReader("Spielerdaten");
 					BufferedReader br = new BufferedReader(fr);
@@ -307,15 +322,15 @@ public class ServerEngine extends Thread
 
 	}
 	//Ann-Catherine Hartmann,37658
-	public void abmelden(String name, String passwort, int levelNr){
-		this.speichern(name,passwort,levelNr);
+	public void abmelden(int levelNr){
+		this.speichern(levelNr);
 
 	}
 	//Ann-Catherine Hartmann,37658
 	/*es wird immer name, passwort und levelnr gespeichert
   wichtig ist, dass die bereits bestehenden eintragungen entweder �berschrieben oder gel�scht werden*/
-	public void speichern( String name, String passwort, int levelNr){
-		String abgleich = name + " "+ passwort;
+	public void speichern(int levelNr){
+		String abgleich = spielername + " "+ spielerpasswort;
 		String neuesLevel = "Level " +String.valueOf(levelNr);
 		try {
 			File original =new File( "Spielerdaten");
@@ -329,16 +344,22 @@ public class ServerEngine extends Thread
 			while((zeile=br.readLine())!=null){
 				if (zeile.equals(abgleich)){
 					bw.write(zeile);
+					System.out.println("schreibe 1");
 					bw.newLine();
 					bw.write(neuesLevel);
+					System.out.println("schreibe neues Level");
 					bw.newLine();
+					System.out.println("schreibe 2");
 					br.readLine();
 					zeile=br.readLine();
+					System.out.println("Lese");
 				}
 				bw.write(zeile);
+				System.out.println("schreibe 3");
 				bw.newLine();
 			}
 			bw.write(sb.toString());
+			System.out.println("schreibe 4");
 			bw.flush();
 			fw.close();
 			bw.close();
@@ -346,6 +367,7 @@ public class ServerEngine extends Thread
 			fr.close();
 			original.delete();
 			kopie.renameTo(original);
+			System.out.println("Speichern");
 
 		} catch ( IOException e) {
 		}
@@ -363,27 +385,30 @@ public class ServerEngine extends Thread
 		// Ansonsten soll das Monster laufen
 		if(m.aktuellenZustandBestimmen(spieler.getXPos(), spieler.getYPos())==1){
 			this.ruhe(m);
-			MBewegungMessage answer = new MBewegungMessage();
+			if(m.nachricht){MBewegungMessage answer = new MBewegungMessage();
 			answer.richtung = m.dir;
 			answer.monsterNummer =i;
 			server.gebeWeiterAnClient(answer);
 			sleep(600);
+			}
 
 		}else if(m.aktuellenZustandBestimmen(spieler.getXPos(), spieler.getYPos())==3){
 			this.fluechten(m);
-			MBewegungMessage answer =  new MBewegungMessage();
+			if(m.nachricht){MBewegungMessage answer = new MBewegungMessage();
 			answer.richtung = m.dir;
 			answer.monsterNummer =i;
 			server.gebeWeiterAnClient(answer);
 			sleep(600);
+			}
 		}
 		else {
 			this.jagen(m);
-			MBewegungMessage answer =  new MBewegungMessage();
+			if(m.nachricht){MBewegungMessage answer = new MBewegungMessage();
 			answer.richtung = m.dir;
 			answer.monsterNummer =i;
 			server.gebeWeiterAnClient(answer);
 			sleep(600);
+			}
 			if(this.attackiereSpieler(event, m)){}
 			int box = this.konstante.BOX;
 
@@ -430,9 +455,6 @@ public boolean attackiereSpieler(boolean hatSchluessel, Monster m) {
 	}
 	
 	boolean zulaessig(Monster m) {
-		if (m.dir == -1)
-			return true;
-
 		if (m.dir == 0 && m.getYPos() - 1 > 0) {
 			return !(map.karte[m.getXPos()][m.getYPos() - 1] instanceof Wand)
 					&& !(map.karte[m.getXPos()][m.getYPos() - 1] instanceof Tuer)
@@ -445,7 +467,7 @@ public boolean attackiereSpieler(boolean hatSchluessel, Monster m) {
 			return !(map.karte[m.getXPos()][m.getYPos() + 1] instanceof Wand)
 					&& !(map.karte[m.getXPos()][m.getYPos() + 1] instanceof Tuer)
 					&& !(map.karte[m.getXPos()][m.getYPos() + 1] instanceof Schluessel);
-		} else if (m.dir == 3 && m.getXPos() > 0) {
+		} else if (m.dir == 3 && m.getXPos()-1 > 0) {
 			return !(map.karte[m.getXPos() - 1][m.getYPos()] instanceof Wand)
 					&& !(map.karte[m.getXPos() - 1][m.getYPos()] instanceof Tuer)
 					&& !(map.karte[m.getXPos() - 1][m.getYPos()] instanceof Schluessel);
@@ -550,6 +572,7 @@ public boolean attackiereSpieler(boolean hatSchluessel, Monster m) {
 			answer.neuX = x;
 			answer.neuY = y;
 			server.gebeWeiterAnClient(answer);
+			this.monsterBewegung();
 			sleep(600);
 
 		}

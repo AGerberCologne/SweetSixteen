@@ -29,6 +29,7 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 	public boolean login=false;
 	public boolean neuesLevel = false;
 	public int itemBenutzen = 4;
+	public boolean gespeichert=false;
 	
 	 public ClientEngine()  {
 		System.out.println("Starte Client");
@@ -152,7 +153,12 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 					else this.itemBenutzen = 3;
 				}
 			}
-		}
+		} else if (daten instanceof MAngriffMessage){
+			
+		} else if (daten instanceof SpeicherMessage){
+			SpeicherAntwort k = (SpeicherAntwort) daten;
+			this.gespeichert=k.hatGeklappt;
+			}
 		  
 		  /*else if (daten instanceof CheatMessage) {
 			int i = ((CheatMessage) daten).i;
@@ -176,8 +182,9 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 		return eingeloggt;
 	}
 
-	void logout() throws Exception {
+	public void logout() throws Exception {
 		LogoutMessage anfrage = new LogoutMessage();
+		com.bekommeVonClient(anfrage);
 	}
 
 	// kann , wenn notwendig , neues x oder y zur�ckgeben...
@@ -229,4 +236,12 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 		this.datenBeimServerAnfragen(cheat);
 	}
 */
+	public boolean angriffMonster(){
+		return true;
+	}
+	public void speichereLevel( int level){
+		SpeicherMessage s = new SpeicherMessage(level);
+		System.out.println("Versuche zu speichern");
+		com.bekommeVonClient(s);
+	}
 }

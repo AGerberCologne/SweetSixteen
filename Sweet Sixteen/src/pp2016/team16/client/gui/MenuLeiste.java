@@ -8,6 +8,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
+import pp2016.team16.shared.Map;
+
 /**
  * Klasse für die Menueleiste die oben angezeigt wird
  * @author Simon Nietz, Matr_Nr: 5823560
@@ -17,8 +19,9 @@ import javax.swing.JOptionPane;
 public class MenuLeiste extends JMenuBar implements ActionListener {
 
 	private static final long serialVersionUID = 1L;
-
+	public LoginDialog dialog;
 	private MiniMap mini;
+	public Map map;
 	private boolean anzeigen=false;
 	
 	// die einzelnen Menuepunkte
@@ -33,7 +36,7 @@ public class MenuLeiste extends JMenuBar implements ActionListener {
     private JMenuItem beenden;
     private JMenuItem karteaufdecken;
     private JMenuItem steuerung;
-    private JMenuItem wechsel;
+    private JMenuItem logout;
     private JMenuItem minimapzeigen;
     private JMenuItem minimapverstecken;
     private JMenuItem speicher;
@@ -64,14 +67,14 @@ public class MenuLeiste extends JMenuBar implements ActionListener {
         beenden = new JMenuItem("Beenden");
         karteaufdecken = new JMenuItem("Karte aufdecken");
         steuerung = new JMenuItem("Steuerung");
-        wechsel = new JMenuItem("Benutzer wechseln");
+        logout = new JMenuItem("Logout");
         minimapzeigen = new JMenuItem("Minimap zeigen");
         minimapverstecken = new JMenuItem("Minimap verstecken");
         speicher = new JMenuItem("Speichern");
         cheats = new JMenuItem("Cheats");
         
         neuesSpiel.addActionListener(this);
-        wechsel.addActionListener(this);
+        logout.addActionListener(this);
         highscore.addActionListener(this);
         beenden.addActionListener(this);
         karteaufdecken.addActionListener(this);
@@ -83,7 +86,7 @@ public class MenuLeiste extends JMenuBar implements ActionListener {
         cheats.addActionListener(this);
         
         spiel.add(neuesSpiel);
-        spiel.add(wechsel);
+        spiel.add(logout);
         spiel.add(beenden);
         spiel.add(speicher);
         anzeige.add(highscore);
@@ -108,7 +111,11 @@ public class MenuLeiste extends JMenuBar implements ActionListener {
 			//fenster.zeigeSpielfeld();
 			
 		}else if(e.getSource() == speicher){
-			
+			int i = 2;
+			//System.out.println(map.levelzaehler);
+			fenster.engine.speichereLevel(fenster.engine.map.levelzaehler);
+			System.out.println("Methode funktioniert");
+		
 		}else if(e.getSource() == cheats){
 		
 			fenster.zeigeCheats();
@@ -123,7 +130,13 @@ public class MenuLeiste extends JMenuBar implements ActionListener {
 			//
 			//
 			
-		}else if(e.getSource() == wechsel){
+		}else if(e.getSource() == logout){
+			try {
+				fenster.engine.logout();
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 			fenster.zeigeLogin();
 			
 			/* Benutzer wechseln  dann Login Fenster

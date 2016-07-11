@@ -49,6 +49,8 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 	public ClientEngine engine = new ClientEngine();
 	public boolean spielende = false;
 	public boolean verloren = false;
+	public static int a;
+
 	public long startZeit;
 	public int benoetigteZeit;
 	public boolean nebelAn = true;
@@ -259,8 +261,13 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 		}
 
 		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-		/*	// Schluessel aufnehmen
-			int a = engine.benutzeItem();				
+			// Schluessel aufnehmen
+			try {
+				a = engine.benutzeItem();
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}				
 			// Heiltrank aufnehmen
 
 			// Schluessel benutzen
@@ -269,7 +276,7 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 				nextLevel();
 			}else if(a == 3) {
 				spielende = true;
-			}*/
+			}
 		}
 	}
 
@@ -281,7 +288,7 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 
 	public void mouseClicked(MouseEvent e) {
 		int	zielX = e.getX() / 32; // Koordinaten des Klicks ...
-		int	zielY = e.getY() / 32; // auslesen und als Ziel setzen
+		int	zielY = (e.getY() / 32)-1; // auslesen und als Ziel setzen
 		if (e.getButton() == MouseEvent.BUTTON1) {
 			// Es war die linke Maustaste
 			if (!spielende) {
@@ -298,6 +305,8 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 			
 			}
 
+		} if (e.getButton() == MouseEvent.BUTTON3) {
+				
 		}
 	}
 

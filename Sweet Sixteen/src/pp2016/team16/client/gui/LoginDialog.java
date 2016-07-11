@@ -34,6 +34,7 @@ public class LoginDialog extends JDialog {
     public static boolean succeeded;
     public static boolean test;
     public static boolean test2;
+    public String passwortname;
     		
     /**
      * @author Simon Nietz, Matr_Nr: 5823560
@@ -47,6 +48,7 @@ public class LoginDialog extends JDialog {
         // ordne die Buttons mithilfe GridBagLayout
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints cs = new GridBagConstraints();
+        
         
         
         cs.fill = GridBagConstraints.HORIZONTAL;
@@ -221,11 +223,14 @@ public class LoginDialog extends JDialog {
  
     public String getPassword() {
         return new String(pfPassword.getPassword());
+       
     }
  
     public static boolean isSucceded(){
     	return test;
     }
+    
+    
     
   /*  public static class Loginn {
     	static int a;

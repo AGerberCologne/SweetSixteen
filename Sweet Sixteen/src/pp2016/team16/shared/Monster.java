@@ -29,6 +29,7 @@ public class Monster extends Figur {
 	public int dir; // Laufrichtung: 0 Nord, 1 Ost, 2 Sued, 3 West
 	private int typ; // Von Beginn an anwesend: 0, Erscheint sp�ter: 1
 	public Astern astern;
+	public boolean nachricht = true;
 	
 	
 	/* Team16: Sweet sixteen
@@ -84,6 +85,7 @@ public class Monster extends Figur {
 		boolean nextWalk = (System.currentTimeMillis() - lastStep) >= cooldownWalk;
 		if (zulaessig) {
 			if (nextWalk) {
+				System.out.println("Getesteter Schritt");
 				switch (dir) {
 				case 0:
 					hoch();
@@ -98,10 +100,13 @@ public class Monster extends Figur {
 					links();
 					break;
 				}
+				nachricht =true;
 				lastStep = System.currentTimeMillis();
 			}
 		} else {
 			changeDir();
+			System.out.println("Kein getesteter Schritt");
+			nachricht = false;
 		}
 	}
 

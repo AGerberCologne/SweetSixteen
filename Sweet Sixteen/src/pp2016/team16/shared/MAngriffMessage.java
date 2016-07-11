@@ -6,5 +6,9 @@ public class MAngriffMessage extends MessageObject {
 	 * 
 	 */
 	private static final long serialVersionUID = 8632275677807677032L;
+	
+	public MAngriffMessage(Boolean n, Monster m){
+		
+	}
 
 }

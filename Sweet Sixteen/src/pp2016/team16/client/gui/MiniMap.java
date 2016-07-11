@@ -126,13 +126,13 @@ public class MiniMap extends JPanel{
 		g.fillOval(fenster.engine.spieler.getXPos()* size+2, fenster.engine.spieler.getYPos() * size+
 				2, 8,8);
 		
-	/*	for (int i = 0; i < fenster.engine.monsterListe.size(); i++) {
+		for (int i = 0; i < fenster.engine.monsterListe.size(); i++) {
 			Monster m = fenster.engine.monsterListe.get(i);
 			boolean event = fenster.engine.spieler.hatSchluessel();
 		// zeichne die Monster als roten Punkt	
-			if(!m.attackiereSpieler(event)){
-				m.move();
-			}if (m.getTyp() == 0) {
+			//if(!m.attackiereSpieler(event)){
+			//	m.move();
+			if (m.getTyp() == 0) {
 				g.setColor(Color.RED);
 				g.fillOval(m.getXPos() * size+2, m.getYPos()* size+2,8,8);
 			}if (m.getTyp() == 2){
@@ -142,8 +142,9 @@ public class MiniMap extends JPanel{
 				g.setColor(Color.RED);
 				g.fillOval(m.getXPos() * size+2, m.getYPos()* size+2,8,8);			
 			}
+		}
 			
-		}*/
+		
 		//Legende für die MiniMap
 		//Zunaechst werden die Bilder gezeichnet
 		g.setColor(Color.GREEN);

@@ -7,8 +7,12 @@ public class MAngriffMessage extends MessageObject {
 	 */
 	private static final long serialVersionUID = 8632275677807677032L;
 	
-	public MAngriffMessage(Boolean n, Monster m){
-		
+	public boolean n;
+	public int monsternummer;
+	
+	public MAngriffMessage(Boolean n, int monsternummer){
+		this.monsternummer=monsternummer;
+		this.n=n;
 	}
 
 }

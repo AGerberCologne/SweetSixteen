@@ -27,6 +27,7 @@ public class ServerEngine extends Thread
 	public Astern astern;
 	public String spielername;
 	public String spielerpasswort;
+	public int monsternr;
 
 
 
@@ -160,6 +161,11 @@ public class ServerEngine extends Thread
 			boolean b=true;
 			SpeicherAntwort antwort = new SpeicherAntwort(b);
 			server.gebeWeiterAnClient(antwort);
+		}else if (eingehendeNachricht instanceof SAngriffMessage){
+			Monster m = angriffsMonster();
+			m.changeHealth(konstante.BOX/24);
+			MStatusMessage msm = new MStatusMessage(monsternr);
+			server.gebeWeiterAnClient(msm);
 		}
 		
 		/*else if (eingehendeNachricht instanceof CheatMessage) {
@@ -580,7 +586,7 @@ public boolean attackiereSpieler(boolean hatSchluessel, Monster m) {
 	/*Aus gegebenen Spiel
 	 * 
 	 */
-	/*public Monster angriffsMonster(){
+	public Monster angriffsMonster(){
 	for(int i = 0; i < this.monsterListe.size(); i++){
 		Monster m = this.monsterListe.get(i);
 		// Kann der Spieler angreifen?
@@ -589,10 +595,12 @@ public boolean attackiereSpieler(boolean hatSchluessel, Monster m) {
 		if (m.getTyp() == 1) kannAngreifen = spieler.hatSchluessel();
 		if (m.getTyp() == 2) kannAngreifen = true;
 		if((Math.sqrt(Math.pow(spieler.getXPos() - m.getXPos(), 2)+ Math.pow(spieler.getYPos() - m.getYPos(), 2)) < 2)&&kannAngreifen){
+			monsternr = i;
 			return m;
+			
 		}
 	}
 
 	return null;
-}*/
+}
 }

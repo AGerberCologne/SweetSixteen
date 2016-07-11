@@ -239,6 +239,7 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 					engine.spieler.rechts();
 			} else if (e.getKeyCode() == KeyEvent.VK_Q) {
 				System.out.println("Angreifen");
+				engine.angriffSpieler();//ruft Methode im Client auf
 			//	Monster	m = engine.spieler.angriffsMonster();
 			//	Monster m = engine.monsterListe.get(i);
 			/*Monster m = engine.spieler.angriffsMonster();

@@ -158,7 +158,12 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 		} else if (daten instanceof SpeicherMessage){
 			SpeicherAntwort k = (SpeicherAntwort) daten;
 			this.gespeichert=k.hatGeklappt;
-			}
+		}else if(daten instanceof MStatusMessage){
+			MStatusMessage msm = (MStatusMessage) daten;
+			int j=msm.monsternummer;
+			Monster m = monsterListe.get(j);
+			m.changeHealth(konstante.BOX/24);
+		}
 		  
 		  /*else if (daten instanceof CheatMessage) {
 			int i = ((CheatMessage) daten).i;
@@ -228,7 +233,10 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 		return itemBenutzen;
 	}
 
-
+	public void angriffSpieler(){
+		SAngriffMessage sam =new SAngriffMessage();
+		com.bekommeVonClient(sam);
+		}
 
 	
 	/*void cheatBenutzen(int i) throws Exception {
@@ -236,8 +244,10 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 		this.datenBeimServerAnfragen(cheat);
 	}
 */
-	public boolean angriffMonster(){
-		return true;
+	public void angriffMonster(){
+		MBewegungMessage mbm = new MBewegungMessage();
+		com.bekommeVonClient(mbm);
+		
 	}
 	public void speichereLevel( int level){
 		SpeicherMessage s = new SpeicherMessage(level);

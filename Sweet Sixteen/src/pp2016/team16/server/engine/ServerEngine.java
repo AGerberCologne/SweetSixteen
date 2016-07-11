@@ -161,12 +161,8 @@ public class ServerEngine extends Thread
 
 		} else if (eingehendeNachricht instanceof SpeicherMessage){
 			int l = ((SpeicherMessage)eingehendeNachricht).level;
-			System.out.println("wird gespeichert");
 			this.speichern(l);
-			System.out.println("hat gespeichert");
-			boolean b=true;
-			SpeicherAntwort antwort = new SpeicherAntwort(b);
-			server.gebeWeiterAnClient(antwort);
+			
 			
 		}else if (eingehendeNachricht instanceof SAngriffMessage){
 			Monster m = angriffsMonster();
@@ -176,6 +172,10 @@ public class ServerEngine extends Thread
 			
 		}else if (eingehendeNachricht instanceof MBewegungMessage){
 			monsterBewegung();
+		}else if (eingehendeNachricht instanceof BeendeMessage){
+			BeendeMessage bm = (BeendeMessage) eingehendeNachricht;
+			speichern(bm.level);
+			this.interrupt();
 		}
 		
 		/*else if (eingehendeNachricht instanceof CheatMessage) {
@@ -427,13 +427,9 @@ public boolean attackiereSpieler(boolean hatSchluessel, Monster m) {
 	return null;
 }
 	
-	/*Ann-Catherine Hartmann,37658
-	 * 
- //Die Methode sollte im boolean eingeloggt true speichern, falls man erfolgreich 
-	 * eine anmeldung oder einen login durchgefï¿½hrt hat;
-	 * auï¿½erdem sollte wenn es eine neue anmeldung ist 1 bei this.map.levelzaehler gespeichert werden
-	 * wenn man sich einlogt, dann soll nicht nur geprï¿½ft werden ob name und passwort zusammen passen sondern 
-	 * auch noch die levelnr ausgelesen werden ( die speichern wir mit), und an this.map.levelzaehler ï¿½bergeben werden*/
+	/**
+	 * @author: Ann-Catherine Hartmann, Matrikelnr: 60038514/ Prüfungsnummer: 37658
+	 **/
 	public void logIn(int i, String name, String passwort){
 		String abgleich = name + " "+ passwort;
 		boolean namegibtesschon = false;
@@ -511,11 +507,15 @@ public boolean attackiereSpieler(boolean hatSchluessel, Monster m) {
 			}
 	}
 
-	//Ann-Catherine Hartmann,37658
+	/**
+	 * @author: Ann-Catherine Hartmann, Matrikelnr: 60038514/ Prüfungsnummer: 37658
+	 **/
 	public void leseHighScore(){
-
+		
 	}
-	//Ann-Catherine Hartmann,37658; Methode funktioniert noch nicht
+	/**
+	 * @author: Ann-Catherine Hartmann, Matrikelnr: 60038514/ Prüfungsnummer: 37658
+	 **/
 	public void setHighScore(int zeit, String name){
 		String z = "Zeit: "+String.valueOf(zeit)+"   Name des Spielers: "+ name;
 		try {
@@ -561,14 +561,16 @@ public boolean attackiereSpieler(boolean hatSchluessel, Monster m) {
 
 
 	}
-	//Ann-Catherine Hartmann,37658
+	/**
+	 * @author: Ann-Catherine Hartmann, Matrikelnr: 60038514/ Prüfungsnummer: 37658
+	 **/
 	public void abmelden(int levelNr){
 		this.speichern(levelNr);
 
 	}
-	//Ann-Catherine Hartmann,37658
-	/*es wird immer name, passwort und levelnr gespeichert
-  wichtig ist, dass die bereits bestehenden eintragungen entweder ï¿½berschrieben oder gelï¿½scht werden*/
+	/**
+	 * @author: Ann-Catherine Hartmann, Matrikelnr: 60038514/ Prüfungsnummer: 37658
+	 **/
 	public void speichern(int levelNr){
 		String abgleich = spielername + " "+ spielerpasswort;
 		String neuesLevel = "Level " +String.valueOf(levelNr);
@@ -584,22 +586,16 @@ public boolean attackiereSpieler(boolean hatSchluessel, Monster m) {
 			while((zeile=br.readLine())!=null){
 				if (zeile.equals(abgleich)){
 					bw.write(zeile);
-					System.out.println("schreibe 1");
 					bw.newLine();
 					bw.write(neuesLevel);
-					System.out.println("schreibe neues Level");
 					bw.newLine();
-					System.out.println("schreibe 2");
 					br.readLine();
 					zeile=br.readLine();
-					System.out.println("Lese");
 				}
 				bw.write(zeile);
-				System.out.println("schreibe 3");
 				bw.newLine();
 			}
 			bw.write(sb.toString());
-			System.out.println("schreibe 4");
 			bw.flush();
 			fw.close();
 			bw.close();
@@ -608,6 +604,9 @@ public boolean attackiereSpieler(boolean hatSchluessel, Monster m) {
 			original.delete();
 			kopie.renameTo(original);
 			System.out.println("Speichern");
+			boolean hatFunktioniert=true;
+			SpeicherAntwort antwort = new SpeicherAntwort(hatFunktioniert);
+			server.gebeWeiterAnClient(antwort);
 
 		} catch ( IOException e) {
 		}

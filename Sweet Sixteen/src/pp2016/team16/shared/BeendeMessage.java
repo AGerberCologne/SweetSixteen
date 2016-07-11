@@ -9,6 +9,10 @@ public class BeendeMessage extends MessageObject implements Serializable {
 	 */
 	private static final long serialVersionUID = -7186794407840374162L;
 	
-
+	public int level;
+	
+	public BeendeMessage (int level){
+		this.level = level;
+	}
 
 }

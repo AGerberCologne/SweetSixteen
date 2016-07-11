@@ -7,11 +7,9 @@ import pp2016.team16.shared.BeendeMessage;
 import pp2016.team16.shared.IchBinDa;
 import pp2016.team16.shared.LogoutMessage;
 import pp2016.team16.shared.MessageObject;
-
-
-//Gruppe 16 Kommunikation; Ann-Catherine Hartmann
-
-
+/**
+ * @author: Ann-Catherine Hartmann, Matrikelnr: 60038514/ Prüfungsnummer: 37658
+ **/
 public class ServerComm extends Thread {
 	public ServerSocket serverS;
 	public Socket s;
@@ -109,6 +107,7 @@ public ServerComm(){
 			
 		}
 		public void schliesse() throws IOException{
+			this.interrupt();
 			serverOpen = false;
 			ost.close();
 			in.close();

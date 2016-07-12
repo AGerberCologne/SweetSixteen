@@ -42,12 +42,6 @@ public class ServerEngine extends Thread
 	public void run(){
 		server = new ServerComm();
 		while(server.serverOpen){
-			try {
-				this.monsterBewegung();
-			} catch (InterruptedException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
 			MessageObject n = server.gebeWeiterAnServer();
 			if(n == null){
 				System.out.println("Test1");
@@ -57,13 +51,19 @@ public class ServerEngine extends Thread
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			} else
+			} else{
 				try {
 					this.nachrichtenVerarbeiten(n);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
+				}}
+			try {
+				this.monsterBewegung();
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 	}
 
@@ -207,8 +207,10 @@ public class ServerEngine extends Thread
 	// Monster Methoden
 
 	public void monsterBewegung() throws InterruptedException{
+		sleep(1000);
 	for (int i = 0; i < monsterListe.size(); i++) {
 		Monster m = monsterListe.get(i);
+		System.out.println("Bewegung für " + i);
 		boolean event = spieler.hatSchluessel();
 		// Da hier alle Monster aufgerufen werden, wird an dieser
 		// Stelle auch ein Angriffsbefehl fuer die Monster

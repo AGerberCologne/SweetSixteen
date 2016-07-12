@@ -129,6 +129,13 @@ public class MenuLeiste extends JMenuBar implements ActionListener, WindowListen
 		if(e.getSource() == neuesSpiel){
 			// Popup schwierigkeit wird gelöscht Message
 			//Methode von Client zum loeschen der Daten
+			try {
+				fenster.engine.changeLevel();
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			fenster.startZeit=System.currentTimeMillis();
 			//fenster.spielZuruecksetzen();
 			//fenster.zeigeSpielfeld();
 			
@@ -151,7 +158,15 @@ public class MenuLeiste extends JMenuBar implements ActionListener, WindowListen
 				fenster.zeigeLogin();
 			} catch (Exception e1) {
 				e1.printStackTrace();
-			}			
+			}
+			if(LoginDialog.isSucceded()){
+				try {
+					fenster.engine.changeLevel();
+					fenster.startZeit=System.currentTimeMillis();
+				} catch (Exception e3) {
+					e3.printStackTrace();
+				}
+			}
 			
 		}else if(e.getSource() == einloggen){
 			if(LoginDialog.test2 == true){

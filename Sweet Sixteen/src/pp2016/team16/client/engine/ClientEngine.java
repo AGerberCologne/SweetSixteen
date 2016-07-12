@@ -77,6 +77,9 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 			ChangeLevelMessage c = (ChangeLevelMessage) daten;
 			map.breite= konstante.WIDTH;
 			map.hoehe = konstante.HEIGHT;
+			while(!monsterListe.isEmpty()){
+				monsterListe.remove();
+			}
 			for(int i=0;i<c.level.length;i++){
 				for(int j=0;j<c.level.length;j++){
 					int Variable = c.level[i][j];
@@ -227,7 +230,7 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 	public Spielelement[][] changeLevel() throws Exception{
 		System.out.println("Der Client fragt ein neues Level an");
 		ChangeLevelMessage anfrage = new ChangeLevelMessage();
-		this.map.levelzaehler = 1;
+		//this.map.levelzaehler = 1;
 		anfrage.levelzaehler = this.map.levelzaehler;
 		com.bekommeVonClient(anfrage);
 		while(this.neuesLevel == false){

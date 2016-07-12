@@ -11,7 +11,6 @@ import pp2016.team16.client.gui.HindiBones;
 import pp2016.team16.shared.*;
 import pp2016.team16.shared.Map;
 import pp2016.team16.server.comm.ServerComm;
-import pp2016.team16.server.engine.IServerEngine;
 import pp2016.team16.server.map.AlleLevel;
 
 
@@ -100,6 +99,10 @@ public class ServerEngine extends Thread
 			map.hoehe = konstante.HEIGHT;
 			AlleLevel levelObject = new AlleLevel(map.hoehe, map.breite);
 			map.level =levelObject.setzeInhalt(map.levelzaehler);
+			System.out.println(map.levelzaehler);
+			while(!monsterListe.isEmpty()){
+				monsterListe.remove();
+			}
 			for(int i=0;i<map.level.length;i++){
 				for(int j=0;j<map.level.length;j++){
 					int Variable = map.level[i][j];

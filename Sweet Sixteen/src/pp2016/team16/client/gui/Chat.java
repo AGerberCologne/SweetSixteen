@@ -5,9 +5,12 @@ import java.awt.Container;
 import java.awt.Dimension;
 
 
-import javax.swing.JFrame;
 
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 
 public class Chat extends JFrame {
@@ -21,23 +24,33 @@ public class Chat extends JFrame {
 
     public Chat(HindiBones fenster){
     	this.fenster=fenster;
-    	JFrame jFrame = new JFrame();
-    	JTextArea jTextMessage = new JTextArea();
-    	jFrame.setSize(258,288);
-		jFrame.setResizable(false); // soll konstante Größe haben
-		
+    	JFrame jFrame = new JFrame("Chatfenster");
+    	JButton senden;
+	    JTextField in;
+	    JTextArea out;
+    	//JTextArea jTextMessage = new JTextArea();
 		jFrame.setVisible(true);
+		jFrame.setBackground(Color.BLACK);
+    	jFrame.setSize(258,288);
+		
+	    in = new JTextField(1);
+	    senden = new JButton("Senden");
+	    out = new JTextArea();
+	    setLayout(null);
+	   
+	    
+	  //  jFrame.add(in);
+	    add(senden);
+        jFrame.setResizable(false); // soll konstante Größe haben
+		
 		final Dimension d = jFrame.getToolkit().getScreenSize();
 		jFrame.setLocation((int) ((d.getWidth() - jFrame.getWidth()) / 2)+((32*16)/2)+162,
 				(int) ((d.getHeight() - jFrame
 						.getHeight()) / 2)-((32*16)/2)+430);
-		Container c = jFrame.getContentPane();
-		c.add(jTextMessage);
-		
-		//jFrame.add
-		this.setBackground(Color.BLACK);
-		
-		//showMessages();
+	
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        
 		
 		fenster.toFront(); // das Spiel sollte direkt weiterspielbar sein
 	}

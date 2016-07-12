@@ -183,6 +183,7 @@ public class MenuLeiste extends JMenuBar implements ActionListener, WindowListen
 		}else if(e.getSource() == beenden){
 			//System.exit(0);
 			fenster.engine.beende(fenster.engine.map.levelzaehler);
+
 		}else if(e.getSource() == steuerung){
 			fenster.zeigeSteuerung();
 		}else if(e.getSource() == minimapzeigen && anzeigen==false){

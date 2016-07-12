@@ -202,33 +202,33 @@ public class Spielflaeche extends JPanel {
 	private void drawMonster(Graphics g, Monster m){
 		// Monster Health Points
 		
-		int a=0;
-		int b=0;
+		int zaehler1=0;
+		int zaehler2=0;
 
 		if(fenster.engine.spieler.getYPos()>(fenster.HEIGHT+1)/2+3)
-			b = 4;
+			zaehler2 = 4;
 		else if(fenster.engine.spieler.getYPos()>(fenster.HEIGHT+1)/2+2)
-			b = 3;
+			zaehler2 = 3;
 		else if(fenster.engine.spieler.getYPos()>(fenster.HEIGHT+1)/2+1)
-			b = 2;
+			zaehler2 = 2;
 		else if(fenster.engine.spieler.getYPos()>(fenster.HEIGHT+1)/2)
-			b = 1;
+			zaehler2 = 1;
 		
 		if(fenster.engine.spieler.getXPos()>(fenster.HEIGHT+1)/2+3)
-			a = 4;
+			zaehler1 = 4;
 		else if(fenster.engine.spieler.getXPos()>(fenster.HEIGHT+1)/2+2)
-			a = 3;
+			zaehler1 = 3;
 		else if(fenster.engine.spieler.getXPos()>(fenster.HEIGHT+1)/2+1)
-			a = 2;
+			zaehler1 = 2;
 		else if(fenster.engine.spieler.getXPos()>(fenster.HEIGHT+1)/2)
-			a = 1;
+			zaehler1 = 1;
 		
 		
 		if(inRange(m.getXPos(), m.getYPos())){
-			g.drawImage(m.getImage(), (m.getXPos()-a) * fenster.BOX, (m.getYPos()-b)
+			g.drawImage(m.getImage(), (m.getXPos()-zaehler1) * fenster.BOX, (m.getYPos()-zaehler2)
 					* fenster.BOX, null);
 			g.setColor(Color.GREEN);
-			g.fillRect((m.getXPos()-a)*fenster.BOX, (m.getYPos()-b)
+			g.fillRect((m.getXPos()-zaehler1)*fenster.BOX, (m.getYPos()-zaehler2)
 					* fenster.BOX - 2, m.getHealth(), 2);
 			
 			}

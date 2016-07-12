@@ -39,7 +39,7 @@ public ServerComm(){
 				in = new ObjectInputStream(s.getInputStream());
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 			while (serverOpen){
 				System.out.println("Server Run");
@@ -54,6 +54,8 @@ public ServerComm(){
 				}
 				System.out.println("Server Run 2");
 			}
+			System.out.println("Server wird gesclossen");
+			this.schliesse();
 		}
 		
 		public void verarbeiteNachricht(){
@@ -68,6 +70,7 @@ public ServerComm(){
 				}
 				else if (n instanceof BeendeMessage){
 					System.out.println("ost wird geschlossen");
+					//serverOpen = false;
 					schliesse();
 				}
 				else{
@@ -75,7 +78,8 @@ public ServerComm(){
 					System.out.println("Test 5");
 				}
 			} catch (IOException | ClassNotFoundException e) {
-				e.printStackTrace();
+				//e.printStackTrace();
+				//serverOpen = false;
 			}
 			
 		}
@@ -100,20 +104,22 @@ public ServerComm(){
 				ost.writeObject(m);
 				ost.flush();	
 			} catch (IOException e) {
-				System.out.println("Test 9");
+				serverOpen = false;
 			
 			}
 			
 			
 		}
-		public void schliesse() throws IOException{
-	
-			serverOpen = false;
-			ost.close();
-			in.close();
+		public void schliesse(){
+			try {
+			//ost.close();
+			//in.close();
 			serverS.close();
 			s.close();
-			
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				
+			}
 			
 		}
 		

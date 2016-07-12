@@ -181,8 +181,10 @@ public class MenuLeiste extends JMenuBar implements ActionListener, WindowListen
 				karteaufdecken.setText("Karte aufdecken");
 			}		
 		}else if(e.getSource() == beenden){
-			//System.exit(0);
-			fenster.engine.beende(fenster.engine.map.levelzaehler);
+			
+			fenster.engine.beende(fenster.engine.map.levelzaehler); 
+			fenster.dispose();
+			System.exit(0);
 
 		}else if(e.getSource() == steuerung){
 			fenster.zeigeSteuerung();

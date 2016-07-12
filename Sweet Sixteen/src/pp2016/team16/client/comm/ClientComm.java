@@ -38,24 +38,23 @@ public class ClientComm extends Thread{
 	
 	
 	public void run(){
-		int z=1;
-		while (clientOpen){
-			if (isInterrupted()){
-				break;
-			}
-			empfangeVomServer();
-			if (z==10){
+		while (clientOpen && c.isClosed()!=true){
+			
 			schickeIchBinDaNachricht();
-			z=1;
-			}
-			z++;
+			empfangeVomServer();
+			
 			try {
 				sleep(600);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				//e.printStackTrace();
+			}
+			if (isInterrupted()){
+				break;
 			}
 		}
+			//beende();
+		
 	}
 	public void sendeAnServer(){
 
@@ -68,11 +67,13 @@ public class ClientComm extends Thread{
 			System.out.println("Clientest 3");
 			oos.flush();
 			System.out.println("Clientest 4");
-			if(msg instanceof BeendeMessage)
-				beende();
+			if(msg instanceof BeendeMessage){
+				System.out.println("BeendeMessage erkannt");
+				System.out.println("alles geschlosen");}
 			
 			
 		}catch(IOException e){
+			this.interrupt();
 			System.out.println("sendeanServer");
 		} 
 		
@@ -85,8 +86,8 @@ public class ClientComm extends Thread{
 			MessageObject bmsg = (MessageObject)ois.readObject();
 			empfangeVomServer.addLast(bmsg);
 		} catch (IOException e) {
-			System.out.println("Test 7");
-			e.printStackTrace();
+			
+			//e.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			
 		}
@@ -109,17 +110,33 @@ public class ClientComm extends Thread{
 	}	
 }
 	
-	public void beende() throws IOException{
 	
-		clientOpen=false;
-		ois.close();
-		oos.close();
-		c.close();
+	public void beende(){
+	
+		//clientOpen=false;
+		
+		try {
+			
+			clientOpen=false;
+			
+			c.shutdownInput();
+			c.shutdownOutput();
+			c.close();
+			ois.close();
+			oos.close();
+			
+			
+			
+			
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();}
 		
 	}
 	
 	public void schickeIchBinDaNachricht(){
 		IchBinDa i= new IchBinDa();
+		System.out.println("Ich bin da");
 		bekommeVonClient(i);
 	}
 }

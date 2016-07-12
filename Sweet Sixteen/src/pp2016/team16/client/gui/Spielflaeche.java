@@ -33,6 +33,8 @@ public class Spielflaeche extends JPanel {
 
 	private Image boden, wand, tuerOffen, tuerZu, schluessel, heiltrank, feuerball;
 	public HindiBones fenster;
+	public int zaehler1;
+	public int zaehler2;
 	
 	/**
 	 * @author Simon Nietz, Matr_Nr: 5823560
@@ -66,8 +68,8 @@ public class Spielflaeche extends JPanel {
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
 
-		int zaehler1=0;
-		int zaehler2=0;
+		 zaehler1=0;
+		 zaehler2=0;
 		// Ueberpruefe an welcher Positition der Spieler ist
 		if(fenster.engine.spieler.getYPos()>(fenster.HEIGHT+1)/2+3)
 			zaehler2 = 4;
@@ -86,6 +88,8 @@ public class Spielflaeche extends JPanel {
 			zaehler1 = 2;
 		else if(fenster.engine.spieler.getXPos()>(fenster.HEIGHT+1)/2)
 			zaehler1 = 1;
+		
+		
 		
 		// Male die einzelnen Felder
 		// falls der Spieler eine gewisse Position ueberschreitet wird mitgescrollt

@@ -53,7 +53,7 @@ public class Astern extends Thread {
 		    
 		    for (int i = 0; i < ZELLEN; i++) {
 		      for (int j = 0; j < ZELLEN; j++) {
-		       if (karte[i][j] instanceof Boden) {
+		       if (karte[i][j] instanceof Boden || karte[i][j] instanceof Schluessel || karte[i][j] instanceof Heiltrank) {
 				field[i][j]=true;
 			}
 		      }

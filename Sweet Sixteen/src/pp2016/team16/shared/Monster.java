@@ -48,7 +48,7 @@ public class Monster extends Figur {
 		lastAttack = System.currentTimeMillis();
 		lastStep = System.currentTimeMillis();
 		cooldownAttack = 500 - 10 * 1; // ms
-		cooldownWalk = 1000;
+		cooldownWalk = 0;
 
 		zustand = 1;
 
@@ -139,10 +139,10 @@ public class Monster extends Figur {
         if (!spielerImRadius) {
 			zustand= 1;
 		}
-        if (spielerImRadius&&getHealth()>8) {
+        if (spielerImRadius&&this.getHealth()>8) {
 			zustand= 2;
 		}
-        if (spielerImRadius&&getHealth()<=8) {
+        if (spielerImRadius&&this.getHealth()<=8) {
 			zustand=3;
 		}
 		return zustand;

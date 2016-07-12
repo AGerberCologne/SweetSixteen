@@ -20,7 +20,7 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 // nat�rlich parallel aktiv sein m�ssen
 {
 	// In diesem Objekt speichert der Client interne Daten
-	ClientComm com;
+	public ClientComm com;
 	public Konstanten konstante = new Konstanten();
 	public Map map = new Map();
 	public Spieler spieler = new Spieler("img//spieler.png");
@@ -44,7 +44,7 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 			 if(m == null){
 				 System.out.println("Test 2");
 				 try {
-					sleep(600);
+					sleep(100);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -58,7 +58,7 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 					 e.printStackTrace();
 				 }
 			 }
-		 }
+		 }this.interrupt();
 	 }
 	
 	// Message-Handling
@@ -89,7 +89,7 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 				case 4: map.karte[i][j] = new Tuer(true); this.spieler.setPos(i, j); break;
 				case 2: map.karte[i][j] = new Boden(); this.monsterListe.add(new Monster(i,j,0)); break;
 				// Monster, welche erst nach dem Aufheben des Schluessels erscheinen
-				case 3: map.karte[i][j] = new Boden(); this.monsterListe.add(new Monster(i,j,2)); break;
+				case 3: map.karte[i][j] = new Schluessel(); break;
 				case 8: map.karte[i][j] = new Boden(); this.monsterListe.add(new Monster(i,j,1)); break;
 			}	
 					
@@ -109,9 +109,12 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 			SBewegungMessage position = (SBewegungMessage) daten;
 			this.spieler.setPos(position.neuX, position.neuY);
 		}else if (daten instanceof MBewegungMessage){
-			System.out.println("Monster-Bewegung");
+			try{
+				System.out.println("Monster-Bewegung");
+			
 			int richtung = ((MBewegungMessage) daten).richtung;
 			Monster m = monsterListe.get(((MBewegungMessage) daten).monsterNummer);
+			System.out.println(((MBewegungMessage) daten).monsterNummer + "  "+ richtung);
 			switch (richtung) {
 			case 0:
 				m.hoch();
@@ -124,8 +127,11 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 				break;
 			case 3:
 				m.links();
-				break;
+				break;}}
+			catch(Exception e){
+				
 			}
+			
 			
 		} else if (daten instanceof ItemStatusMessage){
 			// Schluessel aufnehmen
@@ -156,15 +162,16 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 		} else if (daten instanceof MAngriffMessage){
 			
 			
-		} else if (daten instanceof SpeicherMessage){
-			SpeicherAntwort k = (SpeicherAntwort) daten;
-			this.gespeichert=k.hatGeklappt;
-			
 		}else if(daten instanceof MStatusMessage){
 			MStatusMessage msm = (MStatusMessage) daten;
+			System.out.println("Statusmessage kommt an");
 			int j=msm.monsternummer;
+			boolean mtot=msm.tot;
 			Monster m = monsterListe.get(j);
-			m.changeHealth(konstante.BOX/24);
+			if (mtot==true)
+				monsterListe.remove(j);
+			else
+			m.changeHealth(-(konstante.BOX/4));
 		}
 		  
 		  /*else if (daten instanceof CheatMessage) {
@@ -197,11 +204,12 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 	public void beende(int level){
 		BeendeMessage bm = new BeendeMessage(level);
 		com.bekommeVonClient(bm);
-		//this.interrupt();
+		
 	}
 	// kann , wenn notwendig , neues x oder y zur�ckgeben...
 	public void wegAnfragen(int x, int y) throws InterruptedException {
 		System.out.println("Der Spieler m�chte sich bewegen");
+		if(!(map.karte[x][y] instanceof Wand)){
 		spieler.zielX = x;
 		spieler.zielY = y;
 		SBewegungMessage anfrage = new SBewegungMessage();
@@ -210,7 +218,8 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 		anfrage.neuX = spieler.zielX;
 		anfrage.neuY = spieler.zielY;
 		com.bekommeVonClient(anfrage);
-		sleep(600);
+		sleep(600);}
+		else System.out.println("Du versuchst auf eine Wand zu gehen");
 	}
 
 	
@@ -242,6 +251,7 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 
 	public void angriffSpieler(){
 		SAngriffMessage sam =new SAngriffMessage();
+		System.out.println("SAngriffM");
 		com.bekommeVonClient(sam);
 		}
 

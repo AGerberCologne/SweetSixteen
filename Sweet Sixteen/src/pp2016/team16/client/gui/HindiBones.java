@@ -289,8 +289,8 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 	// int aktuelleYPos = fenster.engine.spieler.getY();	
 
 	public void mouseClicked(MouseEvent e) {
-		int	zielX = e.getX() / 32; // Koordinaten des Klicks ...
-		int	zielY = (e.getY() / 32)-1; // auslesen und als Ziel setzen
+		int	zielX = e.getX() / 32 + spielflaeche.zaehler1; // Koordinaten des Klicks ...
+		int	zielY = (e.getY() / 32)-1 + spielflaeche.zaehler2; // auslesen und als Ziel setzen
 		if (e.getButton() == MouseEvent.BUTTON1) {
 			// Es war die linke Maustaste
 			if (!spielende) {
@@ -307,7 +307,8 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 			
 			}
 
-		} if (e.getButton() == MouseEvent.BUTTON3) {
+		}else if (e.getButton() == MouseEvent.BUTTON3) {
+			engine.angriffSpieler();
 				
 		}
 	}

@@ -149,7 +149,13 @@ public class LoginDialog extends JDialog {
         btnAnmelden = new JButton("Neu Anmelden");
         btnAnmelden.addActionListener(new ActionListener(){
         	public void actionPerformed(ActionEvent e){
-        		System.out.println("hallo");
+        		if(getUsername().equals("") || getPassword().equals("")){
+        			JOptionPane.showMessageDialog(LoginDialog.this,
+                            "Gib einen Benutzernamen und ein Passwort ein!",
+                            "Anmelden",
+                            JOptionPane.ERROR_MESSAGE);
+        		}else {
+        		
         		try {
 					test2 = fenster.engine.login(1, getUsername(), getPassword());
 				} catch (InterruptedException e1) {
@@ -173,6 +179,7 @@ public class LoginDialog extends JDialog {
                             JOptionPane.ERROR_MESSAGE);
         			test = false;
         		}
+        	}
         	}
       
        /* 	public void actionPerformed(ActionEvent e) {   

@@ -28,6 +28,7 @@ public class ServerEngine extends Thread
 	public String spielername;
 	public String spielerpasswort;
 	public int monsternr;
+	public boolean monstertot;
 
 
 
@@ -46,7 +47,7 @@ public class ServerEngine extends Thread
 			if(n == null){
 				System.out.println("Test1");
 				try {
-					sleep(600);
+					sleep(100);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -90,6 +91,7 @@ public class ServerEngine extends Thread
 		} else if (eingehendeNachricht instanceof LogoutMessage){
 			LogoutMessage lm = (LogoutMessage)eingehendeNachricht;
 			speichern(lm.level);
+			eingeloggt=false;
 			
 		} else if (eingehendeNachricht instanceof ChangeLevelMessage) {
 			System.out.println("Server hat Level-Anfrage erhalten");
@@ -110,7 +112,7 @@ public class ServerEngine extends Thread
 					case 4: map.karte[i][j] = new Tuer(true); this.spieler.setPos(i, j); break;
 					case 2: map.karte[i][j] = new Boden(); this.monsterListe.add(new Monster(i,j,0)); break;
 					// Monster, welche erst nach dem Aufheben des Schluessels erscheinen
-					case 3: map.karte[i][j] = new Boden(); this.monsterListe.add(new Monster(i,j,2)); break;
+					case 3: map.karte[i][j] = new Schluessel(); break;
 					case 8: map.karte[i][j] = new Boden(); this.monsterListe.add(new Monster(i,j,1)); break;
 					}}}	
 			ChangeLevelMessage answer = new ChangeLevelMessage();
@@ -166,8 +168,11 @@ public class ServerEngine extends Thread
 			
 		}else if (eingehendeNachricht instanceof SAngriffMessage){
 			Monster m = angriffsMonster();
-			m.changeHealth(konstante.BOX/24);
-			MStatusMessage msm = new MStatusMessage(monsternr);
+			System.out.println("Angriff angekommen");
+			this.monsterChangeHealth(m,-(konstante.BOX/4));
+			System.out.println("Monstergesundheit");
+			MStatusMessage msm = new MStatusMessage(monsternr,monstertot);
+			System.out.println("Schicke Antwort");
 			server.gebeWeiterAnClient(msm);
 			
 		}else if (eingehendeNachricht instanceof MBewegungMessage){
@@ -175,6 +180,7 @@ public class ServerEngine extends Thread
 		}else if (eingehendeNachricht instanceof BeendeMessage){
 			BeendeMessage bm = (BeendeMessage) eingehendeNachricht;
 			speichern(bm.level);
+			server.serverOpen = false;
 			//this.interrupt();
 		}
 		
@@ -210,40 +216,45 @@ public class ServerEngine extends Thread
 		sleep(1000);
 	for (int i = 0; i < monsterListe.size(); i++) {
 		Monster m = monsterListe.get(i);
-		System.out.println("Bewegung für " + i);
 		boolean event = spieler.hatSchluessel();
 		// Da hier alle Monster aufgerufen werden, wird an dieser
 		// Stelle auch ein Angriffsbefehl fuer die Monster
 		// abgegeben, falls der Spieler in der Naehe ist.
 		// Ansonsten soll das Monster laufen
 		if(m.aktuellenZustandBestimmen(spieler.getXPos(), spieler.getYPos())==1){
+			System.out.println(i + " : ruhe");
 			this.ruhe(m);
 			if(m.nachricht){MBewegungMessage answer = new MBewegungMessage();
 			answer.richtung = m.dir;
 			answer.monsterNummer =i;
 			server.gebeWeiterAnClient(answer);
-			sleep(600);
+			sleep(100);
 			}
 
 		}else if(m.aktuellenZustandBestimmen(spieler.getXPos(), spieler.getYPos())==3){
+			System.out.println(i + " : fluechten");
 			this.fluechten(m);
 			if(m.nachricht){MBewegungMessage answer = new MBewegungMessage();
 			answer.richtung = m.dir;
 			answer.monsterNummer =i;
 			server.gebeWeiterAnClient(answer);
-			sleep(600);
+			sleep(100);
 			}
 		}
 		else {
+			System.out.println(i + " : jagen");
 			this.jagen(m);
-			if(m.nachricht){MBewegungMessage answer = new MBewegungMessage();
+			sleep(100);
+			if(m.nachricht){
+				System.out.println(i + " Jagen Nachricht");
+			MBewegungMessage answer = new MBewegungMessage();
 			answer.richtung = m.dir;
 			answer.monsterNummer =i;
 			server.gebeWeiterAnClient(answer);
-			sleep(600);
+			sleep(100);
 			}
-			if(this.attackiereSpieler(event, m)){}
-			int box = this.konstante.BOX;
+		//	if(this.attackiereSpieler(event, m)){}
+		//	int box = this.konstante.BOX;
 
 			/*	double p = m.cooldownProzent();
 			g.setColor(Color.RED);
@@ -273,18 +284,21 @@ public boolean attackiereSpieler(boolean hatSchluessel, Monster m) {
 	}
 
 	public void monsterChangeHealth(Monster m,int change) {
+		m.changeHealth(change);
 		if (m.getHealth() <= 0) {
 			if(m.getTyp()==0 || m.getTyp()==1){
 			map.karte[m.getXPos()][m.getYPos()] = new Heiltrank(30);
 				monsterListe.remove(m);
+				monstertot=true;
 			}
-			if(m.getTyp() == 2){
+			/*if(m.getTyp() == 2){
 			map.karte[m.getXPos()][m.getYPos()] = new Schluessel();
-				monsterListe.remove();
+				monsterListe.remove(m);
 
-			}
+			}*/
 
-		}
+		} else
+			monstertot=false;
 	}
 	
 	boolean zulaessig(Monster m) {
@@ -315,26 +329,36 @@ public boolean attackiereSpieler(boolean hatSchluessel, Monster m) {
 	  * */
 	public void jagen(Monster m) {                                                                      // Spieler JAGEN (Angriffszustand)
 		m.astern = new Astern(m.getYPos(), m.getXPos(), spieler.getXPos(),spieler.getYPos() , map.karte);
-		Wegpunkt test = astern.starten();
+		Wegpunkt test = m.astern.starten();
 		System.out.println("Monster:"+m.getXPos()+","+m.getYPos());
 		System.out.println("Spieler:"+spieler.getXPos()+","+spieler.getYPos());
 		if (test.x<m.getXPos()&&test.y==m.getYPos()) {
 			m.dir=3;
+			m.nachricht=true;
+			System.out.println("m.nachricht wird gesetzt");
 			m.move(zulaessig(m));
 		}
-    	if (test.x>m.getXPos()&&test.y==m.getYPos()) {
+		else if (test.x>m.getXPos()&&test.y==m.getYPos()) {
     		m.dir=1;
+    		m.nachricht =true;
+    		System.out.println("m.nachricht wird gesetzt");
 			m.move(zulaessig(m));
 		}
-		if (test.x==m.getXPos()&&test.y<m.getYPos()) {
+		else if (test.x==m.getXPos()&&test.y<m.getYPos()) {
 			m.dir=0;
+			m.nachricht = true;
+			System.out.println("m.nachricht wird gesetzt");
 			m.move(zulaessig(m));
 		}
-		if (test.x==m.getXPos()&&test.y>m.getYPos()) {
-			m.dir=02;
+		else if (test.x==m.getXPos()&&test.y>m.getYPos()) {
+			m.dir=2;
+			m.nachricht = true;
+			System.out.println("m.nachricht wird gesetzt");
 			m.move(zulaessig(m));
 		}
-		
+		else{
+			m.nachricht =false;
+		}
 	}
 
 	/* Team16: Sweet sixteen
@@ -384,7 +408,7 @@ public boolean attackiereSpieler(boolean hatSchluessel, Monster m) {
 	 * Enes
 	 * */
 	public void berechneWeg() {                                                                     // Spieler JAGEN (Angriffszustand)
-		astern= new Astern (spieler.getYPos(), spieler.getXPos(), spieler.zielX, spieler.zielY, map.karte);
+		astern = new Astern (spieler.getYPos(), spieler.getXPos(), spieler.zielX, spieler.zielY, map.karte);
 		Wegpunkt test = astern.starten();
 		System.out.println("Spieler:"+spieler.getXPos()+","+spieler.getYPos());
 		System.out.println("SZiel:"+spieler.zielX+","+spieler.zielY);
@@ -404,7 +428,7 @@ public boolean attackiereSpieler(boolean hatSchluessel, Monster m) {
 			answer.neuY = y;
 			server.gebeWeiterAnClient(answer);
 			this.monsterBewegung();
-			sleep(600);
+			sleep(100);
 
 		}
 	}
@@ -605,10 +629,6 @@ public boolean attackiereSpieler(boolean hatSchluessel, Monster m) {
 			fr.close();
 			original.delete();
 			kopie.renameTo(original);
-			System.out.println("Speichern");
-			boolean hatFunktioniert=true;
-			SpeicherAntwort antwort = new SpeicherAntwort(hatFunktioniert);
-			server.gebeWeiterAnClient(antwort);
 
 		} catch ( IOException e) {
 		}

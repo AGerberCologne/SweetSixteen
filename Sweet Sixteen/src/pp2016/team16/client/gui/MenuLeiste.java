@@ -148,6 +148,7 @@ public class MenuLeiste extends JMenuBar implements ActionListener, WindowListen
 		//	fenster.engine.logout(fenster.engine.map.levelzaehler);
 			try {
 				fenster.engine.logout(fenster.engine.map.levelzaehler);
+				fenster.zeigeLogin();
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}			

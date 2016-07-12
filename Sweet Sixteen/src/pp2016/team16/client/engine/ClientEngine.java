@@ -197,7 +197,7 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 	public void beende(int level){
 		BeendeMessage bm = new BeendeMessage(level);
 		com.bekommeVonClient(bm);
-		this.interrupt();
+		//this.interrupt();
 	}
 	// kann , wenn notwendig , neues x oder y zur�ckgeben...
 	public void wegAnfragen(int x, int y) throws InterruptedException {

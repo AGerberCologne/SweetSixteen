@@ -175,7 +175,7 @@ public class ServerEngine extends Thread
 		}else if (eingehendeNachricht instanceof BeendeMessage){
 			BeendeMessage bm = (BeendeMessage) eingehendeNachricht;
 			speichern(bm.level);
-			this.interrupt();
+			//this.interrupt();
 		}
 		
 		/*else if (eingehendeNachricht instanceof CheatMessage) {

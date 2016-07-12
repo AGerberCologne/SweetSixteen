@@ -107,7 +107,7 @@ public ServerComm(){
 			
 		}
 		public void schliesse() throws IOException{
-			this.interrupt();
+	
 			serverOpen = false;
 			ost.close();
 			in.close();

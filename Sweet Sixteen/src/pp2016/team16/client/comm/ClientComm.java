@@ -110,7 +110,7 @@ public class ClientComm extends Thread{
 }
 	
 	public void beende() throws IOException{
-		this.interrupt();
+	
 		clientOpen=false;
 		ois.close();
 		oos.close();

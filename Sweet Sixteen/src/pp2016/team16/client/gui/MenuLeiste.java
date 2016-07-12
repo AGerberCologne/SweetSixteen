@@ -2,6 +2,8 @@ package pp2016.team16.client.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -16,7 +18,7 @@ import pp2016.team16.shared.Map;
  *
  */
 
-public class MenuLeiste extends JMenuBar implements ActionListener {
+public class MenuLeiste extends JMenuBar implements ActionListener, WindowListener {
 
 	private static final long serialVersionUID = 1L;
 	public LoginDialog dialog;
@@ -113,6 +115,16 @@ public class MenuLeiste extends JMenuBar implements ActionListener {
         this.add(chat);
         // Aktionen die aufgerufen werden, falls draufgeklickt wird
 	}
+	public void windowClosing(WindowEvent e) {
+		fenster.engine.beende(fenster.engine.map.levelzaehler);
+	}
+	public void windowDeactivated(WindowEvent arg0) {}
+	public void windowDeiconified(WindowEvent arg0) {}
+	public void windowIconified(WindowEvent arg0) {}
+	public void windowOpened(WindowEvent arg0) {}
+	public void windowActivated(WindowEvent arg0) {}
+	public void windowClosed(WindowEvent arg0) {}
+	
 	public void actionPerformed(ActionEvent e){
 		if(e.getSource() == neuesSpiel){
 			// Popup schwierigkeit wird gelöscht Message
@@ -137,25 +149,8 @@ public class MenuLeiste extends JMenuBar implements ActionListener {
 			try {
 				fenster.engine.logout(fenster.engine.map.levelzaehler);
 			} catch (Exception e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
-			}
-			fenster.zeigeLogin();
-			
-			/* Benutzer wechseln  dann Login Fenster
-			if(LoginDialog.succeeded==true){
-				LoginDialog.succeeded = false;
-				fenster.spielZuruecksetzen();
-				fenster.engine.spieler.setName("Hindi");
-				JOptionPane.showMessageDialog(null,							
-                        "Du wurdest ausgeloggt"
-                        );
-				
-				}else{ 
-					JOptionPane.showMessageDialog(null,							
-	                        "Du musst eingeloggt sein"
-	                        );
-				}*/
+			}			
 			
 		}else if(e.getSource() == einloggen){
 			if(LoginDialog.test2 == true){
@@ -187,7 +182,7 @@ public class MenuLeiste extends JMenuBar implements ActionListener {
 			}		
 		}else if(e.getSource() == beenden){
 			//System.exit(0);
-			//.engine.beenden();
+			fenster.engine.beende(fenster.engine.map.levelzaehler);
 		}else if(e.getSource() == steuerung){
 			fenster.zeigeSteuerung();
 		}else if(e.getSource() == minimapzeigen && anzeigen==false){
@@ -207,5 +202,9 @@ public class MenuLeiste extends JMenuBar implements ActionListener {
 	public JMenuItem getHighscore(){
 		return highscore;
 	}
+	
+	
+	
+	
 	
 }

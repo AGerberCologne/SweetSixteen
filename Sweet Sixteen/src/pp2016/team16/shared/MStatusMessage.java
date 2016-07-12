@@ -9,9 +9,11 @@ public class MStatusMessage extends MessageObject {
 	
 	public int monsternummer;
 	public boolean tot;
-	public MStatusMessage(int monsternummer, boolean tot){
+	public boolean heilen;
+	public MStatusMessage(int monsternummer, boolean tot, boolean heilen){
 		this.monsternummer=monsternummer;
 		this.tot=tot;
+		this.heilen = heilen;
 	}
 
 }

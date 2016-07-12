@@ -48,8 +48,8 @@ public class ServerEngine extends Thread
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			MessageObject m = server.gebeWeiterAnServer();
-			if(m == null){
+			MessageObject n = server.gebeWeiterAnServer();
+			if(n == null){
 				System.out.println("Test1");
 				try {
 					sleep(600);
@@ -57,16 +57,22 @@ public class ServerEngine extends Thread
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			}
-			else this.nachrichtenVerarbeiten(m);
+			} else
+				try {
+					this.nachrichtenVerarbeiten(n);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 	}
 
 
 	/**
 	 * Message-Handling @ Gerber, Alina , 5961246
+	 *
 	 */
-	void nachrichtenVerarbeiten(MessageObject eingehendeNachricht) {
+	void nachrichtenVerarbeiten(MessageObject eingehendeNachricht) throws InterruptedException {
 		if (eingehendeNachricht instanceof LoginMessage) 
 		{  LoginMessage l = (LoginMessage) eingehendeNachricht;
 		this.logIn(l.artVonAnmeldung, l.name, l.passwort);
@@ -81,9 +87,9 @@ public class ServerEngine extends Thread
 			System.out.println("Login If");
 		}
 		server.gebeWeiterAnClient(answer);
-		} else if (eingehendeNachricht instanceof LogoutMessage)
-		{
-			System.out.println("Server Shutdown");
+		} else if (eingehendeNachricht instanceof LogoutMessage){
+			LogoutMessage lm = (LogoutMessage)eingehendeNachricht;
+			speichern(lm.level);
 			
 		} else if (eingehendeNachricht instanceof ChangeLevelMessage) {
 			System.out.println("Server hat Level-Anfrage erhalten");
@@ -155,17 +161,21 @@ public class ServerEngine extends Thread
 
 		} else if (eingehendeNachricht instanceof SpeicherMessage){
 			int l = ((SpeicherMessage)eingehendeNachricht).level;
-			System.out.println("wird gespeichert");
 			this.speichern(l);
-			System.out.println("hat gespeichert");
-			boolean b=true;
-			SpeicherAntwort antwort = new SpeicherAntwort(b);
-			server.gebeWeiterAnClient(antwort);
+			
+			
 		}else if (eingehendeNachricht instanceof SAngriffMessage){
 			Monster m = angriffsMonster();
 			m.changeHealth(konstante.BOX/24);
 			MStatusMessage msm = new MStatusMessage(monsternr);
 			server.gebeWeiterAnClient(msm);
+			
+		}else if (eingehendeNachricht instanceof MBewegungMessage){
+			monsterBewegung();
+		}else if (eingehendeNachricht instanceof BeendeMessage){
+			BeendeMessage bm = (BeendeMessage) eingehendeNachricht;
+			speichern(bm.level);
+			this.interrupt();
 		}
 		
 		/*else if (eingehendeNachricht instanceof CheatMessage) {
@@ -193,195 +203,10 @@ public class ServerEngine extends Thread
 	// Spieler Datenbank Verwaltung
 
 
-	/*Ann-Catherine Hartmann,37658
-	 * 
- //Die Methode sollte im boolean eingeloggt true speichern, falls man erfolgreich 
-	 * eine anmeldung oder einen login durchgefï¿½hrt hat;
-	 * auï¿½erdem sollte wenn es eine neue anmeldung ist 1 bei this.map.levelzaehler gespeichert werden
-	 * wenn man sich einlogt, dann soll nicht nur geprï¿½ft werden ob name und passwort zusammen passen sondern 
-	 * auch noch die levelnr ausgelesen werden ( die speichern wir mit), und an this.map.levelzaehler ï¿½bergeben werden*/
-	public void logIn(int i, String name, String passwort){
-		String abgleich = name + " "+ passwort;
-		boolean namegibtesschon = false;
-		if (i ==1){ //Neuanmeldung	
-			try {
-				FileReader fr;
-				fr=new FileReader("Spielerdaten");
-				BufferedReader br = new BufferedReader(fr);
-				String zeile=br.readLine();
-				while((zeile = br.readLine()) != null){
-					if (zeile.equals(abgleich)){
-						eingeloggt = false;
-						namegibtesschon=true;
-						System.out.println("Name und Passwort gibt es schon");
-						break;
-					}else if (zeile.startsWith(name+"")){
-						eingeloggt = false;
-						namegibtesschon=true;
-						System.out.println("Name ist vergeben");
-						break;
-					}
-				}
-
-				br.close();
-				fr.close();
-
-			}catch( IOException e){}
-
-			if(namegibtesschon==false){
-				String initiallevel = "Level 1";
-				FileWriter fw;
-				try {
-					fw = new FileWriter ("Spielerdaten",true);
-					BufferedWriter bw = new BufferedWriter (fw);
-					bw.newLine();
-					bw.write(abgleich);
-					bw.newLine();
-					bw.write (initiallevel);
-					bw.newLine();
-					bw.newLine();
-					bw.newLine();
-					bw.close();//Schlieï¿½t die Datei
-					fw.close();
-					eingeloggt = true;
-					System.out.println("Eingeloggt true");
-				} catch (IOException e1) {
-					System.out.println("Fehler gefunden");
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} 
-			}}else if (i==2){
-				try {
-					spielername = name;
-					spielerpasswort = passwort;
-					FileReader fr;
-					fr=new FileReader("Spielerdaten");
-					BufferedReader br = new BufferedReader(fr);
-					String zeile;
-					while((zeile=br.readLine())!=null){
-						System.out.println("Zeile wird gelesen");
-						if (zeile.equals(abgleich)){
-							eingeloggt = true;
-							String level =br.readLine();
-							char c = level.charAt(6);
-							this.map.levelzaehler =(int) c-48;
-							break;
-						}
-					}
-					br.close();
-					fr.close();
-
-				} catch ( IOException e) {
-				}
-
-			}
-	}
-
-	//Ann-Catherine Hartmann,37658
-	public void leseHighScore(){
-
-	}
-	//Ann-Catherine Hartmann,37658; Methode funktioniert noch nicht
-	public void setHighScore(int zeit, String name){
-		String z = "Zeit: "+String.valueOf(zeit)+"   Name des Spielers: "+ name;
-		try {
-			File original =new File( "HighScore");
-			File kopie = new File("HighScore2");
-			FileReader fr =new FileReader(original);
-			BufferedReader br = new BufferedReader(fr);
-			FileWriter fw = new FileWriter(kopie);
-			BufferedWriter bw = new BufferedWriter(fw);
-			StringBuffer sb = new StringBuffer();
-			String zeile;
-			while((zeile=br.readLine())!=null){
-				if(zeile.equals("")==false){
-					int i = 6;
-					char k = zeile.charAt(i);
-					i++;
-					String h=String.valueOf(k);
-					while(((int)(k=zeile.charAt(i)))!=32){
-						h=h+k;
-						i++;
-					}
-					Integer l =Integer.valueOf(h);
-					if (l>zeit){
-						bw.write(z);
-						bw.newLine();
-						bw.newLine();
-					}}
-				bw.write(zeile);
-				bw.newLine();
-			}
-			bw.write(sb.toString());
-			bw.flush();
-			fw.close();
-			bw.close();
-			br.close();
-			fr.close();
-			original.delete();
-			kopie.renameTo(original);
-
-		} catch ( IOException e) {
-		}
-
-
-
-	}
-	//Ann-Catherine Hartmann,37658
-	public void abmelden(int levelNr){
-		this.speichern(levelNr);
-
-	}
-	//Ann-Catherine Hartmann,37658
-	/*es wird immer name, passwort und levelnr gespeichert
-  wichtig ist, dass die bereits bestehenden eintragungen entweder ï¿½berschrieben oder gelï¿½scht werden*/
-	public void speichern(int levelNr){
-		String abgleich = spielername + " "+ spielerpasswort;
-		String neuesLevel = "Level " +String.valueOf(levelNr);
-		try {
-			File original =new File( "Spielerdaten");
-			File kopie = new File("Spielerdaten2");
-			FileReader fr =new FileReader("Spielerdaten");
-			BufferedReader br = new BufferedReader(fr);
-			FileWriter fw = new FileWriter("Spielerdaten2");
-			BufferedWriter bw = new BufferedWriter(fw);
-			StringBuffer sb = new StringBuffer();
-			String zeile;
-			while((zeile=br.readLine())!=null){
-				if (zeile.equals(abgleich)){
-					bw.write(zeile);
-					System.out.println("schreibe 1");
-					bw.newLine();
-					bw.write(neuesLevel);
-					System.out.println("schreibe neues Level");
-					bw.newLine();
-					System.out.println("schreibe 2");
-					br.readLine();
-					zeile=br.readLine();
-					System.out.println("Lese");
-				}
-				bw.write(zeile);
-				System.out.println("schreibe 3");
-				bw.newLine();
-			}
-			bw.write(sb.toString());
-			System.out.println("schreibe 4");
-			bw.flush();
-			fw.close();
-			bw.close();
-			br.close();
-			fr.close();
-			original.delete();
-			kopie.renameTo(original);
-			System.out.println("Speichern");
-
-		} catch ( IOException e) {
-		}
-
-	}
+	
 	// Monster Methoden
 
-	void monsterBewegung() throws InterruptedException{
+	public void monsterBewegung() throws InterruptedException{
 	for (int i = 0; i < monsterListe.size(); i++) {
 		Monster m = monsterListe.get(i);
 		boolean event = spieler.hatSchluessel();
@@ -551,8 +376,6 @@ public boolean attackiereSpieler(boolean hatSchluessel, Monster m) {
 		m.move(this.zulaessig(m));
 	}
 
-
-
 	// Spieler Methoden
 
 	/*
@@ -603,4 +426,190 @@ public boolean attackiereSpieler(boolean hatSchluessel, Monster m) {
 
 	return null;
 }
+	
+	/**
+	 * @author: Ann-Catherine Hartmann, Matrikelnr: 60038514/ Prüfungsnummer: 37658
+	 **/
+	public void logIn(int i, String name, String passwort){
+		String abgleich = name + " "+ passwort;
+		boolean namegibtesschon = false;
+		if (i ==1){ //Neuanmeldung	
+			try {
+				FileReader fr;
+				fr=new FileReader("Spielerdaten");
+				BufferedReader br = new BufferedReader(fr);
+				String zeile=br.readLine();
+				while((zeile = br.readLine()) != null){
+					if (zeile.equals(abgleich)){
+						eingeloggt = false;
+						namegibtesschon=true;
+						System.out.println("Name und Passwort gibt es schon");
+						break;
+					}else if (zeile.startsWith(name+"")){
+						eingeloggt = false;
+						namegibtesschon=true;
+						System.out.println("Name ist vergeben");
+						break;
+					}
+				}
+
+				br.close();
+				fr.close();
+
+			}catch( IOException e){}
+
+			if(namegibtesschon==false){
+				String initiallevel = "Level 1";
+				FileWriter fw;
+				try {
+					fw = new FileWriter ("Spielerdaten",true);
+					BufferedWriter bw = new BufferedWriter (fw);
+					bw.newLine();
+					bw.write(abgleich);
+					bw.newLine();
+					bw.write (initiallevel);
+					bw.newLine();
+					bw.newLine();
+					bw.newLine();
+					bw.close();//Schlieï¿½t die Datei
+					fw.close();
+					eingeloggt = true;
+					System.out.println("Eingeloggt true");
+				} catch (IOException e1) {
+					System.out.println("Fehler gefunden");
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} 
+			}}else if (i==2){
+				try {
+					spielername = name;
+					spielerpasswort = passwort;
+					FileReader fr;
+					fr=new FileReader("Spielerdaten");
+					BufferedReader br = new BufferedReader(fr);
+					String zeile;
+					while((zeile=br.readLine())!=null){
+						System.out.println("Zeile wird gelesen");
+						if (zeile.equals(abgleich)){
+							eingeloggt = true;
+							String level =br.readLine();
+							char c = level.charAt(6);
+							this.map.levelzaehler =(int) c-48;
+							break;
+						}
+					}
+					br.close();
+					fr.close();
+
+				} catch ( IOException e) {
+				}
+
+			}
+	}
+
+	/**
+	 * @author: Ann-Catherine Hartmann, Matrikelnr: 60038514/ Prüfungsnummer: 37658
+	 **/
+	public void leseHighScore(){
+		
+	}
+	/**
+	 * @author: Ann-Catherine Hartmann, Matrikelnr: 60038514/ Prüfungsnummer: 37658
+	 **/
+	public void setHighScore(int zeit, String name){
+		String z = "Zeit: "+String.valueOf(zeit)+"   Name des Spielers: "+ name;
+		try {
+			File original =new File( "HighScore");
+			File kopie = new File("HighScore2");
+			FileReader fr =new FileReader(original);
+			BufferedReader br = new BufferedReader(fr);
+			FileWriter fw = new FileWriter(kopie);
+			BufferedWriter bw = new BufferedWriter(fw);
+			StringBuffer sb = new StringBuffer();
+			String zeile;
+			while((zeile=br.readLine())!=null){
+				if(zeile.equals("")==false){
+					int i = 6;
+					char k = zeile.charAt(i);
+					i++;
+					String h=String.valueOf(k);
+					while(((int)(k=zeile.charAt(i)))!=32){
+						h=h+k;
+						i++;
+					}
+					Integer l =Integer.valueOf(h);
+					if (l>zeit){
+						bw.write(z);
+						bw.newLine();
+						bw.newLine();
+					}}
+				bw.write(zeile);
+				bw.newLine();
+			}
+			bw.write(sb.toString());
+			bw.flush();
+			fw.close();
+			bw.close();
+			br.close();
+			fr.close();
+			original.delete();
+			kopie.renameTo(original);
+
+		} catch ( IOException e) {
+		}
+
+
+
+	}
+	/**
+	 * @author: Ann-Catherine Hartmann, Matrikelnr: 60038514/ Prüfungsnummer: 37658
+	 **/
+	public void abmelden(int levelNr){
+		this.speichern(levelNr);
+
+	}
+	/**
+	 * @author: Ann-Catherine Hartmann, Matrikelnr: 60038514/ Prüfungsnummer: 37658
+	 **/
+	public void speichern(int levelNr){
+		String abgleich = spielername + " "+ spielerpasswort;
+		String neuesLevel = "Level " +String.valueOf(levelNr);
+		try {
+			File original =new File( "Spielerdaten");
+			File kopie = new File("Spielerdaten2");
+			FileReader fr =new FileReader("Spielerdaten");
+			BufferedReader br = new BufferedReader(fr);
+			FileWriter fw = new FileWriter("Spielerdaten2");
+			BufferedWriter bw = new BufferedWriter(fw);
+			StringBuffer sb = new StringBuffer();
+			String zeile;
+			while((zeile=br.readLine())!=null){
+				if (zeile.equals(abgleich)){
+					bw.write(zeile);
+					bw.newLine();
+					bw.write(neuesLevel);
+					bw.newLine();
+					br.readLine();
+					zeile=br.readLine();
+				}
+				bw.write(zeile);
+				bw.newLine();
+			}
+			bw.write(sb.toString());
+			bw.flush();
+			fw.close();
+			bw.close();
+			br.close();
+			fr.close();
+			original.delete();
+			kopie.renameTo(original);
+			System.out.println("Speichern");
+			boolean hatFunktioniert=true;
+			SpeicherAntwort antwort = new SpeicherAntwort(hatFunktioniert);
+			server.gebeWeiterAnClient(antwort);
+
+		} catch ( IOException e) {
+		}
+
+	}
 }

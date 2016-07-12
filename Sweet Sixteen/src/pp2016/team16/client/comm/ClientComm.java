@@ -1,5 +1,7 @@
 package pp2016.team16.client.comm;
-//Gruppe 16 Kommunikation; Ann-Catherine Hartmann
+/**
+ * @author: Ann-Catherine Hartmann, Matrikelnr: 60038514/ Prüfungsnummer: 37658
+ **/
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -7,13 +9,11 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.LinkedList;
 
-import pp2016.team16.shared.IchBinDa;
-import pp2016.team16.shared.LogoutMessage;
-import pp2016.team16.shared.MessageObject;
+import pp2016.team16.shared.*;
 
 public class ClientComm extends Thread{
-	LinkedList<MessageObject> empfangeVomServer = new LinkedList<MessageObject>();
-	LinkedList<MessageObject> sendeAnServer=new LinkedList<MessageObject>();
+	LinkedList<MessageObject> empfangeVomServer = new LinkedList<MessageObject>();//Empfangeschlange
+	LinkedList<MessageObject> sendeAnServer=new LinkedList<MessageObject>();//Sendeschlange
 	ObjectInputStream ois=null;
 	ObjectOutputStream oos=null;
 	Socket c;
@@ -41,7 +41,6 @@ public class ClientComm extends Thread{
 		int z=1;
 		while (clientOpen){
 			if (isInterrupted()){
-				System.out.println("FEHLER");
 				break;
 			}
 			empfangeVomServer();
@@ -62,7 +61,6 @@ public class ClientComm extends Thread{
 
 		
 		try{
-			
 			MessageObject msg = sendeAnServer.removeFirst();
 			System.out.println("Clientest 1");
 			System.out.println("Clientest 2");
@@ -70,9 +68,7 @@ public class ClientComm extends Thread{
 			System.out.println("Clientest 3");
 			oos.flush();
 			System.out.println("Clientest 4");
-			
-			//empfangeVomServer();
-			if(msg instanceof LogoutMessage)
+			if(msg instanceof BeendeMessage)
 				beende();
 			
 			
@@ -114,6 +110,7 @@ public class ClientComm extends Thread{
 }
 	
 	public void beende() throws IOException{
+		this.interrupt();
 		clientOpen=false;
 		ois.close();
 		oos.close();

@@ -155,9 +155,11 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 			}
 		} else if (daten instanceof MAngriffMessage){
 			
+			
 		} else if (daten instanceof SpeicherMessage){
 			SpeicherAntwort k = (SpeicherAntwort) daten;
 			this.gespeichert=k.hatGeklappt;
+			
 		}else if(daten instanceof MStatusMessage){
 			MStatusMessage msm = (MStatusMessage) daten;
 			int j=msm.monsternummer;
@@ -187,11 +189,16 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 		return eingeloggt;
 	}
 
-	public void logout() throws Exception {
-		LogoutMessage anfrage = new LogoutMessage();
+	public void logout(int level) throws Exception {
+		LogoutMessage anfrage = new LogoutMessage(level);
 		com.bekommeVonClient(anfrage);
 	}
-
+	 
+	public void beende(int level){
+		BeendeMessage bm = new BeendeMessage(level);
+		com.bekommeVonClient(bm);
+		this.interrupt();
+	}
 	// kann , wenn notwendig , neues x oder y zur�ckgeben...
 	public void wegAnfragen(int x, int y) throws InterruptedException {
 		System.out.println("Der Spieler m�chte sich bewegen");

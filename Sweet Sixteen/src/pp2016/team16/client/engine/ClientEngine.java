@@ -143,7 +143,7 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 				map.karte[spieler.getXPos()][spieler.getYPos()] = new Boden();
 				this.itemBenutzen = 1;
 
-			}
+			}   
 			// Heiltrank aufnehmen
 			else if (((ItemStatusMessage) daten).art == 0) {
 				spieler.nimmHeiltrank((Heiltrank) map.karte[spieler.getXPos()][spieler.getYPos()]);		

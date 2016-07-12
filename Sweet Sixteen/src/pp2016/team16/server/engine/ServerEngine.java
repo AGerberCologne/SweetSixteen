@@ -102,7 +102,7 @@ public class ServerEngine extends Thread
 			System.out.println(map.levelzaehler);
 			while(!monsterListe.isEmpty()){
 				monsterListe.remove();
-			}
+			}   
 			for(int i=0;i<map.level.length;i++){
 				for(int j=0;j<map.level.length;j++){
 					int Variable = map.level[i][j];

@@ -139,7 +139,7 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 				spieler.nimmSchluessel();
 				map.karte[spieler.getXPos()][spieler.getYPos()] = new Boden();
 				this.itemBenutzen = 1;
-
+				spieler.nimmSchluessel();
 			}
 			// Heiltrank aufnehmen
 			else if (((ItemStatusMessage) daten).art == 0) {
@@ -160,8 +160,9 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 				}
 			}
 		} else if (daten instanceof MAngriffMessage){
-			
-			
+			Monster m =monsterListe.get(((MAngriffMessage) daten).monsternummer);
+			m.angriff =true;
+					
 		}else if(daten instanceof MStatusMessage){
 			MStatusMessage msm = (MStatusMessage) daten;
 			System.out.println("Statusmessage kommt an");

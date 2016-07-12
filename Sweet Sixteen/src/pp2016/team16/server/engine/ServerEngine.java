@@ -253,8 +253,11 @@ public class ServerEngine extends Thread
 			server.gebeWeiterAnClient(answer);
 			sleep(100);
 			}
-		//	if(this.attackiereSpieler(event, m)){}
-		//	int box = this.konstante.BOX;
+			if(this.attackiereSpieler(event, m)){
+				MAngriffMessage angriff = new MAngriffMessage(i);
+				server.gebeWeiterAnClient(angriff);
+			}
+			int box = this.konstante.BOX;
 
 			/*	double p = m.cooldownProzent();
 			g.setColor(Color.RED);
@@ -380,15 +383,15 @@ public boolean attackiereSpieler(boolean hatSchluessel, Monster m) {
 			m.dir = 2; 
 			m.move(zulaessig(m));
 		}
-		if(map.karte[monsterX+1][monsterY] instanceof Boden && spielerX<=monsterX) {
+		else if(map.karte[monsterX+1][monsterY] instanceof Boden && spielerX<=monsterX) {
 			m.dir = 1; 
 			m.move(zulaessig(m));
 		}
-		if(map.karte[monsterX-1][monsterY] instanceof Boden && spielerX>=monsterX) {
+		else if(map.karte[monsterX-1][monsterY] instanceof Boden && spielerX>=monsterX) {
 			m.dir = 3; 
 			m.move(zulaessig(m));
 		}
-		if(map.karte[monsterX][monsterY-1] instanceof Boden && spielerY>=monsterY) {
+		else if(map.karte[monsterX][monsterY-1] instanceof Boden && spielerY>=monsterY) {
 			m.dir = 0; 
 			m.move(zulaessig(m));
 		}

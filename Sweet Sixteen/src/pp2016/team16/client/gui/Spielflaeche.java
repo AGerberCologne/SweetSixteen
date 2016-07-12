@@ -35,6 +35,7 @@ public class Spielflaeche extends JPanel {
 	public HindiBones fenster;
 	public int zaehler1;
 	public int zaehler2;
+	public Konstanten konstante = new Konstanten();
 	
 	/**
 	 * @author Simon Nietz, Matr_Nr: 5823560
@@ -206,7 +207,7 @@ public class Spielflaeche extends JPanel {
 	private void drawMonster(Graphics g, Monster m){
 		// Monster Health Points
 		
-		int zaehler1=0;
+	/*	int zaehler1=0;
 		int zaehler2=0;
 
 		if(fenster.engine.spieler.getYPos()>(fenster.HEIGHT+1)/2+3)
@@ -226,7 +227,7 @@ public class Spielflaeche extends JPanel {
 			zaehler1 = 2;
 		else if(fenster.engine.spieler.getXPos()>(fenster.HEIGHT+1)/2)
 			zaehler1 = 1;
-		
+		*/
 		
 		if(inRange(m.getXPos(), m.getYPos())){
 			g.drawImage(m.getImage(), (m.getXPos()-zaehler1) * fenster.BOX, (m.getYPos()-zaehler2)
@@ -236,6 +237,15 @@ public class Spielflaeche extends JPanel {
 					* fenster.BOX - 2, m.getHealth(), 2);
 			
 			}
+		if(m.angriff == true){
+			System.out.println("Monster greift an");
+			double p = m.cooldownProzent();
+			g.setColor(Color.RED);
+			g.drawImage(feuerball, fenster.engine.spieler.getXPos()*fenster.BOX,
+					fenster.engine.spieler.getYPos()*fenster.BOX, 8, 8, null);
+					 m.angriff = false;
+		}
+		
 	}
 	
 	private boolean inRange(int i, int j) {

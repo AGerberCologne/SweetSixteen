@@ -10,9 +10,8 @@ public class MAngriffMessage extends MessageObject {
 	public boolean n;
 	public int monsternummer;
 	
-	public MAngriffMessage(Boolean n, int monsternummer){
+	public MAngriffMessage( int monsternummer){
 		this.monsternummer=monsternummer;
-		this.n=n;
 	}
 
 }

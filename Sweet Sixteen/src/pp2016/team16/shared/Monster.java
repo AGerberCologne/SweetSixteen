@@ -30,6 +30,7 @@ public class Monster extends Figur {
 	private int typ; // Von Beginn an anwesend: 0, Erscheint sp�ter: 1
 	public Astern astern;
 	public boolean nachricht = true;
+	public boolean angriff =false;
 	
 	
 	/* Team16: Sweet sixteen
@@ -139,10 +140,10 @@ public class Monster extends Figur {
         if (!spielerImRadius) {
 			zustand= 1;
 		}
-        if (spielerImRadius&&this.getHealth()>8) {
+        if (spielerImRadius&&this.getHealth()>16) {
 			zustand= 2;
 		}
-        if (spielerImRadius&&this.getHealth()<=8) {
+        if (spielerImRadius&&this.getHealth()<=16) {
 			zustand=3;
 		}
 		return zustand;

@@ -294,10 +294,10 @@ public boolean attackiereSpieler(boolean hatSchluessel, Monster m) {
 			return !(map.karte[m.getXPos() + 1][m.getYPos()] instanceof Wand)
 					&& !(map.karte[m.getXPos() + 1][m.getYPos()] instanceof Tuer)
 					&& !(map.karte[m.getXPos() + 1][m.getYPos()] instanceof Schluessel);
-		} else if (m.dir == 2 && m.getYPos() + 1 < map.karte.length) {
-			return !(map.karte[m.getXPos()][m.getYPos() + 1] instanceof Wand)
-					&& !(map.karte[m.getXPos()][m.getYPos() + 1] instanceof Tuer)
-					&& !(map.karte[m.getXPos()][m.getYPos() + 1] instanceof Schluessel);
+		} else if (m.dir == 2 && m.getYPos() + 1  < map.karte.length) {
+			return !(map.karte[m.getXPos()][m.getYPos() +1] instanceof Wand)
+					&& !(map.karte[m.getXPos()][m.getYPos() +1] instanceof Tuer)
+					&& !(map.karte[m.getXPos()][m.getYPos() +1] instanceof Schluessel);
 		} else if (m.dir == 3 && m.getXPos()-1 > 0) {
 			return !(map.karte[m.getXPos() - 1][m.getYPos()] instanceof Wand)
 					&& !(map.karte[m.getXPos() - 1][m.getYPos()] instanceof Tuer)

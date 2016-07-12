@@ -1,4 +1,4 @@
-package pp2016.team16.client.gui;
+/*package pp2016.team16.client.gui;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -18,7 +18,7 @@ import javax.swing.JTextField;
  * 
  * @author Simon Nietz, Matr_Nr: 5823560
  *
- */
+ 
 
 public class MenuPanel extends JPanel{
 
@@ -56,7 +56,7 @@ public class MenuPanel extends JPanel{
 		add(p);
 		
 		// Spiel-starten-Button
-/*		start.addActionListener(new ActionListener(){
+		start.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				fenster.zeigeSpielfeld();
 				fenster.spieler.setName(name.getText());
@@ -78,7 +78,7 @@ public class MenuPanel extends JPanel{
 			public void actionPerformed(ActionEvent e) {
 				System.exit(0);
 			}	
-		});*/
+		});
 		//beenden.setPreferredSize(new Dimension(200,50));
 
 		name.addActionListener(new ActionListener(){
@@ -100,4 +100,4 @@ public class MenuPanel extends JPanel{
 
 	}
 	
-}
+}*/

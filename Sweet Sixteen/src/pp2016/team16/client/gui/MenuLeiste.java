@@ -29,6 +29,7 @@ public class MenuLeiste extends JMenuBar implements ActionListener {
     private JMenu anzeige;
 	private JMenu hilfe;
     private JMenu minimap;
+    private JMenu chat;
 	
     //die Unterpunkte der Menues
     private JMenuItem neuesSpiel;
@@ -41,6 +42,8 @@ public class MenuLeiste extends JMenuBar implements ActionListener {
     private JMenuItem minimapverstecken;
     private JMenuItem speicher;
     private JMenuItem cheats;
+    private JMenuItem einloggen;
+    private JMenuItem chat2;
     /**
      * 
      */
@@ -60,6 +63,7 @@ public class MenuLeiste extends JMenuBar implements ActionListener {
 		anzeige = new JMenu("Anzeige");
 		hilfe = new JMenu("Hilfe");
 		minimap = new JMenu("Minimap");
+		chat = new JMenu("Chat");
         
 		// dieses sind die Unterpunkte
         neuesSpiel = new JMenuItem("Neues Spiel starten");
@@ -72,6 +76,8 @@ public class MenuLeiste extends JMenuBar implements ActionListener {
         minimapverstecken = new JMenuItem("Minimap verstecken");
         speicher = new JMenuItem("Speichern");
         cheats = new JMenuItem("Cheats");
+        einloggen = new JMenuItem("Login");
+        chat2= new JMenuItem("Chat anzeigen");
         
         neuesSpiel.addActionListener(this);
         logout.addActionListener(this);
@@ -84,23 +90,27 @@ public class MenuLeiste extends JMenuBar implements ActionListener {
         minimapverstecken.addActionListener(this);
         speicher.addActionListener(this);
         cheats.addActionListener(this);
+        einloggen.addActionListener(this);
+        chat2.addActionListener(this);
         
         spiel.add(neuesSpiel);
+        spiel.add(einloggen);
         spiel.add(logout);
-        spiel.add(beenden);
         spiel.add(speicher);
+        spiel.add(beenden);
         anzeige.add(highscore);
         anzeige.add(karteaufdecken);
         hilfe.add(steuerung);
         hilfe.add(cheats);
         minimap.add(minimapzeigen);
         minimap.add(minimapverstecken);
+        chat.add(chat2);
         
         this.add(spiel);
         this.add(anzeige);
         this.add(hilfe);
         this.add(minimap);
-        
+        this.add(chat);
         // Aktionen die aufgerufen werden, falls draufgeklickt wird
 	}
 	public void actionPerformed(ActionEvent e){
@@ -111,7 +121,6 @@ public class MenuLeiste extends JMenuBar implements ActionListener {
 			//fenster.zeigeSpielfeld();
 			
 		}else if(e.getSource() == speicher){
-			int i = 2;
 			//System.out.println(map.levelzaehler);
 			fenster.engine.speichereLevel(fenster.engine.map.levelzaehler);
 			System.out.println("Methode funktioniert");
@@ -119,25 +128,12 @@ public class MenuLeiste extends JMenuBar implements ActionListener {
 		}else if(e.getSource() == cheats){
 		
 			fenster.zeigeCheats();
-	/*	}else if(e.getSource() == einloggen){
-			if(LoginDialog.test==true){
-				JOptionPane.showMessageDialog(null,
-						"Du bist schon eingeloggt");
-			}else{
-			fenster.zeigeLogin();
-			}*/
-			// else if Level in gleicher schwierigkeit
-			//
-			//
+		}else if(e.getSource() == chat2){
+			System.out.println("Chat angekommen");
+			fenster.chat();
 			
 		}else if(e.getSource() == logout){
-			try {
-				fenster.engine.logout();
-			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			fenster.zeigeLogin();
+		//	fenster.engine.logout(fenster.engine.map.levelzaehler);
 			
 			/* Benutzer wechseln  dann Login Fenster
 			if(LoginDialog.succeeded==true){
@@ -153,6 +149,18 @@ public class MenuLeiste extends JMenuBar implements ActionListener {
 	                        "Du musst eingeloggt sein"
 	                        );
 				}*/
+			
+		}else if(e.getSource() == einloggen){
+			if(LoginDialog.test2 == true){
+				JOptionPane.showMessageDialog(null,
+                        "Du bist schon eingeloggt",
+                        "Anmeldung",
+                        JOptionPane.INFORMATION_MESSAGE);
+			}else {
+				fenster.zeigeLogin();
+			}
+			
+			
 		}else if(e.getSource() == highscore){
 			if(fenster.highscoreAngezeigt){
 				fenster.zeigeSpielfeld();
@@ -171,7 +179,8 @@ public class MenuLeiste extends JMenuBar implements ActionListener {
 				karteaufdecken.setText("Karte aufdecken");
 			}		
 		}else if(e.getSource() == beenden){
-			System.exit(0);
+			//System.exit(0);
+			//.engine.beenden();
 		}else if(e.getSource() == steuerung){
 			fenster.zeigeSteuerung();
 		}else if(e.getSource() == minimapzeigen && anzeigen==false){

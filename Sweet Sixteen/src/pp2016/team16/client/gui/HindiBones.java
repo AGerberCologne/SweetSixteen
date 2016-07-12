@@ -155,10 +155,11 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 		
 			//     engine.spieler.setName(LoginDialog.getUsername());
 
-		
-
 	}
-
+	public void chat(){
+		Chat chatfenster = new Chat(this);
+		
+	}
 
 
 
@@ -333,6 +334,8 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 	public void keyReleased(KeyEvent e) {}
 	public void keyTyped(KeyEvent e) {}
 
+	
+	
 	public void spielZuruecksetzen() {
 
 		// das Spiel wird neu initialisiert

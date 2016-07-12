@@ -46,9 +46,9 @@ public class MiniMap extends JPanel{
 		//setze die Groeﬂe und Position fest.
 	    jFrame.setSize(258,340);
 		final Dimension d = jFrame.getToolkit().getScreenSize();
-		jFrame.setLocation((int) ((d.getWidth() - jFrame.getWidth()) / 2)+((32*16)/2)+180,
+		jFrame.setLocation((int) ((d.getWidth() - jFrame.getWidth()) / 2)+((32*16)/2)+162,
 				(int) ((d.getHeight() - jFrame
-						.getHeight()) / 2)-((32*16)/2)+98);
+						.getHeight()) / 2)-((32*16)/2)+106);
 		this.setBackground(Color.BLACK);
 		jFrame.setResizable(false); // Die Groeﬂe soll nicht veraendert werden
 		jFrame.add(this);

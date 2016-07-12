@@ -96,6 +96,7 @@ public class LoginDialog extends JDialog {
                         "Login",
                         JOptionPane.INFORMATION_MESSAGE);
                 test = true;
+                
                 dispose();    		
         	} else  {                
                 JOptionPane.showMessageDialog(LoginDialog.this,

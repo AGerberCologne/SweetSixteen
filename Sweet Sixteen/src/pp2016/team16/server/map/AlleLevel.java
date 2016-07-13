@@ -61,7 +61,7 @@ public class AlleLevel {
 				level[i][j] = Felder.WAND;
 
 		Random zufall = new Random();
-		// r für Reihe、c für Spalte
+		// r fuer Reihe、c fuer Spalte
 		// erzeuge Zufallsposition r
 		int r = zufall.nextInt(hoehe - 2) + 1; // initialisiert r mit einem
 												// bestimmten

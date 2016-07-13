@@ -174,9 +174,9 @@ public class ServerEngine extends Thread
 			System.out.println("Angriff angekommen");
 			this.monsterChangeHealth(m,-(konstante.BOX/4));
 			System.out.println("Monstergesundheit");
-			MStatusMessage msm = new MStatusMessage(monsternr,monstertot);
+			//MStatusMessage msm = new MStatusMessage(monsternr,monstertot);
 			System.out.println("Schicke Antwort");
-			server.gebeWeiterAnClient(msm);
+			//server.gebeWeiterAnClient(msm);
 			
 		}else if (eingehendeNachricht instanceof MBewegungMessage){
 			monsterBewegung();

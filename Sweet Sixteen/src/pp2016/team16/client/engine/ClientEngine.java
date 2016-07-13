@@ -129,7 +129,8 @@ public class ClientEngine extends Thread {
 					// Monster, welche erst nach dem Aufheben des Schluessels
 					// erscheinen
 					case 3:
-						map.karte[i][j] = new Schluessel();
+						map.karte[i][j] = new Boden();
+						this.monsterListe.add(new Monster(i, j, 2));
 						break;
 					case 8:
 						map.karte[i][j] = new Boden();
@@ -232,8 +233,15 @@ public class ClientEngine extends Thread {
 			boolean mtot = msm.tot;
 			boolean heilen = msm.heilen;
 			Monster m = monsterListe.get(j);
-			if (mtot == true)
+			if (mtot == true) {
+				if(m.getTyp()==2) {
+					this.map.karte[m.getXPos()][m.getYPos()] = new Schluessel();
+				}
+				else {
+					this.map.karte[m.getXPos()][m.getYPos()] = new Heiltrank(30);
+				}
 				monsterListe.remove(j);
+			}
 			else if (mtot == false && heilen == false)
 				m.changeHealth(-(konstante.BOX / 4));
 			else if (mtot == false && heilen == true)

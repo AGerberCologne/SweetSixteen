@@ -69,7 +69,7 @@ public class ServerComm extends Thread {
 		while (serverOpen) {
 			verarbeiteNachricht();
 			try {
-				sleep(600);
+				sleep(50);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

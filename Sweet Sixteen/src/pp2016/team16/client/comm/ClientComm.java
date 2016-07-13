@@ -1,145 +1,195 @@
 package pp2016.team16.client.comm;
-/**
- * @author: Ann-Catherine Hartmann, Matrikelnr: 60038514/ Prüfungsnummer: 37658
- **/
+
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.LinkedList;
-
 import pp2016.team16.shared.*;
 
-public class ClientComm extends Thread{
-	LinkedList<MessageObject> empfangeVomServer = new LinkedList<MessageObject>();//Empfangeschlange
-	LinkedList<MessageObject> sendeAnServer=new LinkedList<MessageObject>();//Sendeschlange
-	ObjectInputStream ois=null;
-	ObjectOutputStream oos=null;
-	Socket c;
+/**
+ * Handelt die Kommunikation zwischen der Server- und Clientengine auf der Clientseite
+ * 
+ * @author: Ann-Catherine Hartmann, Matrikelnr: 60038514
+ **/
+
+
+public class ClientComm extends Thread {
+	/**
+	 * @param Empfangeschlange
+	 */
+	LinkedList<MessageObject> empfangeVomServer = new LinkedList<MessageObject>();
+	/**
+	 * @param Sendeschlange
+	 */
+	LinkedList<MessageObject> sendeAnServer = new LinkedList<MessageObject>();
+	ObjectInputStream ois = null;
+	ObjectOutputStream oos = null;
+	Socket client;
+	/**
+	 * @param host unseres Clientsockets. Dieser ist leider nur über diesen String änderbar aufgrund
+	 * unserer Objektstruktur
+	 */
 	public String host = "localhost";
+	/**
+	 * @param Portnummer unseres Servers, ist leider nicht veränderbar über
+	 *  main-Methode aufgrund unserer Objektstruktur;
+	 */
 	public int port = 10000;
 	public boolean clientOpen;
 
-	public ClientComm(){
-		try{
-			c = new Socket(host, port);
-			clientOpen=true;
-			oos = new ObjectOutputStream(c.getOutputStream());
+	/**
+	 * Der Konstruktor initialisiert das Socket, setzt den Booleanwert
+	 * clientOpen auf true, damit danach die run-Methode immer Nachrichten vom
+	 * Server empfängt und die Ichbinda-Nachrichten verschickt, initialisiert
+	 * den ObjectInput-und ObjectOutputStream und flusht den OutputStream.
+	 * Zuletzt wird die run-Methde mit start() aufgerufen
+	 * 
+	 * @author Ann-Catherine Hartmann 6038514
+	 */
+	public ClientComm() {
+		try {
+			client = new Socket(host, port);
+			clientOpen = true;
+			oos = new ObjectOutputStream(client.getOutputStream());
 			oos.flush();
-			ois=new ObjectInputStream(c.getInputStream());
+			ois = new ObjectInputStream(client.getInputStream());
 			this.start();
-		}catch(IOException e){
-			
+		} catch (IOException e) {
+
 		}
 	}
 
-	
-	
-	
-	public void run(){
-		while (clientOpen && c.isClosed()!=true){
-			
+	/**
+	 * solange clientOpen true ist und das Socket nicht geschlossen ist, schickt
+	 * die Methode eine IchBinDaNachricht periodisch und fragt an, ob etwas vom
+	 * Server geschickt wurde
+	 * 
+	 * @author Ann-Catherine Hartmann 6038514
+	 */
+
+	public void run() {
+		while (clientOpen && client.isClosed() != true) {
+
 			schickeIchBinDaNachricht();
 			empfangeVomServer();
-			
+
 			try {
 				sleep(600);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				//e.printStackTrace();
+				e.printStackTrace();
 			}
-			if (isInterrupted()){
+			if (isInterrupted()) {
 				break;
 			}
 		}
-			//beende();
-		
-	}
-	public void sendeAnServer(){
 
-		
-		try{
-			MessageObject msg = sendeAnServer.removeFirst();
-			System.out.println("Clientest 1");
-			System.out.println("Clientest 2");
-			oos.writeObject(msg);
-			System.out.println("Clientest 3");
-			oos.flush();
-			System.out.println("Clientest 4");
-			if(msg instanceof BeendeMessage){
-				System.out.println("BeendeMessage erkannt");
-				System.out.println("alles geschlosen");}
-			
-			
-		}catch(IOException e){
-			this.interrupt();
-			System.out.println("sendeanServer");
-		} 
-		
 	}
+	/**
+	 * Das erste Element der Sendeschlange wird entfernt und in den Output
+	 * 
+	 * @author Ann-Catherine Hartmann 6038514
+	 */
+	public void sendeAnServer() {
+
+		try {
+			MessageObject msg = sendeAnServer.removeFirst();
+			oos.writeObject(msg);
+			oos.flush();
+
+		} catch (IOException e) {
+			this.interrupt();
+		}
+
+	}
+	/**
+	 * Die Methode empfängt das nächste Objekt aus dem Inputstream und fügt dies als
+	 * letztes Element in die Empfangeschlange ein.
+	 * 
+	 * @author Ann-Catherine Hartmann 6038514
+	 */
 	public void empfangeVomServer() {
-		
+
 		try {
 			
-			System.out.println("Leere Nachricht");
-			MessageObject bmsg = (MessageObject)ois.readObject();
-			empfangeVomServer.addLast(bmsg);
+			MessageObject antwort = (MessageObject) ois.readObject();
+			empfangeVomServer.addLast(antwort);
+			
 		} catch (IOException e) {
-			
-			//e.printStackTrace();
+			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
-			
+
 		}
-		
+
 	}
-	
-	public void bekommeVonClient(MessageObject cmsg){
-		sendeAnServer.addLast(cmsg);
+	/**
+	 * hier wird das Objekt übergeben, das an den Server geschickt werden soll. Dieses 
+	 * wird als Letztes in die Sendeschlange eingefügt und die Methode sendeAnServer wird
+	 * aufgerufen.
+	 * 
+	 * @author Ann-Catherine Hartmann 6038514
+	 */
+	public void bekommeVonClient(MessageObject anfrage) {
+		sendeAnServer.addLast(anfrage);
 		sendeAnServer();
 		
 	}
-	
-	public MessageObject gebeWeiterAnClient(){
-	MessageObject j;
-	if (empfangeVomServer.isEmpty()== false){
-	j=empfangeVomServer.removeFirst();
-	return j;}
-	else {
-		return null;
-	}	
-}
-	
-	
-	public void beende(){
-	
-		//clientOpen=false;
-		
+	/**
+	 * wenn die Empfangeschlange nicht leer ist, wird das erste Element der Liste 
+	 * zurückgegeben, ansonsten wird null zurückgegeben 
+	 * 
+	 * @return das erste Nachrichtenobjekt der Empfangeschlange oder null, wenn 
+	 * Empfangeschlange leer ist
+	 * 
+	 * 
+	 * @author Ann-Catherine Hartmann 6038514
+	 *
+	 */
+	public MessageObject gebeWeiterAnClient() {
+		MessageObject antwort;
+		if (empfangeVomServer.isEmpty() == false) {
+			antwort = empfangeVomServer.removeFirst();
+			return antwort;
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * Setzt zuerst den Boolean clientOpen auf false, damit die run()-Methode aus meiner 
+	 * Klasse und aus der der Cientengine beendet wird. Zudem wird der Input-, Output- , 
+	 * Objectinput-, Objectputstream und das Socket geschlossen
+	 * 
+	 * @author Ann-Catherine Hartmann 6038514  
+	 *
+	 */
+
+	public void beende() {
 		try {
-			
-			clientOpen=false;
-			
-			c.shutdownInput();
-			c.shutdownOutput();
-			c.close();
+
+			clientOpen = false;
+
+			client.shutdownInput();
+			client.shutdownOutput();
+			client.close();
 			ois.close();
 			oos.close();
-			
-			
-			
-			
-	} catch (IOException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();}
-		
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
-	
-	public void schickeIchBinDaNachricht(){
-		IchBinDa i= new IchBinDa();
-		System.out.println("Ich bin da");
-		bekommeVonClient(i);
+
+	/**
+	 * schickt eine Nachricht des Typs IchBinDa an den Server
+	 * 
+	 * @author Ann-Catherine Hartmann 6038514
+	 */
+	public void schickeIchBinDaNachricht() {
+		IchBinDa ibd = new IchBinDa();
+		bekommeVonClient(ibd);
 	}
 }
-	
-
 	

@@ -595,44 +595,46 @@ public class ServerEngine extends Thread {
 
 		return null;
 	}
-
 	/**
+	 * übergibt die Anmeldeart, name und passwort und schaut je nach Anmeldeart, ob es den Namen (und das Passwort) schon gibt,
+	 * wenn nicht, dann füge den Namen hinzu oder ob der Name und das Passwort in der Textdatei stehen und gibt an den Cliet zurück,
+	 * dass die Anmeldung geklappt hat
+	 * 
+	 * @param i steht für Anmeldeart 1= neu anmelden 2=einloggen
+	 * @param name , der eingegeben wurde ins Loginfenster
+	 * @param passwort, das eingegeben wurde ins Loginfenster
+	 * 
 	 * @author: Ann-Catherine Hartmann, Matrikelnr: 60038514/ Prüfungsnummer:
 	 *          37658
 	 **/
 	public void logIn(int i, String name, String passwort) {
-		String abgleich = name + " " + passwort;
-		boolean namegibtesschon = false;
+		String abgleich = name + " " + passwort; //Abzugleichender String bestehend aus Name und Passwort
+		boolean namegibtesschon = false;//namegibtesschon ist ein boolean, der auf true gesetzt wird, wenn es den ausgesuchten Namen schon gibt
 		if (i == 1) { // Neuanmeldung
-			try {
+			try {//Prüfung, ob es Name oder Name und Passwort schon gibt
 				FileReader fr;
 				fr = new FileReader("Spielerdaten");
 				BufferedReader br = new BufferedReader(fr);
 				String zeile = br.readLine();
-				while ((zeile = br.readLine()) != null) {
-					if (zeile.equals(abgleich)) {
-						eingeloggt = false;
-						namegibtesschon = true;
-						System.out.println("Name und Passwort gibt es schon");
-						break;
-					} else if (zeile.startsWith(name + "")) {
-						eingeloggt = false;
-						namegibtesschon = true;
-						System.out.println("Name ist vergeben");
+				while ((zeile = br.readLine()) != null) {//während die Datei noch einen Inhalt hat
+					if (zeile.equals(abgleich)||zeile.startsWith(name + "")) {//falls es den Namen und das Passwort schon gibt, dann ...
+						eingeloggt = false;//setzte eingeloggt auf false
+						namegibtesschon = true;//namegibtesschon auf true
 						break;
 					}
 				}
-
+				//Schließe den Buffered- und Filereader
 				br.close();
 				fr.close();
 
 			} catch (IOException e) {
 			}
 
-			if (namegibtesschon == false) {
-				String initiallevel = "Level 1";
+			if (namegibtesschon == false) {//Wenn es den Namen noch nicht gibt
+				String initiallevel = "Level 1";//setze das Level auf 1
 				FileWriter fw;
 				try {
+					//hinzufügen des Spielers ans Ende der Spielerdatendatei
 					fw = new FileWriter("Spielerdaten", true);
 					BufferedWriter bw = new BufferedWriter(fw);
 					bw.newLine();
@@ -642,31 +644,29 @@ public class ServerEngine extends Thread {
 					bw.newLine();
 					bw.newLine();
 					bw.newLine();
-					bw.close();// Schlieï¿½t die Datei
+					bw.close();// Schliesst die Datei
 					fw.close();
 					eingeloggt = true;
-					System.out.println("Eingeloggt true");
 				} catch (IOException e1) {
-					System.out.println("Fehler gefunden");
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}
-		} else if (i == 2) {
+		} else if (i == 2) {//wenn man sich einloggen will
 			try {
-				spielername = name;
-				spielerpasswort = passwort;
+				spielername = name;//speichert den Namen des Spielers
+				spielerpasswort = passwort;//speichert das Passwort des Spielers
+				//Schaut ob Name und Passwort in der Datei Spielerdaten steht
 				FileReader fr;
 				fr = new FileReader("Spielerdaten");
 				BufferedReader br = new BufferedReader(fr);
 				String zeile;
 				while ((zeile = br.readLine()) != null) {
 					System.out.println("Zeile wird gelesen");
-					if (zeile.equals(abgleich)) {
-						eingeloggt = true;
-						String level = br.readLine();
-						char c = level.charAt(6);
-						this.map.levelzaehler = (int) c - 48;
+					if (zeile.equals(abgleich)) {//Wenn Name und Passwort gefunden wurden in der Datei
+						eingeloggt = true;//setze eingeloggt gleich true
+						String level = br.readLine();//lese das Level in der darauffolgenden Zeile
+						char c = level.charAt(6);//Levelnummer steht an Zeile 6 des Strings level
+						this.map.levelzaehler = (int) c - 48;// level wird auf den Wert aus der Datei gesetzt, -48, da die Zahlen im Asci-code ab Stelle 49 anfangen
 						break;
 					}
 				}
@@ -680,24 +680,25 @@ public class ServerEngine extends Thread {
 	}
 
 	/**
-	 * @author: Ann-Catherine Hartmann, Matrikelnr: 60038514/ Prüfungsnummer:
-	 *          37658
+	 * Liest die ersten 5 Namen und Zeiten in der Highscoredatei aus 
+	 * und packt diesen in eine Nachricht und gibt diese über die Kommunikation an den Client weiter
+	 * 
+	 * @author: Ann-Catherine Hartmann, Matrikelnr: 6038514
+	 *       
 	 **/
 	public void leseHighScore() {
 		try {
-			FileReader fr;
-			fr = new FileReader("HighScore");
-			BufferedReader br = new BufferedReader(fr);
-			String zeile;
-			for (int i = 0; i < 5; i++) {
+			FileReader fr= new FileReader("HighScore"); //Initialisierung des Filereaders
+			BufferedReader br = new BufferedReader(fr);//Initialisierung des Bufferedrreaders
+			String zeile;//String zum Zwischenspeichern der gelesenen Zeile
+			for (int i = 0; i < 5; i++) {//gehe 5 mal durch
 
-				zeile = br.readLine();
-				System.out.println("HighScore wird gelesen:" + zeile);
-				HighScoreMessage hm = new HighScoreMessage(zeile);
-				server.gebeWeiterAnClient(hm);
-				zeile = br.readLine();
+				zeile = br.readLine();//lese eine zeile
+				HighScoreMessage hm = new HighScoreMessage(zeile);//setze die Zeile als Parameter in die Nachricht
+				server.gebeWeiterAnClient(hm);//Schicke die Nachricht an die Kommunikation
+				zeile = br.readLine();//Lese die leere Zeile zw. den HighScorespielern
 			}
-
+			//Wenn man 5mal durchgegangen ist, schliesse den (Buffered-) Filereader
 			br.close();
 			fr.close();
 
@@ -707,21 +708,12 @@ public class ServerEngine extends Thread {
 	}
 
 	/**
-<<<<<<< HEAD
 	 * Fügt das Ergebnis des Spielers und dessen Namen sortiert nach Zeit in die Highscoretextdatei ein, 
 	 * 
 	 * @author: Ann-Catherine Hartmann 6038514
-=======
-	 * @author: Ann-Catherine Hartmann, Matrikelnr: 60038514/ Prüfungsnummer:
-	 *          37658
->>>>>>> branch 'master' of https://github.com/AGerberCologne/SweetSixteen.git
 	 **/
 	public void setHighScore(int zeit, String name) {
-		String z = "Zeit: " + String.valueOf(zeit) + "   Name des Spielers: "
-
-				+ name; //einzufügender String
-
-
+		String z = "Zeit: " + String.valueOf(zeit) + "   Name des Spielers: "+ name; //einzufügender String
 		try {
 
 			File original = new File("HighScore");//Originaldatei
@@ -735,35 +727,38 @@ public class ServerEngine extends Thread {
 			BufferedWriter bw = new BufferedWriter(fw);
 			//Zwischenspeicher für die aktuell gelesene Zeile
 			String zeile;
-
+			//wenn die aktuell gelesene Zeile ungleich Null ist, also man noch nicht am Ende der Datei angekommen ist
 			while ((zeile = br.readLine()) != null) {
+				//wenn die zeile im Original nicht leer ist, dann...
 				if (zeile.equals("") == false) {
+					//Zähler gleich 6, da die Zahl für die Zeit an der 6.Stelle der Zeile anfängt
 					int i = 6;
-					char k = zeile.charAt(i);
-					i++;
-					String h = String.valueOf(k);
-					while (((int) (k = zeile.charAt(i))) != 32) {
-						h = h + k;
-						i++;
+					char k = zeile.charAt(i);//bekomme das Zeichen an der Stelle i
+					i++;//erhöhe i um 1
+					String h = String.valueOf(k);//
+					while (((int) (k = zeile.charAt(i))) != 32) {//Während das gelesene Zeichen an der Stelle i ungleich dem Leerzeichen ist (in ASCI-Code = 32), dann..
+						h = h + k;//füge zu h den char k
+						i++;//erhöhe i um 1
 					}
-					Integer l = Integer.valueOf(h);
-					if (l > zeit) {
-						bw.write(z);
-						bw.newLine();
-						bw.newLine();
+					Integer l = Integer.valueOf(h);//Integerwert von dem String h, nachdem alle Zahlen in der Zeile gelesen wurden
+					if (l > zeit) {//falls die aktuell gelesene Zeit größer ist als die zeit unseres Spielers
+						bw.write(z);//schreibe die Werte (Name und Zeit, die im String s gespeichert sind) des aktuellen Spielers in die Hilfsdatei
+						bw.newLine();//gehe in die nächste Zeile in der Hilfsdatei
+						bw.newLine();//gehe in die nächste Zeile (damit wird eine leere Zeile erzeugt) in der Hilfsdatei
 					}
 				}
-				bw.write(zeile);
-				bw.newLine();
+				bw.write(zeile);//Schreibe den aktuell ausgelesenen Wert in die Hilfsdatei
+				bw.newLine();//geh in die nächste Zeile in der Hilfsdatei
 			}
 			
-			bw.flush();
+			bw.flush();//flusht den BufferedWriter
+			//Schliesst den (Buffered-)Filewriter und (Buffered-)FileReader
 			fw.close();
 			bw.close();
 			br.close();
 			fr.close();
-			original.delete();
-			kopie.renameTo(original);
+			original.delete();//lösche die Originaldatei
+			kopie.renameTo(original);//nenne die Hilfsdatei so wie die Originaldatei
 
 		} catch (IOException e) {
 
@@ -829,3 +824,5 @@ public class ServerEngine extends Thread {
 
 	}
 }
+
+

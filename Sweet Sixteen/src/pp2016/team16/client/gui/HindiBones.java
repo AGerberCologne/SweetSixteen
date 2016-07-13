@@ -6,25 +6,14 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.LinkedList;
-
 import javax.swing.JFrame;
-
-import pp2016.team16.client.gui.Leser;
 import pp2016.team16.client.engine.ClientEngine;
-import pp2016.team16.server.map.AlleLevel;
-import pp2016.team16.shared.Boden;
-import pp2016.team16.shared.Heiltrank;
-import pp2016.team16.shared.Monster;
-import pp2016.team16.shared.Schluessel;
-import pp2016.team16.shared.Spielelement;
-import pp2016.team16.shared.Spieler;
-import pp2016.team16.shared.Tuer;
-import pp2016.team16.shared.Wand;
 
 /**
- * Klasse für das gesamte Fenster des Spiels
- * Mit KeyListener und MouseListener
+ * <Klasse fuer das gesamte Fenster des Spiels Implementiert wird ein
+ * KeyListener und ein MouseListener Der KeyListener wird für die Bewegung
+ * benoetigt, der MouseListener wird Aktionen>
+ * 
  * @author Simon Nietz, Matr_Nr: 5823560
  *
  */
@@ -33,71 +22,72 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 
 	private static final long serialVersionUID = 1L;
 
-
 	private Spielflaeche spielflaeche;
 	private Statusleiste statusleiste;
-	public Highscore highscore;
 	private MenuLeiste menuLeiste;
 	private Steuerung steuerung;
+
+	public Highscore highscore;
 	public Cheats cheats;
-	//	public boolean test;
-	
-
-
-	//public AlleLevel level2 = new AlleLevel();
-
 	public ClientEngine engine = new ClientEngine();
-	public boolean spielende = false;
-	public boolean verloren = false;
-	public static int a;
-
-	public long startZeit;
-	public int benoetigteZeit;
-	public boolean nebelAn = true;
 	public static JFrame frame;
+
 	private boolean spielerInHighscore = false;
 	public boolean highscoreAngezeigt = false;
+	public boolean nebelAn = true;
+	public boolean spielende = false;
+	public boolean verloren = false;
 
 	public final int MAXLEVEL = 5;
 	public final int WIDTH = 21;
 	public final int HEIGHT = 21;
 	public final int BOX = 32;
-	//public final int Width = 17;
-	//public final int Height = 17;
+	public static int itemtyp;
+	public long startZeit;
+	public int benoetigteZeit;
 
 	/**
+	 * <Der Konstruktor startet zunächst die Loginabfrage Wird diese erfuellt,
+	 * so wird ein neues JFrame initialisiert und ein neues Spiel gestartet.>
+	 * 
 	 * @author Simon Nietz, Matr_Nr: 5823560
-	 * @param width Breite des Fensters
-	 * @param height Hoehe des Fensters
-	 * @param title Titel des Fensters
+	 * 
+	 * @param width
+	 *            die Breite des erzeugten JFrame fuer das Spiel
+	 * @param height
+	 *            die Hoehe des erzeugten JFrame fuer das Spiel
+	 * @param title
+	 *            der Titel des JFrame
+	 * 
 	 */
 
 	public HindiBones(int width, int height, String title) {
-		
-	
+
+		// starte zunaechst den LoginDialog und ueberpruefe, ob der Login
+		// erfolgreich ist
 		zeigeLogin();
-		if(LoginDialog.isSucceded()){
-		//	System.out.println(LoginDialog.isSucceded());
-		//	initialisiereJFrame(width, height, title);
-		//	starteNeuesSpiel();
-		
-		try {
-			engine.changeLevel();
-		} catch (Exception e) {
-			e.printStackTrace();
+		if (LoginDialog.isSucceded()) {
+			try {
+				engine.changeLevel();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			// bei erfolgreichem Login, wird ein neues Spiel gestartet
+			initialisiereJFrame(width, height, title);
+			starteNeuesSpiel();
 		}
-		//}
-		initialisiereJFrame(width, height, title);
-		starteNeuesSpiel();
-		}
-		
-	}	
+
+	}
 
 	/**
 	 * 
-	 * @param width Breite des erzeugten JFrame
-	 * @param height Heohe des erzeugten JFrame
-	 * @param title Titel des erzeugten JFrame
+	 * @author Simon Nietz, Matr_Nr:5823560
+	 * @param width
+	 *            Breite des erzeugten JFrame
+	 * @param height
+	 *            Heohe des erzeugten JFrame
+	 * @param title
+	 *            Titel des erzeugten JFrame
 	 */
 
 	public void initialisiereJFrame(int width, int height, String title) {
@@ -133,6 +123,9 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
 
+	/**
+	 * @author Die Methode wurde aus dem alten Spiel uebernommen
+	 */
 	public void zeigeSpielfeld() {
 		// entferne alles
 		highscoreAngezeigt = false;
@@ -148,21 +141,9 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 		this.pack();
 	}
 
-	public  void zeigeLogin() {
-		// erstelle das Fenster für den Login     	
-		LoginDialog loginDlg = new LoginDialog(frame, this);
-		loginDlg.setVisible(true);
-		
-			//     engine.spieler.setName(LoginDialog.getUsername());
-
-	}
-/*	public void chat(){
-		Chat chatfenster = new Chat(this);
-		
-	} */
-
-
-
+	/**
+	 * @author Diese Methode wurde aus dem alten Spiel uebernommen
+	 */
 	public void zeigeHighscore() {
 		// entferne alles
 		highscoreAngezeigt = true;
@@ -178,6 +159,9 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 		highscore.repaint();
 	}
 
+	/**
+	 * @author Diese Methode wurde aus dem alten Spiel uebernommen
+	 */
 	public void zeigeSteuerung() {
 		// entferne alles
 		highscoreAngezeigt = false;
@@ -192,8 +176,15 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 		this.pack();
 		steuerung.repaint();
 	}
-	public void zeigeCheats(){
+
+	/**
+	 * <Die Methode zeigt das Bild der Cheats an>
+	 * 
+	 * @author Simon Nietz, Matr_Nr: 5823560
+	 */
+	public void zeigeCheats() {
 		highscoreAngezeigt = false;
+		// Entferne zunaechst alles, was angezeigt wird
 		this.remove(spielflaeche);
 		this.remove(statusleiste);
 		this.remove(highscore);
@@ -206,160 +197,145 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 		cheats.repaint();
 	}
 
+	/**
+	 * Die Methode initialisiert ein neues Objekt des Datentype LoginDialog>
+	 * 
+	 * @author Simon Nietz, Matr_Nr: 5823560
+	 */
+	public void zeigeLogin() {
+		// erstelle das Fenster für den Login
+		LoginDialog loginDlg = new LoginDialog(frame, this);
+		loginDlg.setVisible(true);
+	}
+
+	/**
+	 * @author Diese Methode wurde aus dem alten Spiel uebernommen
+	 */
 	// Getter fuer die Spielflaeche bzw. Statusleiste
-	public Spielflaeche getSpielflaeche() {return spielflaeche;}
-	public Statusleiste getStatusleiste() {return statusleiste;}
-	public Highscore getHighscore() {return highscore;}
+	public Spielflaeche getSpielflaeche() {
+		return spielflaeche;
+	}
+	/**
+	 * @author Diese Methode wurde aus dem alten Spiel uebernommen
+	 */
+	public Statusleiste getStatusleiste() {
+		return statusleiste;
+	}
+	/**
+	 * @author Diese Methode wurde aus dem alten Spiel uebernommen
+	 */
+	public Highscore getHighscore() {
+		return highscore;
+	}
 
-
-	// Methoden der Schnittstelle KeyListener
-
+	
+	/**
+	 * <Die Klasse implementiert den KeyListener>
+	 * @author Simon Nietz, Matr_Nr: 5823560
+	 */
 	public void keyPressed(KeyEvent e) {
-		// Aktuelle Position des Spielers
-		int xPos = engine.spieler.getXPos();
-		int yPos = engine.spieler.getYPos();
-
-
-		// Frage Tastatureingaben auf den Pfeiltasten ab.
-		// Es wird geprueft, ob der naechste Schritt zulaessig ist.
-		// Bleibt die Figur innerhalb der Grenzen des Arrays?
-		// Wenn ja, ist das naechste Feld begehbar?
-		// Falls beides "wahr" ist, dann gehe den naechsten Schritt
+		// Frage ab, welche Tasten gedrueckt werden
+		// Rufe bei den Tasten die jeweiligen Methoden aus der ClientEngine auf
 		if (!spielende) {
-			if (e.getKeyCode() == KeyEvent.VK_UP) {
-				if (yPos > 0 && !(engine.map.karte[xPos][yPos - 1] instanceof Wand))
-					engine.spieler.hoch();
-			} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-				if (yPos < HEIGHT + 4 && !(engine.map.karte[xPos][yPos + 1] instanceof Wand))
-					engine.spieler.runter();
-			} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-				if (xPos > 0 && !(engine.map.karte[xPos - 1][yPos] instanceof Wand))
-					engine.spieler.links();
-			} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-				if (xPos < WIDTH + 4 && !(engine.map.karte[xPos + 1][yPos] instanceof Wand))
-					engine.spieler.rechts();
-			} else if (e.getKeyCode() == KeyEvent.VK_Q) {
-				System.out.println("Angreifen");
-				engine.angriffSpieler();//ruft Methode im Client auf
-			//	Monster	m = engine.spieler.angriffsMonster();
-			//	Monster m = engine.monsterListe.get(i);
-			/*Monster m = engine.spieler.angriffsMonster();
-				if (m != null)
-					m.changeHealth(-BOX / 4);
-				// B für 'Heiltrank benutzen'*/
-				
-			} else if (e.getKeyCode() == KeyEvent.VK_B){
+			if (e.getKeyCode() == KeyEvent.VK_B) {
 				engine.trankBenutzen();
-			} else if (e.getKeyCode() == KeyEvent.VK_L){
+				//
+			} else if (e.getKeyCode() == KeyEvent.VK_L) {
 				try {
 					engine.cheatBenutzen(1);
 				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
 				}
-			} else if (e.getKeyCode() == KeyEvent.VK_D){
+			} else if (e.getKeyCode() == KeyEvent.VK_D) {
 				try {
 					engine.cheatBenutzen(2);
 				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
 				}
 			}
-			
-		}
 
-		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-			// Schluessel aufnehmen
-			try {
-				a = engine.benutzeItem();
-			} catch (InterruptedException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}				
-			// Heiltrank aufnehmen
+			if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+				// Item aufnehmen
+				try {
+					itemtyp = engine.benutzeItem();
+				} catch (InterruptedException e1) {
 
-			// Schluessel benutzen
-			if(a == 2){
+				}
+				if (itemtyp == 2) {
 
-				nextLevel();
-			}else if(a == 3) {
-				spielende = true;
+					nextLevel();
+				} else if (itemtyp == 3) {
+					spielende = true;
+				}
 			}
 		}
+
 	}
 
+	// Die restlichen Methoden des KeyListener muessen implementiert werden
+	public void keyReleased(KeyEvent e) {
+	}
 
+	public void keyTyped(KeyEvent e) {
+	}
 
-
-	// int aktuelleXPos = fenster.engine.spieler.getX();
-	// int aktuelleYPos = fenster.engine.spieler.getY();	
-
+	/**
+	 * <Der MouseListener wird implementiert.>
+	 * @author Simon Nietz
+	 */
 	public void mouseClicked(MouseEvent e) {
-		int	zielX = e.getX() / 32 + spielflaeche.zaehler1; // Koordinaten des Klicks ...
-		int	zielY = (e.getY() / 32)-1 + spielflaeche.zaehler2; // auslesen und als Ziel setzen
+		int zielX = e.getX() / 32 + spielflaeche.zaehler1; // Koordinaten des
+															// Klicks ...
+		int zielY = (e.getY() / 32) - 1 + spielflaeche.zaehler2; // auslesen und
+																	// als Ziel
+																	// setzen
 		if (e.getButton() == MouseEvent.BUTTON1) {
 			// Es war die linke Maustaste
 			if (!spielende) {
-			System.out.println(zielX+" "+zielY);
-		//	engine.wegAnfragen(zielX, zielY);
-			
-			try {
-				engine.wegAnfragen(zielX, zielY);
-				System.out.println("Anfrage wurde verschickt");
-			} catch (InterruptedException e1) {
-				System.out.println("Es ist was schief gelaufen");
-				e1.printStackTrace();
-			}
-			
-			}
+				System.out.println(zielX + " " + zielY);
 
-		}else if (e.getButton() == MouseEvent.BUTTON3) {
+				// Gebe die Koordinaten an die Methode wegAnfragen der
+				// ClientEngine weiter
+				try {
+					engine.wegAnfragen(zielX, zielY);
+					System.out.println("Anfrage wurde verschickt");
+				} catch (InterruptedException e1) {
+				}
+
+			}
+			// Bei Rechter Maustaste wird die Methode angriffSpieler der
+			// ClientEngine weitergegeben
+		} else if (e.getButton() == MouseEvent.BUTTON3) {
 			engine.angriffSpieler();
-				
+
 		}
 	}
 
-	/* laufweg = engine.Astern(int zielX, zielY, startX, StartY, this)   | was für ein Typ ist laufweg?
+	// Die restlichen Methoden des Mouselistener müssen implementiert werden
+	public void mouseEntered(MouseEvent arg0) {
+	}
 
+	public void mouseExited(MouseEvent arg0) {
+	}
 
+	public void mousePressed(MouseEvent arg0) {
+	}
 
+	public void mouseReleased(MouseEvent arg0) {
+	}
 
-
-
+	/**
+	 * @author Diese Methode wurde aus dem alten Spiel uebernommen
 	 */
-	/* die uebrigen Methoden des MouseListener muessen auch implementiert werden 
-	 auch wenn diese nicht genutzt werden
-	 */
-	public void mouseEntered(MouseEvent arg0) {}
-	public void mouseExited(MouseEvent arg0) {}
-	public void mousePressed(MouseEvent arg0) {}
-	public void mouseReleased(MouseEvent arg0) {}
-
-
-
-
-	public void keyReleased(KeyEvent e) {}
-	public void keyTyped(KeyEvent e) {}
-
-	
-	
 	public void spielZuruecksetzen() {
-
-		// das Spiel wird neu initialisiert
-/*		engine.spieler = new Spieler("img//spieler.png", this);
-		monsterListe = new LinkedList<Monster>();
-		level = new Spielelement[WIDTH][HEIGHT];
-*/
-
-//		currentLevel = 0;
 		spielende = false;
 		verloren = false;
 		nebelAn = true;
-		//nextLevel();
 		spielerInHighscore = false;
 		startZeit = System.currentTimeMillis();
 	}
 
+	/**
+	 * @author Diese Methode wurde aus dem alten Spiel uebernommen
+	 */
 	// Spielschleife
 	public void starteNeuesSpiel() {
 		spielZuruecksetzen();
@@ -370,7 +346,8 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 				// Hier wird alle 50ms neu gezeichnet
 				try {
 					Thread.sleep(50);
-				} catch (InterruptedException e) {}
+				} catch (InterruptedException e) {
+				}
 
 				getSpielflaeche().repaint();
 				getStatusleiste().repaint();
@@ -383,10 +360,8 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 				benoetigteZeit = (int) ((System.currentTimeMillis() - startZeit) / 1000);
 
 				if (!verloren && !spielerInHighscore) {
-					/*getHighscore().addSpielerToHighScore(benoetigteZeit);
-					getHighscore().repaint();
-					spielerInHighscore = true;*/
-					engine.fuegeZuHighScorehinzu(LoginDialog.getUsername(), benoetigteZeit);
+					engine.fuegeZuHighScorehinzu(LoginDialog.getUsername(),
+							benoetigteZeit);
 				} else {
 					getSpielflaeche().repaint();
 				}
@@ -395,26 +370,18 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 		} while (true);
 
 	}
-
-	public void nextLevel()  {
-		// das nächste Level wird geladen
-	//	currentLevel++;
-
-		//	laby = level2.setzeInhalt(currentLevel);		
+	
+	/**
+	 * <Die Methode lädt das Level aus der ClientEngine>
+	 * @author Simon Nietz, Matr_Nr: 5823560
+	 */
+	public void nextLevel() {
 		try {
 			engine.map.karte = engine.changeLevel();
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
-		//	Leser leser = new Leser(laby, this);
-		//	level = leser.getLevel();
 	}
-
-	public ClientEngine getEngine() {
-		return engine;
-	}
-
+	
 
 
 }
-

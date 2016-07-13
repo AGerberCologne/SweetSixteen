@@ -10,6 +10,7 @@ import pp2016.team16.shared.Map;
 import pp2016.team16.server.comm.ServerComm;
 import pp2016.team16.server.map.AlleLevel;
 
+
 /**
  * 
  * @author Alina Gerber 5961246
@@ -20,15 +21,19 @@ import pp2016.team16.server.map.AlleLevel;
 
 public class ServerEngine extends Thread {
 
+
+
 	public ServerComm server;
 	public Map map = new Map();
 	public Spieler spieler = new Spieler("img//spieler.png");
 	public LinkedList<Monster> monsterListe = new LinkedList<Monster>();
 	public Konstanten konstante = new Konstanten();
 	
+
 	/**
 	 * enthält den Namen des aktuell eingeloggten Spielers
 	 */
+
 	public String spielername;
 	/**
 	 * enthält das Passwort des aktuell eingeloggten Spielers
@@ -68,7 +73,7 @@ public class ServerEngine extends Thread {
 		System.out.println("Starte Server");
 
 	}
-	
+
 	/**
 	 *  Ueberschreiben der run-Methode des Threads; diese läuft solange wie server nicht beendet ist.
 	 *  Die Methode horcht nach neuen Nachrichten vom Client und versucht diese zu bearbeiten.
@@ -702,14 +707,23 @@ public class ServerEngine extends Thread {
 	}
 
 	/**
+<<<<<<< HEAD
 	 * Fügt das Ergebnis des Spielers und dessen Namen sortiert nach Zeit in die Highscoretextdatei ein, 
 	 * 
 	 * @author: Ann-Catherine Hartmann 6038514
+=======
+	 * @author: Ann-Catherine Hartmann, Matrikelnr: 60038514/ Prüfungsnummer:
+	 *          37658
+>>>>>>> branch 'master' of https://github.com/AGerberCologne/SweetSixteen.git
 	 **/
 	public void setHighScore(int zeit, String name) {
 		String z = "Zeit: " + String.valueOf(zeit) + "   Name des Spielers: "
+
 				+ name; //einzufügender String
+
+
 		try {
+
 			File original = new File("HighScore");//Originaldatei
 			File kopie = new File("HighScore2");//Hilfsdatei
 			FileReader fr = new FileReader(original);//Initialisierung des Filereaders für die Originaldatei
@@ -721,7 +735,7 @@ public class ServerEngine extends Thread {
 			BufferedWriter bw = new BufferedWriter(fw);
 			//Zwischenspeicher für die aktuell gelesene Zeile
 			String zeile;
-			//
+
 			while ((zeile = br.readLine()) != null) {
 				if (zeile.equals("") == false) {
 					int i = 6;
@@ -752,9 +766,11 @@ public class ServerEngine extends Thread {
 			kopie.renameTo(original);
 
 		} catch (IOException e) {
+
 		}
 
 	}
+
 
 	/** 
 	 * speichert das aktuelle Level, wenn der Spieler auf Beenden drückt

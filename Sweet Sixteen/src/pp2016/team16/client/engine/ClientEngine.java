@@ -1,8 +1,10 @@
 package pp2016.team16.client.engine;
 
 /**
+ * In der Klasse  werden die "Spielmatrix" verwaltet:
  * @author Alina Gerber, 5961246
  */
+
 import java.io.*;
 import java.net.*;
 import java.util.*;
@@ -23,6 +25,9 @@ public class ClientEngine extends Thread {
 	public LinkedList<String> highscore = new LinkedList<String>();
 
 	public boolean eingeloggt = false;
+	/**
+	 * @param 
+	 */
 	public boolean login = false;
 	public boolean neuesLevel = false;
 	public int itemBenutzen = 4;
@@ -69,10 +74,18 @@ public class ClientEngine extends Thread {
 		this.interrupt();
 	}
 
-	// Message-Handling
-	void nachrichtVerarbeiten(MessageObject daten) throws Exception {
-		if (daten instanceof LoginAnswerMessage) {
-			LoginAnswerMessage l = (LoginAnswerMessage) daten;
+//Nachrichtenverarbeiten	
+	/**
+	 * Die Nachricht verarbeitet die an den Client gesendeten Nachrichten.
+	 * @param eingehendeNachricht eingehende Nachricht
+	 * @throws Exception
+	 * 
+	 * @author Alina Gerber, 5961246
+	 */
+	void nachrichtVerarbeiten(MessageObject eingehendeNachricht) throws Exception {
+		//Fall: Login
+		if (eingehendeNachricht instanceof LoginAnswerMessage) {
+			LoginAnswerMessage l = (LoginAnswerMessage) eingehendeNachricht;
 			map.level = l.map;
 			map.levelzaehler = l.levelzaehler;
 			spieler.setName(l.name);
@@ -81,8 +94,8 @@ public class ClientEngine extends Thread {
 			System.out.println("Login wurde empfangen");
 			this.login = true;
 
-		} else if (daten instanceof ChangeLevelMessage) {
-			ChangeLevelMessage c = (ChangeLevelMessage) daten;
+		} else if (eingehendeNachricht instanceof ChangeLevelMessage) {
+			ChangeLevelMessage c = (ChangeLevelMessage) eingehendeNachricht;
 			map.breite = konstante.WIDTH;
 			map.hoehe = konstante.HEIGHT;
 			while (!monsterListe.isEmpty()) {
@@ -132,18 +145,18 @@ public class ClientEngine extends Thread {
 			this.neuesLevel = true;
 			System.out.println("Neues Level gespeichert");
 
-		} else if (daten instanceof SBewegungMessage) {
+		} else if (eingehendeNachricht instanceof SBewegungMessage) {
 			System.out.println("Neue Position");
-			SBewegungMessage position = (SBewegungMessage) daten;
+			SBewegungMessage position = (SBewegungMessage) eingehendeNachricht;
 			this.spieler.setPos(position.neuX, position.neuY);
-		} else if (daten instanceof MBewegungMessage) {
+		} else if (eingehendeNachricht instanceof MBewegungMessage) {
 			try {
 				System.out.println("Monster-Bewegung");
 
-				int richtung = ((MBewegungMessage) daten).richtung;
+				int richtung = ((MBewegungMessage) eingehendeNachricht).richtung;
 				Monster m = monsterListe
-						.get(((MBewegungMessage) daten).monsterNummer);
-				System.out.println(((MBewegungMessage) daten).monsterNummer
+						.get(((MBewegungMessage) eingehendeNachricht).monsterNummer);
+				System.out.println(((MBewegungMessage) eingehendeNachricht).monsterNummer
 						+ "  " + richtung);
 				switch (richtung) {
 				case 0:
@@ -163,9 +176,9 @@ public class ClientEngine extends Thread {
 
 			}
 
-		} else if (daten instanceof LeertasteMessage) {
+		} else if (eingehendeNachricht instanceof LeertasteMessage) {
 			// Schluessel aufnehmen
-			if (((LeertasteMessage) daten).art == 1) {
+			if (((LeertasteMessage) eingehendeNachricht).art == 1) {
 				spieler.nimmSchluessel();
 				map.karte[spieler.getXPos()][spieler.getYPos()] = new Boden();
 				this.itemBenutzen = 1;
@@ -173,14 +186,14 @@ public class ClientEngine extends Thread {
 				spieler.nimmSchluessel();
 			}
 
-			else if (((LeertasteMessage) daten).art == 0) {
+			else if (((LeertasteMessage) eingehendeNachricht).art == 0) {
 				spieler.nimmHeiltrank((Heiltrank) map.karte[spieler.getXPos()][spieler
 						.getYPos()]);
 				map.karte[spieler.getXPos()][spieler.getYPos()] = new Boden();
 				this.itemBenutzen = 1;
 			}
 			// Schluessel benutzen
-			else if (((LeertasteMessage) daten).art == 2) {
+			else if (((LeertasteMessage) eingehendeNachricht).art == 2) {
 				if (!((Tuer) map.karte[spieler.getXPos()][spieler.getYPos()])
 						.istOffen() && spieler.hatSchluessel()) {
 					((Tuer) map.karte[spieler.getXPos()][spieler.getYPos()])
@@ -192,11 +205,11 @@ public class ClientEngine extends Thread {
 					} else
 						this.itemBenutzen = 3;
 				}
-			} else if (((LeertasteMessage) daten).art == 3) {
+			} else if (((LeertasteMessage) eingehendeNachricht).art == 3) {
 				this.itemBenutzen = 1;
 			}
 
-		} else if (daten instanceof BTasteMessage) {
+		} else if (eingehendeNachricht instanceof BTasteMessage) {
 			if (spieler.anzahlHeiltraenke > 0) {
 				int change = spieler.benutzeHeiltrank();
 				// Heilungseffekt wird verbessert, falls neue Monster durch das
@@ -206,14 +219,14 @@ public class ClientEngine extends Thread {
 				else
 					spieler.changeHealth((int) (change * 0.5));
 			}
-		} else if (daten instanceof MAngriffMessage) {
+		} else if (eingehendeNachricht instanceof MAngriffMessage) {
 			Monster m = monsterListe
-					.get(((MAngriffMessage) daten).monsternummer);
+					.get(((MAngriffMessage) eingehendeNachricht).monsternummer);
 			spieler.changeHealth(-konstante.BOX / 8);
 			m.angriff = true;
 
-		} else if (daten instanceof MStatusMessage) {
-			MStatusMessage msm = (MStatusMessage) daten;
+		} else if (eingehendeNachricht instanceof MStatusMessage) {
+			MStatusMessage msm = (MStatusMessage) eingehendeNachricht;
 			System.out.println("Statusmessage kommt an");
 			int j = msm.monsternummer;
 			boolean mtot = msm.tot;
@@ -226,9 +239,9 @@ public class ClientEngine extends Thread {
 			else if (mtot == false && heilen == true)
 				m.changeHealth(konstante.BOX / 8);
 
-		} else if (daten instanceof HighScoreMessage) {
+		} else if (eingehendeNachricht instanceof HighScoreMessage) {
 			System.out.println("HighScoreNachricht wird erkannt");
-			HighScoreMessage hm = (HighScoreMessage) daten;
+			HighScoreMessage hm = (HighScoreMessage) eingehendeNachricht;
 			String n = hm.zeile;
 			System.out.println(n);
 			highscore.add(n);
@@ -236,8 +249,8 @@ public class ClientEngine extends Thread {
 
 		}
 
-		else if (daten instanceof CheatMessage) {
-			int i = ((CheatMessage) daten).i;
+		else if (eingehendeNachricht instanceof CheatMessage) {
+			int i = ((CheatMessage) eingehendeNachricht).i;
 			switch (i) {
 			case 1:
 				spieler.changeHealth(konstante.BOX / 4);

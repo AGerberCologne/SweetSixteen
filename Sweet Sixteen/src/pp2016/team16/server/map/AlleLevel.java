@@ -331,7 +331,7 @@ public class AlleLevel {
 	 * <Methode setzeMonsterMitSchluessel() setzt zufaellig das Monster mit dem
 	 * Schluessel in das erzeugte Labyrinth. Auch hier wird zunaechst
 	 * ueberprueft, ob die zufaellig gewaehlte Position begehbar ist. >
-	 ** @return gibt das Level inklusive der gesetzten Spornpositionen des Monsters mit dem Schluessel zurueck.
+	 * @return gibt das Level inklusive der gesetzten Spornpositionen des Monsters mit dem Schluessel zurueck.
 	 * @author <Noll , Markus , 5812500 >
 	 */
 	public int[][] setzeMonsterMitSchluessel() {
@@ -353,11 +353,13 @@ public class AlleLevel {
 	 * 
 	 * @author <Noll , Markus , 5812500 >
 	 */
+	
 	/**
 	 * public void zeichneLevel(){ for (int x = 0; x < level.length; x++) { for
 	 * (int y = 0; y < level[x].length; y++) { System.out.print(level[x][y]); }
 	 * System.out.println(""); } }
 	 */
+	
 	/**
 	 * <Methode setzeInhalt() fasst alle zur Erzeugung des Levels notwendigen
 	 * Methoden in einer Methode zusammen. >
@@ -372,7 +374,6 @@ public class AlleLevel {
 		setzeTrank();
 		if (levelzahl < 3) {
 			setzeMonsterTyp1(levelzahl);
-
 			setzeMonsterTyp2(Math.max(3, levelzahl));
 		} else {
 			setzeMonsterTyp12(3);

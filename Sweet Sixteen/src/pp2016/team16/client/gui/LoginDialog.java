@@ -2,8 +2,6 @@ package pp2016.team16.client.gui;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.ArrayList;
-
 import javax.swing.*;
 import javax.swing.border.*;
 
@@ -84,11 +82,15 @@ public class LoginDialog extends JDialog {
         btnLogin.addActionListener(new ActionListener() {
  
         	public void actionPerformed(ActionEvent e){
+        		if(getUsername().equals("") || getPassword().equals("")){
+        			JOptionPane.showMessageDialog(LoginDialog.this,
+                            "Gib einen Benutzernamen und ein Passwort ein!",
+                            "Anmelden",
+                            JOptionPane.ERROR_MESSAGE);
+        		}else{
         		try {
 					test2 = fenster.engine.login(2, getUsername(), getPassword());
 				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
 				}
         	if (test2 == true){
         		JOptionPane.showMessageDialog(LoginDialog.this,
@@ -108,7 +110,7 @@ public class LoginDialog extends JDialog {
                 pfPassword.setText("");
                 test = false;  
         	}
-        		
+        		}
         	}
         	// abfragen, ob der eingegeben Benutzername existiert und das Passwort stimmt
        /*     public void actionPerformed(ActionEvent e) {
@@ -134,7 +136,7 @@ public class LoginDialog extends JDialog {
             } */
         });
         //moeglichkeit ohne sich einzuloggen zu spielen
-        btnCancel1 = new JButton("Spiele als Gast");
+  /*      btnCancel1 = new JButton("Spiele als Gast");
         btnCancel1.addActionListener(new ActionListener() {
  
             public void actionPerformed(ActionEvent e) {
@@ -143,7 +145,7 @@ public class LoginDialog extends JDialog {
                
             }
          
-        });
+        });*/
         
         //neuen Benutzer erstellen
         btnAnmelden = new JButton("Neu Anmelden");
@@ -159,8 +161,6 @@ public class LoginDialog extends JDialog {
         		try {
 					test2 = fenster.engine.login(1, getUsername(), getPassword());
 				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
 				}
         		
         		if(test2 == true){
@@ -214,7 +214,7 @@ public class LoginDialog extends JDialog {
        
         JPanel bp = new JPanel();
         bp.add(btnLogin);
-        bp.add(btnCancel1);
+    //    bp.add(btnCancel1);
         bp.add(btnAnmelden);
  
         getContentPane().add(panel, BorderLayout.CENTER);

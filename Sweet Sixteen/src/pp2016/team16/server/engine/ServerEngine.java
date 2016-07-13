@@ -277,11 +277,7 @@ public class ServerEngine extends Thread
 			}
 			int box = this.konstante.BOX;
 
-			/*	double p = m.cooldownProzent();
-			g.setColor(Color.RED);
-			g.drawImage(feuerball, (int)(((1-p) * m.getXPos() + (p) * s.getXPos())*box) + box/2,
-					(int)(((1-p) * m.getYPos() + (p) * s.getYPos())*box) + box/2, 8, 8, null);
-	 */}
+			}
 	}
 }
 public boolean attackiereSpieler(boolean hatSchluessel, Monster m) {

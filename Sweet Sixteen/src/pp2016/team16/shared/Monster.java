@@ -140,10 +140,10 @@ public class Monster extends Figur {
         if (!spielerImRadius) {
 			zustand= 1;
 		}
-        if (spielerImRadius&&this.getHealth()>16) {
+        if (spielerImRadius&&this.getHealth()>8) {
 			zustand= 2;
 		}
-        if (spielerImRadius&&this.getHealth()<=16) {
+        if (spielerImRadius&&this.getHealth()<=8) {
 			zustand=3;
 		}
 		return zustand;

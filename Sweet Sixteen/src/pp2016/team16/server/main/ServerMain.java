@@ -1,6 +1,6 @@
-package test;
+package pp2016.team16.server.main;
 
-import pp2016.team16.server.comm.*;
+
 import pp2016.team16.server.engine.ServerEngine;
 
 public class ServerMain {

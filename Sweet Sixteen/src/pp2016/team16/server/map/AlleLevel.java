@@ -15,15 +15,14 @@ import java.util.Random;
 
 import pp2016.team16.shared.Spielelement;
 
-/**
- * <Block Attribute>* */
 
-/**
- * 4 Attribute
- * 
- * @author <Noll , Markus , 5812500 >
- */
 public class AlleLevel {
+	/**
+	 * <Block Attribute>
+	 * 4 Attribute
+	 * 
+	 * @author <Noll , Markus , 5812500 >
+	 */
 	public Spielelement[][] level2;
 	public int hoehe, breite; // deklariere oeffentliche Variabeln hoehe und
 								// breite
@@ -31,9 +30,10 @@ public class AlleLevel {
 
 	/**
 	 * < Block Konstruktor > <Zweidimensionales Array stellt die Grundlage des
-	 * jeweiligen Levels dar >
-	 * 
-	 * @author <Noll , Markus , 5812500 >
+	 * jeweiligen Levels dar >	 
+	 * @param hoehe gibt die Hoehe des Levles an
+	 * @param breite gibt die Breite des Levels an
+	 * * @author <Noll , Markus , 5812500 >
 	 */
 	public AlleLevel(int hoehe, int breite) { // Konstruktor
 		this.hoehe = hoehe; // initialisiere hoehe und breite
@@ -51,7 +51,7 @@ public class AlleLevel {
 	 * eine zufaellige Startposition für die darauf folgende Methode gewaehlt.
 	 * Wichtig dabei ist, dass sich die Startposition in einer ungeraden Spalte,
 	 * sowie ungeraden Zeile befindet. >
-	 * 
+	 * @return das bisher erzeugte Labyrinth, bestehend aus Weg und Wand, wird zurueckgegeben
 	 * @author <Noll , Markus , 5812500 >
 	 */
 	public int[][] erzeugeLabyrinth() { // Methode um Labyrinth zu erzeugen
@@ -89,8 +89,8 @@ public class AlleLevel {
 
 	/**
 	 * <Methode erzeugeZufallsRichtung() erzeugt ein Array mit vier
-	 * Zufallszahlen, die für die jeweiligen Richtungen stehen >
-	 * 
+	 * Zufallszahlen, die für die jeweiligen Richtungen stehen > 
+	 * @return Interger Array wird zureuck gegeben
 	 * @author <Noll , Markus , 5812500 >
 	 */
 	public Integer[] erzeugeZufallsRichtung() {
@@ -113,7 +113,8 @@ public class AlleLevel {
 	 * festgelegt, dass die aeusserste Zeile und Spalte, nicht mehr zum
 	 * "legalen" Bereich gehoert. Durch das zufaellige benutzen der cases wird
 	 * ein Labyrinth erzeugt >
-	 * 
+	 * @param r beschreibt die vorher per Zufall bestimmte Startposition des Allgorithmus
+	 * @param c beschreibt die vorher per Zufall bestimmte Startposition des Allgorithmus
 	 * @author <Noll , Markus , 5812500 >
 	 */
 	public void floodfill(int r, int c) {
@@ -185,7 +186,7 @@ public class AlleLevel {
 	/**
 	 * <Methode zufallsPositionx() gibt eine zufaellige Zahl innerhalb der Hoehe
 	 * des Arrays wieder. Die erste und letzte Zeile sind nicht inbegriffen. >
-	 * 
+	 * @return gibt eine zufaellige Zahl innerhalb unseres Spielfelds wieder, diese Zahl steht fuer x-Koordinate 
 	 * @author <Noll , Markus , 5812500 >
 	 */
 	public int zufallsPositionx() {
@@ -198,7 +199,7 @@ public class AlleLevel {
 	 * <Methode zufallsPositiony() gibt eine zufaellige Zahl innerhalb der
 	 * Breite des Arrays wieder. Die erste und letzte Spalte sind nicht
 	 * inbegriffen. >
-	 * 
+	 * @return gibt eine zufaellige Zahl innerhalb unseres Spielfelds wieder, diese Zahl steht fuer y-Koordinate
 	 * @author <Noll , Markus , 5812500 >
 	 */
 	public int zufallsPositiony() {
@@ -211,7 +212,7 @@ public class AlleLevel {
 	 * <Methode setzeTrank() setzt zufaellig vier Traenke in unser erzeugtes
 	 * Labyrinth. Dabei wird zunaechst ueberprüft, ob die gewaehlte Position
 	 * begehbar ist. >
-	 * 
+	 * @return gibt das Level inklusive der gesetzten Traenke zurueck
 	 * @author <Noll , Markus , 5812500 >
 	 */
 	public int[][] setzeTrank() {
@@ -231,7 +232,7 @@ public class AlleLevel {
 	/**
 	 * <Methode setzeStart() setzt zufaellig eine Startposition in unsere
 	 * Aussenwand. >
-	 * 
+	 * @return gibt das Level inklusive der gesetzten Startposition des Spielers zurueck.
 	 * @author <Noll , Markus , 5812500 >
 	 */
 	public int[][] setzeStart() {
@@ -248,19 +249,19 @@ public class AlleLevel {
 	}
 
 	/**
-	 * <Methode setzeExit() setzt zufaellig eine Zielposition in unsere
+	 * <Methode setzeZiel() setzt zufaellig eine Zielposition in unsere
 	 * Aussenwand. >
-	 * 
+	 * @return gibt das Level inklusive der gesetzten Zielpoistion zurueck.
 	 * @author <Noll , Markus , 5812500 >
 	 */
-	public int[][] setzeExit() {
+	public int[][] setzeZiel() {
 
 		int y = zufallsPositiony();
 		int x = hoehe - 1;
 		if (level[x][y] == Felder.WAND && level[x - 1][y] == Felder.BODEN) {
 			level[x][y] = Felder.ZIEL;
 		} else {
-			setzeExit();
+			setzeZiel();
 		}
 		return level;
 	}
@@ -269,7 +270,7 @@ public class AlleLevel {
 	 * <Methode setzeMonsterTyp1() setzt zufaellig Monster des Typs 1 in das
 	 * erzeugte Labyrinth. Auch hier wird zunaechst ueberprueft, ob die
 	 * zufaellig gewaehlte Position begehbar ist. >
-	 * 
+	 * @return gibt das Level inklusive der gesetzten Spornpositionen der Monster vom Typ1 zurueck.
 	 * @author <Noll , Markus , 5812500 >
 	 */
 	public int[][] setzeMonsterTyp1(int maxMonster) {
@@ -289,7 +290,7 @@ public class AlleLevel {
 	 * <Methode setzeMonsterTyp2() setzt zufaellig Monster des Typs 1 in das
 	 * erzeugte Labyrinth. Auch hier wird zunaechst ueberprueft, ob die
 	 * zufaellig gewaehlte Position begehbar ist. >
-	 * 
+	 * @return gibt das Level inklusive der gesetzten Spornpositionen der Monster vom Typ2 zurueck.
 	 * @author <Noll , Markus , 5812500 >
 	 */
 	public int[][] setzeMonsterTyp2(int maxMonster) {
@@ -309,7 +310,7 @@ public class AlleLevel {
 	 * <Methode setzeMonsterTyp12() setzt zufaellig Monster des Typs 1 in das
 	 * erzeugte Labyrinth (Ab Level 3). Auch hier wird zunaechst ueberprueft, ob
 	 * die zufaellig gewaehlte Position begehbar ist. >
-	 * 
+	 * @return gibt das Level inklusive der gesetzten Spornpositionen der Monster vom Typ1 zurueck.
 	 * @author <Noll , Markus , 5812500 >
 	 */
 
@@ -330,7 +331,7 @@ public class AlleLevel {
 	 * <Methode setzeMonsterMitSchluessel() setzt zufaellig das Monster mit dem
 	 * Schluessel in das erzeugte Labyrinth. Auch hier wird zunaechst
 	 * ueberprueft, ob die zufaellig gewaehlte Position begehbar ist. >
-	 * 
+	 ** @return gibt das Level inklusive der gesetzten Spornpositionen des Monsters mit dem Schluessel zurueck.
 	 * @author <Noll , Markus , 5812500 >
 	 */
 	public int[][] setzeMonsterMitSchluessel() {
@@ -360,14 +361,14 @@ public class AlleLevel {
 	/**
 	 * <Methode setzeInhalt() fasst alle zur Erzeugung des Levels notwendigen
 	 * Methoden in einer Methode zusammen. >
-	 * 
+	 * @return gibt das fertig generierte, mit allen Spielelementen gesetzen  Level zurueck.
 	 * @author <Noll , Markus , 5812500 >
 	 */
 	public int[][] setzeInhalt(int levelzahl) {
 
 		erzeugeLabyrinth();
 		setzeStart();
-		setzeExit();
+		setzeZiel();
 		setzeTrank();
 		if (levelzahl < 3) {
 			setzeMonsterTyp1(levelzahl);

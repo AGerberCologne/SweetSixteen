@@ -8,11 +8,20 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+/**
+ * <Die Klasse zeigt das Bilder der Steuerung an>
+ * @author Simon Nietz, Matr_Nr: 5823560
+ *
+ */
+
 public class Steuerung extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
-	
+	/**
+	 * <Methode für die Festlegung und das anzeigen des Bildes>
+	 * @author Simon Nietz, Matr_Nr: 5823560
+	 */
 	
 	public void paint(Graphics g){
 		Image img = null, boden = null;

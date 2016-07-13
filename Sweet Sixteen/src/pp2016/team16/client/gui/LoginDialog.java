@@ -33,7 +33,7 @@ public class LoginDialog extends JDialog {
 	public String passwortname;
 
 	/**
-	 * <Die Methode LoginDialog erstellt ein neues JPanel. Dem JPanel werden JButtons und JTextField hinzugefeugt.>
+	 * <Der Konstruktor LoginDialog erstellt ein neues JPanel. Dem JPanel werden JButtons und JTextField hinzugefeugt.>
 	 * @param parent das Frame auf dem der Dialog ausgefuehrt wird
 	 * @param fenster fenster von HindiBones 
 	 * @author Simon Nietz, Matr_Nr: 5823560

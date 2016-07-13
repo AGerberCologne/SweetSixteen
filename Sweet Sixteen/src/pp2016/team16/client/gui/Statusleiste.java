@@ -16,8 +16,7 @@ import pp2016.team16.shared.Spielelement;
 import pp2016.team16.shared.Tuer;
 
 /**
- * <Klasse für die Statusleiste die unten zu sehen ist>
- * @author Simon Nietz, Matr_Nr: 5823560
+ * @author Die Klasse wurde aus dem alten Spiel uebernommen
  */
 
 public class Statusleiste extends JPanel {
@@ -27,12 +26,7 @@ public class Statusleiste extends JPanel {
 	private Image hintergrund, schluessel, heiltrank;
 	
 	private HindiBones fenster;
-	
-	/**
-	 * <
-	 * @param fenster fenster der Anwendung
-	 * @author Simon Nietz, Matr_Nr: 5823560
-	 */
+
 	
 	public Statusleiste(HindiBones fenster){
 		this.fenster = fenster;
@@ -47,7 +41,7 @@ public class Statusleiste extends JPanel {
 		}
 	}
 	
-
+	
 	
 	public void paint(Graphics g) {
 		g.setColor(Color.BLACK);

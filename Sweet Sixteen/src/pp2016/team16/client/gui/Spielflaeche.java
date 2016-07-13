@@ -35,7 +35,7 @@ public class Spielflaeche extends JPanel {
 	public Konstanten konstante = new Konstanten();
 	
 	/**
-	 * <In der Methode werden die Bilder aus dem Ordner img geladen
+	 * <In dem Konstruktor werden die Bilder aus dem Ordner img geladen und mithilfe der Paint Methode gezeichnet>
 	 * @param fenster das Spielfenster 
 	 * @author Simon Nietz, Matr_Nr: 5823560
 	 */

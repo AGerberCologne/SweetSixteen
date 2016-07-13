@@ -55,7 +55,7 @@ public class MenuLeiste extends JMenuBar implements ActionListener, WindowListen
     private HindiBones fenster;
     
     /**
-     * <Die MenuLeist des Typs JMenuBar wird erzeugt>
+     * <Der Konstruktor erzeugt die MenuLeist des Typs JMenuBar>
      * @param fenster fenster von der Anwendung
      * @author Simon Nietz, Matr_Nr: 5823560
      */

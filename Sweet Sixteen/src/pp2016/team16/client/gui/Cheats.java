@@ -25,7 +25,7 @@ public class Cheats extends JPanel {
 		Image img = null, boden = null;
 			// Versuche die Bilder die benutzt werden zu laden
 		try{
-			img = ImageIO.read(new File("img//Steuerung.png"));
+			img = ImageIO.read(new File("img//cheats.png"));
 			boden = ImageIO.read(new File("img//status.png"));
 		}catch(IOException e){ }
 		

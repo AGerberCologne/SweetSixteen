@@ -76,7 +76,7 @@ public class ClientComm extends Thread {
 			empfangeVomServer();
 
 			try {
-				sleep(600);
+				sleep(50);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

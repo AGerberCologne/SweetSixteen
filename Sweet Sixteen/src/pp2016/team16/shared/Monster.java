@@ -48,7 +48,7 @@ public class Monster extends Figur {
 		lastAttack = System.currentTimeMillis();
 		lastStep = System.currentTimeMillis();
 		cooldownAttack = 500 - 10 * 1; // ms
-		cooldownWalk = 0;
+		cooldownWalk = 1000;
 
 		zustand = 1;
 

@@ -1,21 +1,18 @@
 package pp2016.team16.client.engine;
 
-/**
- * In der Klasse  werden die "Spielmatrix" verwaltet:
- * @author Alina Gerber, 5961246
- */
 
-import java.io.*;
-import java.net.*;
+
 import java.util.*;
 
 import pp2016.team16.shared.*;
 import pp2016.team16.shared.Map;
 import pp2016.team16.client.comm.ClientComm;
-import pp2016.team16.client.gui.Highscore;
-import pp2016.team16.client.gui.HindiBones;
 import pp2016.team16.shared.Heiltrank;
 
+/**
+ * In der Klasse  werden die "Spielmatrix" verwaltet:
+ * @author Alina Gerber, 5961246
+ */
 public class ClientEngine extends Thread {
 	public ClientComm client;
 	public Konstanten konstante = new Konstanten();

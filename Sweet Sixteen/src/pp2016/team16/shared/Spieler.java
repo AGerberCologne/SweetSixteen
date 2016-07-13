@@ -1,20 +1,15 @@
 package pp2016.team16.shared;
 
-import pp2016.team16.client.engine.ClientEngine;
-import pp2016.team16.client.gui.HindiBones;
-import pp2016.team16.client.gui.LoginDialog;
 
+import pp2016.team16.client.gui.LoginDialog;
 import java.io.File;
 import java.io.IOException;
-import java.util.LinkedList;
-
-import pp2016.team16.server.engine.*;
-
 import javax.imageio.ImageIO;
-
-//import astern.Astern;
-//import astern.Wegpunkt;
-
+/**
+ * Klasse mit den Eigenschaften des Spielers, die nicht direkt in der Engine angegeben sind
+ * @ uebernommen aus dem alten Spiel
+ *
+ */
 public class Spieler extends Figur {
 
 	
@@ -26,9 +21,6 @@ public class Spieler extends Figur {
 	
 	public int zielX = 0;
 	public int zielY = 0;
-	public boolean hatSchrittgemacht =false;
-	
-	
 	
 	public Spieler(String imgDatei){
 		
@@ -52,60 +44,81 @@ public class Spieler extends Figur {
 		}
 	}
 
-	// Methode, um den Schluessel aufzuheben
+	/**
+	 *  Methode, um den Schluessel aufzuheben
+	 */
 	public void nimmSchluessel(){
 		hatSchluessel = true;
 	}
 	
-	// Methode, um den Schluessel zu entfernen
+	/**
+	 * Methode, um den Schluessel zu entfernen
+	 */
 	public void entferneSchluessel(){
 		hatSchluessel = false;
 	}	
-	
+	/**
+	 * Methode, um den Heiltrank zu benutzen
+	 * @return heiltrankWirkung, also die hoehe der Wirkung
+	 */
 	public int benutzeHeiltrank(){
 		setAnzahlHeiltraenke(anzahlHeiltraenke-1);
 		return heiltrankWirkung;
 	}
-	
+	/**
+	 * Methode um einen Heiltrank aufzuheben
+	 * @param Heiltrank (ermittelt ueber Spielelement[][]
+	 */
 	public void nimmHeiltrank(Heiltrank t){
 		anzahlHeiltraenke++;
 		heiltrankWirkung = t.getWirkung();
 			
 		
 	}
-	
+	/**
+	 * Methode um die Hoehe der Heiltraenke zu erhoehen
+	 * @param anzahl der Heiltraenke ingesamt
+	 */
 	public void setAnzahlHeiltraenke(int anzahl){
 		if (anzahl >= 0) anzahlHeiltraenke = anzahl;
 	}
-	
+	/**
+	 * Methode die die Anzahl der Heiltraenke zurueck gibt
+	 * @return die Gesamtanzahl an Traenken
+	 */
 	public int getAnzahlHeiltraenke(){
 		return anzahlHeiltraenke;
 	}
 	
-	// Hat der Spieler den Schluessel?
+	/**
+	 * Methode um abzufargen ob der Spieler den Schluessel besitzt
+	 * @return gibt einen boolean zurueck
+	 */
 	public boolean hatSchluessel(){
 		return hatSchluessel;
 	}
-		
+//Getter 
+	
 	public String getName(){
 	
 		return name;
 		
 	}
-	
-	public void setName(String name){
-		this.name = name ;
-	}
-	
 	public String getPasswort(){
 		
 		return passwort;
 		
 	}
 	
+// Setter
+	public void setName(String name){
+		this.name = name ;
+	}
 	public void setPasswort(String passwort){
 		this.passwort = passwort ;
 	}
+	
+	
 	
 	
 	

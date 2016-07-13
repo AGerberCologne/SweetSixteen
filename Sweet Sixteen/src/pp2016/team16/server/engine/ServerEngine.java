@@ -101,6 +101,7 @@ public class ServerEngine extends Thread {
 			}
 			try {
 				this.monsterBewegung();
+				this.spielermacheSchritt();
 			} catch (InterruptedException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -130,7 +131,8 @@ public class ServerEngine extends Thread {
 				anfrage.eingeloggt = eingeloggt;
 				anfrage.name = daten.name;
 				anfrage.passwort = daten.passwort;
-				anfrage.levelzaehler = map.levelzaehler-1;
+				anfrage.levelzaehler = map.levelzaehler;
+				map.levelzaehler--;
 			}
 			server.gebeWeiterAnClient(anfrage);
 			
@@ -146,7 +148,7 @@ public class ServerEngine extends Thread {
 		} else if (eingehendeNachricht instanceof ChangeLevelMessage) {
 			System.out.println("Level - Anfrage");
 			this.cheatZaehler = 0; //Zuruecksetzen
-			map.levelzaehler = ((ChangeLevelMessage) eingehendeNachricht).levelzaehler+1;
+			map.levelzaehler++;
 			map.breite = konstante.WIDTH;
 			map.hoehe = konstante.HEIGHT;
 			// Berechnen des neuen Level
@@ -176,6 +178,8 @@ public class ServerEngine extends Thread {
 					case 4:
 						map.karte[i][j] = new Tuer(true);
 						this.spieler.setPos(i, j);
+						this.spieler.zielX = i;
+						this.spieler.zielY = j;
 						break;
 					case 2:
 						map.karte[i][j] = new Boden();
@@ -193,7 +197,7 @@ public class ServerEngine extends Thread {
 					}
 				}
 			}
-			this.speichern(map.levelzaehler-1);
+			this.speichern(map.levelzaehler);
 			//Antwort-Nachricht verschicken
 			ChangeLevelMessage answer = new ChangeLevelMessage();
 			answer.level = map.level;
@@ -345,7 +349,6 @@ public class ServerEngine extends Thread {
 	 * @throws InterruptedException
 	 */
 	public void monsterBewegung() throws InterruptedException {
-		sleep(1000);
 		for (int i = 0; i < monsterListe.size(); i++) {
 			Monster m = monsterListe.get(i);
 			boolean event = spieler.hatSchluessel();
@@ -596,19 +599,25 @@ public class ServerEngine extends Thread {
 	 * 
 	 * @author Alina Gerber, 5961246
 	 */
-	public void spielermacheSchritt() throws InterruptedException {
-		while (!astern.positionX.isEmpty()) {
+	public void spielermacheSchritt() throws InterruptedException{
+		long jetzt = System.currentTimeMillis();
+		long zeitvergangen = jetzt-spieler.letzterSchritt;
+		if(zeitvergangen<=300){
+			System.out.println("Noch nicht genug zeit vergangen: "+zeitvergangen);
+			return;
+		}
+		if(spieler.getYPos()!=spieler.zielY || spieler.getXPos()!=spieler.zielX) {
+			astern = new Astern (spieler.getYPos(), spieler.getXPos(), spieler.zielX, spieler.zielY, map.karte);
+			Wegpunkt punkt = astern.starten();
 			System.out.println("Neue Position wird verschickt");
-			int x = astern.positionX.removeFirst();
-			int y = astern.positionY.removeFirst();
-			spieler.setPos(x, y);
-			SBewegungMessage anfrage = new SBewegungMessage();
-			anfrage.neuX = x;
-			anfrage.neuY = y;
-			server.gebeWeiterAnClient(anfrage);
-			this.monsterBewegung();
-			sleep(100);
-
+			int x = punkt.x;
+			int y= punkt.y;
+			spieler.setPos(x,y);
+			spieler.letzterSchritt = jetzt;
+			SBewegungMessage answer = new SBewegungMessage();
+			answer.neuX = x;
+			answer.neuY = y;
+			server.gebeWeiterAnClient(answer);
 		}
 	}
 

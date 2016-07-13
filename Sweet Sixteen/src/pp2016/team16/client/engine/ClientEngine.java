@@ -24,15 +24,33 @@ public class ClientEngine extends Thread {
 	public LinkedList<Monster> monsterListe = new LinkedList<Monster>();
 	public LinkedList<String> highscore = new LinkedList<String>();
 
+	/**
+	 * @param Gibt an ob der Spieler eingeloggt wurde
+	 */
 	public boolean eingeloggt = false;
 	/**
-	 * @param 
+	 * @param Parameter, der angibt ob es eine Login-Antwort vom Server gekommen ist
 	 */
 	public boolean login = false;
+	/**
+	 * @param Parameter, der angibt ob eine Level-Nachricht vom Server gekommen ist
+	 */
 	public boolean neuesLevel = false;
+	/**
+	 * @param Wird gebraucht fuer das versenden von Leertasten-Messages 
+	 * 0 oder 1 = wenn man den Gegenstand aufgehoben hat oder auf einem Feld ohne Item steht, 
+	 * 2 = ein neues Level muss geladen, 
+	 * 3 = das Spiel wird beende
+	 * 4 = warte auf Server-Antwort
+	 */
 	public int itemBenutzen = 4;
+	/**
+	 * @param
+	 */
 	public boolean gespeichert = false;
 
+	
+	
 	/**
 	 * Der Konstruktor initialisiert die clientseitige Kommunikation und startet den Thread. 
 	 * ClientEngine enthält die "Spielmatrix".
@@ -85,25 +103,27 @@ public class ClientEngine extends Thread {
 	void nachrichtVerarbeiten(MessageObject eingehendeNachricht) throws Exception {
 		//Fall: Login
 		if (eingehendeNachricht instanceof LoginAnswerMessage) {
-			LoginAnswerMessage l = (LoginAnswerMessage) eingehendeNachricht;
-			map.level = l.map;
-			map.levelzaehler = l.levelzaehler;
-			spieler.setName(l.name);
-			spieler.setPasswort(l.passwort);
-			this.eingeloggt = l.eingeloggt;
+			LoginAnswerMessage daten = (LoginAnswerMessage) eingehendeNachricht;
+			map.level = daten.map;
+			map.levelzaehler = daten.levelzaehler;
+			spieler.setName(daten.name);
+			spieler.setPasswort(daten.passwort);
+			this.eingeloggt = daten.eingeloggt;
 			System.out.println("Login wurde empfangen");
 			this.login = true;
-
+			
+		//Fall : Wechseln des Levels/Neues Spielfeld
 		} else if (eingehendeNachricht instanceof ChangeLevelMessage) {
-			ChangeLevelMessage c = (ChangeLevelMessage) eingehendeNachricht;
+			ChangeLevelMessage daten = (ChangeLevelMessage) eingehendeNachricht;
 			map.breite = konstante.WIDTH;
 			map.hoehe = konstante.HEIGHT;
 			while (!monsterListe.isEmpty()) {
 				monsterListe.remove();
 			}
-			for (int i = 0; i < c.level.length; i++) {
-				for (int j = 0; j < c.level.length; j++) {
-					int Variable = c.level[i][j];
+			// wurde mehr oder weniger aus dem alten Spiel ubernommen
+			for (int i = 0; i < daten.level.length; i++) {
+				for (int j = 0; j < daten.level.length; j++) {
+					int Variable = daten.level[i][j];
 					switch (Variable) {
 					case 0:
 						map.karte[i][j] = new Wand();
@@ -111,7 +131,6 @@ public class ClientEngine extends Thread {
 					case 1:
 						map.karte[i][j] = new Boden();
 						break;
-					// case 3: map.karte[i][j] = new Schluessel(); break;
 					case 5:
 						map.karte[i][j] = new Heiltrank(20);
 						break;
@@ -142,14 +161,18 @@ public class ClientEngine extends Thread {
 
 			}
 
-			map.levelzaehler = c.levelzaehler;
+			map.levelzaehler = daten.levelzaehler;
 			this.neuesLevel = true;
 			System.out.println("Neues Level gespeichert");
-
+			
+			
+		//Fall: Spieler-Bewegung	
 		} else if (eingehendeNachricht instanceof SBewegungMessage) {
 			System.out.println("Neue Position");
-			SBewegungMessage position = (SBewegungMessage) eingehendeNachricht;
-			this.spieler.setPos(position.neuX, position.neuY);
+			SBewegungMessage daten = (SBewegungMessage) eingehendeNachricht;
+			this.spieler.setPos(daten.neuX, daten.neuY);
+			
+		// Fall: Monster-Bewegung	
 		} else if (eingehendeNachricht instanceof MBewegungMessage) {
 			try {
 				System.out.println("Monster-Bewegung");
@@ -176,7 +199,8 @@ public class ClientEngine extends Thread {
 			} catch (Exception e) {
 
 			}
-
+			
+		//Fall : Antwort auf das Druecken der LeerTaste
 		} else if (eingehendeNachricht instanceof LeertasteMessage) {
 			// Schluessel aufnehmen
 			if (((LeertasteMessage) eingehendeNachricht).art == 1) {
@@ -186,7 +210,7 @@ public class ClientEngine extends Thread {
 
 				spieler.nimmSchluessel();
 			}
-
+			// HeilTrank aufnehmen
 			else if (((LeertasteMessage) eingehendeNachricht).art == 0) {
 				spieler.nimmHeiltrank((Heiltrank) map.karte[spieler.getXPos()][spieler
 						.getYPos()]);
@@ -209,7 +233,7 @@ public class ClientEngine extends Thread {
 			} else if (((LeertasteMessage) eingehendeNachricht).art == 3) {
 				this.itemBenutzen = 1;
 			}
-
+		// Fall: Antwort auf das druecken der B-Taste	
 		} else if (eingehendeNachricht instanceof BTasteMessage) {
 			if (spieler.anzahlHeiltraenke > 0) {
 				int change = spieler.benutzeHeiltrank();
@@ -220,18 +244,21 @@ public class ClientEngine extends Thread {
 				else
 					spieler.changeHealth((int) (change * 0.5));
 			}
+			
+		// Fall: Monster greift an	
 		} else if (eingehendeNachricht instanceof MAngriffMessage) {
 			Monster m = monsterListe
 					.get(((MAngriffMessage) eingehendeNachricht).monsternummer);
 			spieler.changeHealth(-konstante.BOX / 8);
 			m.angriff = true;
-
+			
+		// Fall: Monster-Leben haben scih veraendert	
 		} else if (eingehendeNachricht instanceof MStatusMessage) {
-			MStatusMessage msm = (MStatusMessage) eingehendeNachricht;
+			MStatusMessage daten = (MStatusMessage) eingehendeNachricht;
 			System.out.println("Statusmessage kommt an");
-			int j = msm.monsternummer;
-			boolean mtot = msm.tot;
-			boolean heilen = msm.heilen;
+			int j = daten.monsternummer;
+			boolean mtot = daten.tot;
+			boolean heilen = daten.heilen;
 			Monster m = monsterListe.get(j);
 			if (mtot == true) {
 				if(m.getTyp()==2) {
@@ -246,17 +273,17 @@ public class ClientEngine extends Thread {
 				m.changeHealth(-(konstante.BOX / 4));
 			else if (mtot == false && heilen == true)
 				m.changeHealth(konstante.BOX / 8);
-
+			
+		// Fall : Speichern des Highscores in Highscore in einer liked List, auf die HindiBones zugreifen kann
 		} else if (eingehendeNachricht instanceof HighScoreMessage) {
-			System.out.println("HighScoreNachricht wird erkannt");
-			HighScoreMessage hm = (HighScoreMessage) eingehendeNachricht;
-			String n = hm.zeile;
-			System.out.println(n);
+			HighScoreMessage daten = (HighScoreMessage) eingehendeNachricht;
+			String n = daten.zeile;
 			highscore.add(n);
 			System.out.println("HighScore wird gelesen in Liste:" + n);
 
 		}
-
+		
+		// Fall : Cheat- Antowrt
 		else if (eingehendeNachricht instanceof CheatMessage) {
 			int i = ((CheatMessage) eingehendeNachricht).i;
 			switch (i) {
@@ -273,8 +300,17 @@ public class ClientEngine extends Thread {
 		}
 	}
 
-	// Methoden fï¿½r GUI
-
+// Methoden fuer GUI
+	/**
+	 * Die Methode verschickt eine Login Anfrage an den Server
+	 * @param gibt die Art der Anmeldung an : 1 = neu anmelden; 2 = login 
+	 * @param n entspricht dem Namen
+	 * @param p entspricht dem Passwort
+	 * @return gibt zurueck ob der login erfolgreich war
+	 * @throws InterruptedException
+	 * 
+	 * @author Alina Gerber, 5961246
+	 */
 	public boolean login(int i, String n, String p) throws InterruptedException {
 		LoginMessage anfrage = new LoginMessage(i, n, p);
 		client.bekommeVonClient(anfrage);
@@ -285,21 +321,37 @@ public class ClientEngine extends Thread {
 		this.login = false;
 		return eingeloggt;
 	}
-
+	/**
+	 * Die Methode schickt eine Benutzer Wechsel Nachricht an den Server
+	 * @param  level gibt an in welchem Level sich der Spieler gerade befindet
+	 * @throws Exception
+	 * @author Alina Gerber, 5961246
+	 */
 	public void logout(int level) throws Exception {
 		LogoutMessage anfrage = new LogoutMessage(level);
 		client.bekommeVonClient(anfrage);
 	}
 
+	/**
+	 * Die Methode verschickt eine Beende-Nachricht
+	 * @param level gibt an in welchem Level sich der Spieler gerade befindet
+	 * @author Alina Gerber , 5961246
+	 */
 	public void beende(int level) {
 		BeendeMessage bm = new BeendeMessage(level);
 		client.bekommeVonClient(bm);
 
 	}
 
-	// kann , wenn notwendig , neues x oder y zurï¿½ckgeben...
+	/**
+	 * Die Methode verschickt eine Bewegungsanfrage des Spielers. Sollte  der Spieler auf eine Wand geklickt haben wird dies hier direkt abgefangen.
+	 * @param x ist die x-Koordinate der ZielPosition
+	 * @param y ist die y-Koordinate der ZielPosition
+	 * @throws InterruptedException
+	 * @author Alina Gerber, 5961246
+	 */
 	public void wegAnfragen(int x, int y) throws InterruptedException {
-		System.out.println("Der Spieler mï¿½chte sich bewegen");
+		System.out.println("Der Spieler moechte sich bewegen");
 		if (!(map.karte[x][y] instanceof Wand)) {
 			spieler.zielX = x;
 			spieler.zielY = y;
@@ -313,8 +365,13 @@ public class ClientEngine extends Thread {
 		} else
 			System.out.println("Du versuchst auf eine Wand zu gehen");
 	}
-
-	// evtl besser kein reurn, sondern abruf ï¿½ber map.karte
+	/**
+	 * Die Methode verschickt eine Level-Anfrage an den Server , wartet auf eine Antwort und kann das erhaltenen Spielelement zurueck
+	 * @return gibt das erhaltene Level in Form von Spielelement[][] zurueck
+	 * @throws Exception
+	 * 
+	 * @author Alina Gerber , 5961246
+	 */
 	public Spielelement[][] changeLevel() throws Exception {
 		System.out.println("Der Client fragt ein neues Level an");
 		ChangeLevelMessage anfrage = new ChangeLevelMessage();
@@ -330,7 +387,14 @@ public class ClientEngine extends Thread {
 		return map.karte;
 	}
 
-	// 0, 1 = aufnehmen, 2 = neues level, 3 = spiel beenden
+	
+	/**
+	 * Die Methode verschickt eine Leertasten Message und wartet bis es eine Antwort vom Server gibt
+	 * @return gibt 0 oder 1 = wenn man den Gegenstand aufgehoben hat oder auf einem Feld ohne Item steht, 2 = ein neues Level muss geladen, 3 = das Spiel wird beendet  
+	 * @throws InterruptedException
+	 * 
+	 * @author Alina Gerber, 5961246
+	 */
 	public int benutzeItem() throws InterruptedException {
 		itemBenutzen = 4;
 		LeertasteMessage anfrage = new LeertasteMessage();
@@ -340,42 +404,55 @@ public class ClientEngine extends Thread {
 		}
 		return itemBenutzen;
 	}
-
+	/**
+	 * Die Methode wird aufgerufen, wenn ein Trank benutzt werden soll
+	 * @author Alina Gerber, 5961246
+	 */
 	public void trankBenutzen() {
 		BTasteMessage anfrage = new BTasteMessage();
 		client.bekommeVonClient(anfrage);
 	}
-
+	/**
+	 * Die Methode verschickt eine Angriff- Nachricht des Spielers
+	 * @author Alina Gerber , 5961246
+	 */
 	public void angriffSpieler() {
-		SAngriffMessage sam = new SAngriffMessage();
-		System.out.println("SAngriffM");
-		client.bekommeVonClient(sam);
+		SAngriffMessage anfrage = new SAngriffMessage();
+		client.bekommeVonClient(anfrage);
 	}
 
 	// 1 = leben erhöhen, 2 = bei einem zufälligen Monster wird die hälfte der
 	// Leben weg genommen
 	// es können aber pro level nur 2 mal cheats benutzt werden
+	/**
+	 * Die Methode verschickt eine Cheat-Anfrage an den Server
+	 * @param i = 1 = leben erhöhen, 2 = bei einem zufälligen Monster wird die hälfte der Leben weg genommen
+	 * @throws Exception
+	 * @author Alina Gerber, 5961246
+	 */
 	public void cheatBenutzen(int i) throws Exception {
-		CheatMessage cheat = new CheatMessage(i);
-		client.bekommeVonClient(cheat);
+		CheatMessage anfrage = new CheatMessage(i);
+		client.bekommeVonClient(anfrage);
 	}
-
-	public void angriffMonster() {
-		MBewegungMessage mbm = new MBewegungMessage();
-		client.bekommeVonClient(mbm);
-
-	}
-
+	
+	/**
+	 * Die Methode verschickt eine Speicher-Anfrage an den Server
+	 * @param levelhoehe die gespeichert werden soll
+	 * @Alina Gerber , 5961246
+	 */
 	public void speichereLevel(int level) {
-		SpeicherMessage s = new SpeicherMessage(level);
+		SpeicherMessage anfrage = new SpeicherMessage(level);
 		System.out.println("Versuche zu speichern");
-		client.bekommeVonClient(s);
+		client.bekommeVonClient(anfrage);
 	}
-
+	/**
+	 * Die Methode verschickt eine Highscore-Anfrage an den Server
+	 * @author Ann-Catherine Hartmann, Matrikelnr: 60038514 
+	 */
 	public void schickeHighScore() {
-		HighScoreAnfrageMessage hsam = new HighScoreAnfrageMessage();
+		HighScoreAnfrageMessage anfrage = new HighScoreAnfrageMessage();
 		System.out.println("HighScore wird bei server angefragt");
-		client.bekommeVonClient(hsam);
+		client.bekommeVonClient(anfrage);
 		try {
 			sleep(10000);
 		} catch (InterruptedException e) {
@@ -383,7 +460,12 @@ public class ClientEngine extends Thread {
 			e.printStackTrace();
 		}
 	}
-
+	/**
+	 * 
+	 * @param name gibt den Namen des Spielers an
+	 * @param zeit gibt die benoetigte Zeit an
+	 * @author Ann-Catherine Hartmann, Matrikelnr: 60038514
+	 */
 	public void fuegeZuHighScorehinzu(String name, int zeit) {
 		SetzeHighScoreMessage shsm = new SetzeHighScoreMessage(name, zeit);
 		client.bekommeVonClient(shsm);

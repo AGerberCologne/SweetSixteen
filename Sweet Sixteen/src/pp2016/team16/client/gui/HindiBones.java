@@ -156,10 +156,10 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 			//     engine.spieler.setName(LoginDialog.getUsername());
 
 	}
-	public void chat(){
+/*	public void chat(){
 		Chat chatfenster = new Chat(this);
 		
-	}
+	} */
 
 
 
@@ -249,17 +249,23 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 				// B für 'Heiltrank benutzen'*/
 				
 			} else if (e.getKeyCode() == KeyEvent.VK_B){
-				if(engine.spieler.anzahlHeiltraenke>0){
-					int change = engine.spieler.benutzeHeiltrank();
-					// Heilungseffekt wird verbessert, falls neue Monster durch das Aufheben des Schlüssels ausgelöst wurden
-					if (engine.spieler.hatSchluessel())
-						engine.spieler.changeHealth((int)(change*1.5));
-					else
-						engine.spieler.changeHealth((int)(change*0.5));
-				} else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-					System.exit(0);
+				engine.trankBenutzen();
+			} else if (e.getKeyCode() == KeyEvent.VK_L){
+				try {
+					engine.cheatBenutzen(1);
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			} else if (e.getKeyCode() == KeyEvent.VK_D){
+				try {
+					engine.cheatBenutzen(2);
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
 			}
+			
 		}
 
 		if (e.getKeyCode() == KeyEvent.VK_SPACE) {

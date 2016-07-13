@@ -22,6 +22,8 @@ public class Spieler extends Figur {
 	public int zielX = 0;
 	public int zielY = 0;
 	
+	public long letzterSchritt = 0;
+	
 	public Spieler(String imgDatei){
 		
 		

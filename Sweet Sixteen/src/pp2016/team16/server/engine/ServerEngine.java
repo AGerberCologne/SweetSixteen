@@ -10,9 +10,9 @@ import pp2016.team16.server.map.AlleLevel;
 
 /**
  * 
- * @author Alina Gerber 5961246
- * @author Enes Goekdag 5615399
- * @author Ann-Catherine Hartmann 6038514
+ * @author Gerber, Alina, 5961246
+ * @author Goekdag,Enes, 5615399
+ * @author Hartmann, Ann-Catherine, 6038514
  *
  */
 

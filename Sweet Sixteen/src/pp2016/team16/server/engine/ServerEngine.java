@@ -798,6 +798,7 @@ public class ServerEngine extends Thread {
 				bw.write(zeile);//füge die zuletzt gelesene Zeile in die Hilfsdatei
 				bw.newLine();//gehe eine Zeile weiter in der Hilfsdatei
 			}
+			
 			bw.flush();//flusht den Bufferedwriter
 			//schließt alle (Buffered-)Filewriter und (Buffered-)Filereader
 			fw.close();

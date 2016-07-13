@@ -91,24 +91,24 @@ public class MiniMap extends JPanel{
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
 		for (int i = 0; i < fenster.WIDTH; i++) {
 			for (int j = 0; j < fenster.HEIGHT; j++) {
-				if (fenster.engine.map.karte[i][j] instanceof Wand) {
+				if (fenster.engine.spielfeld.karte[i][j] instanceof Wand) {
 					 // Hier kommt eine Wand hin
 					g.drawImage(scaledWand, i*size, j*size,	null);
-				} else if (fenster.engine.map.karte[i][j] instanceof Boden) {
+				} else if (fenster.engine.spielfeld.karte[i][j] instanceof Boden) {
 					// Das Feld ist begehbar
 					g.drawImage(scaledBoden, i*size,j*size, null);
-				} else if (fenster.engine.map.karte[i][j] instanceof Schluessel) {
+				} else if (fenster.engine.spielfeld.karte[i][j] instanceof Schluessel) {
 					// Hier liegt der Schluessel
 					g.drawImage(scaledBoden, i*size,j*size , null);
 					g.drawImage(scaledSchluessel, i*size,j*size, null);
-				} else if (fenster.engine.map.karte[i][j] instanceof Tuer) {
+				} else if (fenster.engine.spielfeld.karte[i][j] instanceof Tuer) {
 					// Hier ist die Tür
 					g.drawImage(scaledBoden, i*size,j*size, null);
-					if (((Tuer) fenster.engine.map.karte[i][j]).istOffen())
+					if (((Tuer) fenster.engine.spielfeld.karte[i][j]).istOffen())
 						g.drawImage(scaledTuerOffen, i*size,j*size, null);
 					else
 						g.drawImage(scaledTuerZu, i*size,j*size, null);
-				} else if (fenster.engine.map.karte[i][j] instanceof Heiltrank) {
+				} else if (fenster.engine.spielfeld.karte[i][j] instanceof Heiltrank) {
 					// Hier ist die Tür
 					g.drawImage(scaledBoden, i*size,j*size, null);
 					// Hier liegt ein Heiltrank

@@ -377,7 +377,7 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 	 */
 	public void nextLevel() {
 		try {
-			engine.map.karte = engine.changeLevel();
+			engine.spielfeld.karte = engine.changeLevel();
 		} catch (Exception e) {
 		}
 	}

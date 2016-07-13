@@ -63,7 +63,7 @@ public class Statusleiste extends JPanel {
 		g.setColor(Color.WHITE);	
 		g.drawString(fenster.engine.spieler.getName(), fenster.BOX + 5, 20);
 		g.drawString("Zeit: " + (System.currentTimeMillis() - fenster.startZeit)/1000, fenster.BOX * (Konstanten.BREITE - 6), 20);
-		g.drawString("Level " + fenster.engine.map.levelzaehler + "/" + fenster.MAXLEVEL, fenster.BOX * (Konstanten.BREITE - 4)-5, 20);
+		g.drawString("Level " + fenster.engine.spielfeld.levelzaehler + "/" + fenster.MAXLEVEL, fenster.BOX * (Konstanten.BREITE - 4)-5, 20);
 		
 		// Heiltrankanzeige
 		int anzahlHeiltraenke = fenster.engine.spieler.getAnzahlHeiltraenke();
@@ -73,7 +73,7 @@ public class Statusleiste extends JPanel {
 		g.drawString(s, fenster.BOX*(Konstanten.BREITE-2)-8, 20);
 		g.drawImage(heiltrank,fenster.BOX * (Konstanten.BREITE-2),0,null);
 
-		Spielelement feld = fenster.engine.map.karte[fenster.engine.spieler.getXPos()][fenster.engine.spieler.getYPos()];
+		Spielelement feld = fenster.engine.spielfeld.karte[fenster.engine.spieler.getXPos()][fenster.engine.spieler.getYPos()];
 		// falls ein Schluessel aufgehoben wird, wird dieser auch in die Statusleiste gezeichnet
 		if(feld instanceof Schluessel){
 			g.drawString("Leertaste zum Aufnehmen", fenster.BOX * (Konstanten.BREITE - 11) - 5, 20);

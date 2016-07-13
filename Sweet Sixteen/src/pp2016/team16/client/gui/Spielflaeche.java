@@ -101,31 +101,31 @@ public class Spielflaeche extends JPanel {
 			for (int j = 0; j < Konstanten.HOEHE; j++) {
 				if (inRange(i+zaehler1,j+zaehler2)) {
 
-					if (fenster.engine.map.karte[i+zaehler1][j+zaehler2] instanceof Wand) {
+					if (fenster.engine.spielfeld.karte[i+zaehler1][j+zaehler2] instanceof Wand) {
 						// Hier kommt eine Wand hin
 						g.drawImage(wand, i * fenster.BOX, j * fenster.BOX,
 								null);
-					} else if (fenster.engine.map.karte[i+zaehler1][j+zaehler2] instanceof Boden) {
+					} else if (fenster.engine.spielfeld.karte[i+zaehler1][j+zaehler2] instanceof Boden) {
 						// Dieses Feld ist begehbar
 						g.drawImage(boden, i * fenster.BOX,
 								j * fenster.BOX, null);
-					} else if (fenster.engine.map.karte[i+zaehler1][j+zaehler2] instanceof Schluessel) {
+					} else if (fenster.engine.spielfeld.karte[i+zaehler1][j+zaehler2] instanceof Schluessel) {
 						// Hier liegt ein Schluessel
 						g.drawImage(boden, i * fenster.BOX,
 								j * fenster.BOX, null);
 						g.drawImage(schluessel, i * fenster.BOX, j
 								* fenster.BOX, null);
-					} else if (fenster.engine.map.karte[i+zaehler1][j+zaehler2] instanceof Tuer){
+					} else if (fenster.engine.spielfeld.karte[i+zaehler1][j+zaehler2] instanceof Tuer){
 						// Hier ist die Tuer
 						g.drawImage(boden, i * fenster.BOX,
 								j * fenster.BOX, null);
-						if (((Tuer) fenster.engine.map.karte[i+zaehler1][j+zaehler2]).istOffen())
+						if (((Tuer) fenster.engine.spielfeld.karte[i+zaehler1][j+zaehler2]).istOffen())
 							g.drawImage(tuerOffen, i * fenster.BOX, j
 									* fenster.BOX, null);
 						else
 							g.drawImage(tuerZu, i * fenster.BOX, j
 									* fenster.BOX, null);
-					} else if (fenster.engine.map.karte[i+zaehler1][j+zaehler2] instanceof Heiltrank) {
+					} else if (fenster.engine.spielfeld.karte[i+zaehler1][j+zaehler2] instanceof Heiltrank) {
 						// Hier ist die Tuer
 						g.drawImage(boden, i * fenster.BOX,
 								j * fenster.BOX, null);

@@ -125,7 +125,7 @@ public class MenuLeiste extends JMenuBar implements ActionListener, WindowListen
 	 * @author Simon Nietz, Matr_Nr: 5823560
 	 */
 	public void windowClosing(WindowEvent e) {
-		fenster.engine.beende(fenster.engine.map.levelzaehler);
+		fenster.engine.beende(fenster.engine.spielfeld.levelzaehler);
 	}
 	public void windowDeactivated(WindowEvent arg0) {}
 	public void windowDeiconified(WindowEvent arg0) {}
@@ -155,7 +155,7 @@ public class MenuLeiste extends JMenuBar implements ActionListener, WindowListen
 		
 		}else if(e.getSource() == speicher){
 			// Speichern des aktuellen Levels
-			fenster.engine.speichereLevel(fenster.engine.map.levelzaehler);
+			fenster.engine.speichereLevel(fenster.engine.spielfeld.levelzaehler);
 			JOptionPane.showMessageDialog(null,
                     "Erfolgreich gespeichert!.",
                     "Speichern",
@@ -188,7 +188,7 @@ public class MenuLeiste extends JMenuBar implements ActionListener, WindowListen
 			// Bei dem logout wird das Level gespeichert und die Methode zeigeLogin() 
 			// zum erneuten login aufgerufen
 			try {
-				fenster.engine.logout(fenster.engine.map.levelzaehler);
+				fenster.engine.logout(fenster.engine.spielfeld.levelzaehler);
 				fenster.zeigeLogin();
 			} catch (Exception e1) {
 				e1.printStackTrace();
@@ -237,7 +237,7 @@ public class MenuLeiste extends JMenuBar implements ActionListener, WindowListen
 			}		
 		}else if(e.getSource() == beenden){
 			// Sicheres Beenden des Spiels
-			fenster.engine.beende(fenster.engine.map.levelzaehler); 
+			fenster.engine.beende(fenster.engine.spielfeld.levelzaehler); 
 			fenster.dispose();
 			System.exit(0);
 

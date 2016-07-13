@@ -15,7 +15,7 @@ import pp2016.team16.shared.Heiltrank;
 public class ClientEngine extends Thread {
 	public ClientComm client;
 	public Konstanten konstante = new Konstanten();
-	public Map map = new Map();
+	public Map spielfeld = new Map();
 	public Spieler spieler = new Spieler("img//spieler.png");
 	public LinkedList<Monster> monsterListe = new LinkedList<Monster>();
 	public LinkedList<String> highscore = new LinkedList<String>();
@@ -106,8 +106,8 @@ public class ClientEngine extends Thread {
 		// Fall: Login
 		if (eingehendeNachricht instanceof LoginAnswerMessage) {
 			LoginAnswerMessage daten = (LoginAnswerMessage) eingehendeNachricht;
-			map.level = daten.map;
-			map.levelzaehler = daten.levelzaehler;
+			spielfeld.level = daten.map;
+			spielfeld.levelzaehler = daten.levelzaehler;
 			spieler.setName(daten.name);
 			spieler.setPasswort(daten.passwort);
 			this.eingeloggt = daten.eingeloggt;
@@ -117,8 +117,8 @@ public class ClientEngine extends Thread {
 			// Fall : Wechseln des Levels/Neues Spielfeld
 		} else if (eingehendeNachricht instanceof ChangeLevelMessage) {
 			ChangeLevelMessage daten = (ChangeLevelMessage) eingehendeNachricht;
-			map.breite = konstante.WIDTH;
-			map.hoehe = konstante.HEIGHT;
+			spielfeld.breite = konstante.WIDTH;
+			spielfeld.hoehe = konstante.HEIGHT;
 			while (!monsterListe.isEmpty()) {
 				monsterListe.remove();
 			}
@@ -128,33 +128,33 @@ public class ClientEngine extends Thread {
 					int Variable = daten.level[i][j];
 					switch (Variable) {
 					case 0:
-						map.karte[i][j] = new Wand();
+						spielfeld.karte[i][j] = new Wand();
 						break;
 					case 1:
-						map.karte[i][j] = new Boden();
+						spielfeld.karte[i][j] = new Boden();
 						break;
 					case 5:
-						map.karte[i][j] = new Heiltrank(20);
+						spielfeld.karte[i][j] = new Heiltrank(20);
 						break;
 					case 6:
-						map.karte[i][j] = new Tuer(false);
+						spielfeld.karte[i][j] = new Tuer(false);
 						break;
 					case 4:
-						map.karte[i][j] = new Tuer(true);
+						spielfeld.karte[i][j] = new Tuer(true);
 						this.spieler.setPos(i, j);
 						break;
 					case 2:
-						map.karte[i][j] = new Boden();
+						spielfeld.karte[i][j] = new Boden();
 						this.monsterListe.add(new Monster(i, j, 0));
 						break;
 					// Monster, welche erst nach dem Aufheben des Schluessels
 					// erscheinen
 					case 3:
-						map.karte[i][j] = new Boden();
+						spielfeld.karte[i][j] = new Boden();
 						this.monsterListe.add(new Monster(i, j, 2));
 						break;
 					case 8:
-						map.karte[i][j] = new Boden();
+						spielfeld.karte[i][j] = new Boden();
 						this.monsterListe.add(new Monster(i, j, 1));
 						break;
 					}
@@ -163,7 +163,7 @@ public class ClientEngine extends Thread {
 
 			}
 
-			map.levelzaehler = daten.levelzaehler;
+			spielfeld.levelzaehler = daten.levelzaehler;
 			this.neuesLevel = true;
 			System.out.println("Neues Level gespeichert");
 
@@ -207,27 +207,27 @@ public class ClientEngine extends Thread {
 			// Schluessel aufnehmen
 			if (((LeertasteMessage) eingehendeNachricht).art == 1) {
 				spieler.nimmSchluessel();
-				map.karte[spieler.getXPos()][spieler.getYPos()] = new Boden();
+				spielfeld.karte[spieler.getXPos()][spieler.getYPos()] = new Boden();
 				this.itemBenutzen = 1;
 
 				spieler.nimmSchluessel();
 			}
 			// HeilTrank aufnehmen
 			else if (((LeertasteMessage) eingehendeNachricht).art == 0) {
-				spieler.nimmHeiltrank((Heiltrank) map.karte[spieler.getXPos()][spieler
+				spieler.nimmHeiltrank((Heiltrank) spielfeld.karte[spieler.getXPos()][spieler
 						.getYPos()]);
-				map.karte[spieler.getXPos()][spieler.getYPos()] = new Boden();
+				spielfeld.karte[spieler.getXPos()][spieler.getYPos()] = new Boden();
 				this.itemBenutzen = 1;
 			}
 			// Schluessel benutzen
 			else if (((LeertasteMessage) eingehendeNachricht).art == 2) {
-				if (!((Tuer) map.karte[spieler.getXPos()][spieler.getYPos()])
+				if (!((Tuer) spielfeld.karte[spieler.getXPos()][spieler.getYPos()])
 						.istOffen() && spieler.hatSchluessel()) {
-					((Tuer) map.karte[spieler.getXPos()][spieler.getYPos()])
+					((Tuer) spielfeld.karte[spieler.getXPos()][spieler.getYPos()])
 							.setOffen();
 					// Nach dem Oeffnen der Tuer ist der Schluessel wieder weg
 					spieler.entferneSchluessel();
-					if (map.levelzaehler <= konstante.MAXLEVEL) {
+					if (spielfeld.levelzaehler <= konstante.MAXLEVEL) {
 						this.itemBenutzen = 2;
 					} else
 						this.itemBenutzen = 3;
@@ -264,9 +264,9 @@ public class ClientEngine extends Thread {
 			Monster m = monsterListe.get(j);
 			if (mtot == true) {
 				if (m.getTyp() == 2) {
-					this.map.karte[m.getXPos()][m.getYPos()] = new Schluessel();
+					this.spielfeld.karte[m.getXPos()][m.getYPos()] = new Schluessel();
 				} else {
-					this.map.karte[m.getXPos()][m.getYPos()] = new Heiltrank(30);
+					this.spielfeld.karte[m.getXPos()][m.getYPos()] = new Heiltrank(30);
 				}
 				monsterListe.remove(j);
 			} else if (mtot == false && heilen == false)
@@ -366,7 +366,7 @@ public class ClientEngine extends Thread {
 	 */
 	public void wegAnfragen(int x, int y) throws InterruptedException {
 		System.out.println("Der Spieler moechte sich bewegen");
-		if (!(map.karte[x][y] instanceof Wand)) {
+		if (!(spielfeld.karte[x][y] instanceof Wand)) {
 			spieler.zielX = x;
 			spieler.zielY = y;
 			SBewegungMessage anfrage = new SBewegungMessage();
@@ -392,8 +392,7 @@ public class ClientEngine extends Thread {
 	public Spielelement[][] changeLevel() throws Exception {
 		System.out.println("Der Client fragt ein neues Level an");
 		ChangeLevelMessage anfrage = new ChangeLevelMessage();
-		// this.map.levelzaehler = 1;
-		anfrage.levelzaehler = this.map.levelzaehler;
+		anfrage.levelzaehler = this.spielfeld.levelzaehler;
 		client.bekommeVonClient(anfrage);
 		while (this.neuesLevel == false) {
 			System.out.println("Neues Level wurde noch nicht geladen");
@@ -401,7 +400,7 @@ public class ClientEngine extends Thread {
 		}
 		this.neuesLevel = false;
 		System.out.println("Endlich geschafft");
-		return map.karte;
+		return spielfeld.karte;
 	}
 
 	/**
@@ -445,9 +444,7 @@ public class ClientEngine extends Thread {
 		client.bekommeVonClient(anfrage);
 	}
 
-	// 1 = leben erhöhen, 2 = bei einem zufälligen Monster wird die hälfte der
-	// Leben weg genommen
-	// es können aber pro level nur 2 mal cheats benutzt werden
+	
 	/**
 	 * Die Methode verschickt eine Cheat-Anfrage an den Server
 	 * 
@@ -501,7 +498,7 @@ public class ClientEngine extends Thread {
 	 * @author Ann-Catherine Hartmann, Matrikelnr: 60038514
 	 */
 	public void fuegeZuHighScorehinzu(String name, int zeit) {
-		SetzeHighScoreMessage shsm = new SetzeHighScoreMessage(name, zeit);
-		client.bekommeVonClient(shsm);
+		SetzeHighScoreMessage anfrage = new SetzeHighScoreMessage(name, zeit);
+		client.bekommeVonClient(anfrage);
 	}
 }

@@ -10,6 +10,7 @@ import java.util.*;
 import pp2016.team16.shared.*;
 import pp2016.team16.shared.Map;
 import pp2016.team16.client.comm.ClientComm;
+import pp2016.team16.client.gui.Highscore;
 import pp2016.team16.client.gui.HindiBones;
 import pp2016.team16.shared.Heiltrank;
 
@@ -21,10 +22,12 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 {
 	// In diesem Objekt speichert der Client interne Daten
 	public ClientComm com;
+	//public Highscore highScore;
 	public Konstanten konstante = new Konstanten();
 	public Map map = new Map();
 	public Spieler spieler = new Spieler("img//spieler.png");
 	public LinkedList<Monster> monsterListe = new LinkedList<Monster>();
+	public LinkedList<String> highscore=new LinkedList<String>();
 	public boolean eingeloggt = false;
 	public boolean login=false;
 	public boolean neuesLevel = false;
@@ -177,6 +180,15 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 				monsterListe.remove(j);
 			else
 			m.changeHealth(-(konstante.BOX/4));
+			
+		}else if (daten instanceof HighScoreMessage){
+			System.out.println("HighScoreNachricht wird erkannt");
+			HighScoreMessage hm =(HighScoreMessage) daten;
+			String n = hm.zeile;
+			System.out.println(n);
+			highscore.add(n);
+			System.out.println("HighScore wird gelesen in Liste:"+n);
+			
 		}
 		  
 		  /*else if (daten instanceof CheatMessage) {
@@ -275,5 +287,20 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 		SpeicherMessage s = new SpeicherMessage(level);
 		System.out.println("Versuche zu speichern");
 		com.bekommeVonClient(s);
+	}
+	public void schickeHighScore(){
+		HighScoreAnfrageMessage hsam = new HighScoreAnfrageMessage();
+		System.out.println("HighScore wird bei server angefragt");
+		com.bekommeVonClient(hsam);
+		try {
+			sleep(10000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	public void fuegeZuHighScorehinzu(String name, int zeit){
+		SetzeHighScoreMessage shsm = new SetzeHighScoreMessage(name,zeit);
+		com.bekommeVonClient(shsm);
 	}
 }

@@ -36,7 +36,7 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 
 	private Spielflaeche spielflaeche;
 	private Statusleiste statusleiste;
-	private Highscore highscore;
+	public Highscore highscore;
 	private MenuLeiste menuLeiste;
 	private Steuerung steuerung;
 	public Cheats cheats;
@@ -377,9 +377,10 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 				benoetigteZeit = (int) ((System.currentTimeMillis() - startZeit) / 1000);
 
 				if (!verloren && !spielerInHighscore) {
-					getHighscore().addSpielerToHighScore(benoetigteZeit);
+					/*getHighscore().addSpielerToHighScore(benoetigteZeit);
 					getHighscore().repaint();
-					spielerInHighscore = true;
+					spielerInHighscore = true;*/
+					engine.fuegeZuHighScorehinzu(LoginDialog.getUsername(), benoetigteZeit);
 				} else {
 					getSpielflaeche().repaint();
 				}

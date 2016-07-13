@@ -26,13 +26,14 @@ public class Highscore extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	
-	private LinkedList<HighScoreElement> highScore;
+	//private LinkedList<HighScoreElement> highScore;
+	public LinkedList <String> highScore = new LinkedList<String>();
 	
 	
 	
 	public Highscore(){
 
-		highScore = new LinkedList<HighScoreElement>();
+		/*highScore = new LinkedList<String>();
 		
 		try {
 			FileReader reader = new FileReader(new File("highscore.txt"));
@@ -58,7 +59,7 @@ public class Highscore extends JPanel {
 		}
 		while(highScore.size() < 10){
 			highScore.add(new HighScoreElement(1000, "Anonym"));	
-		}
+		}*/
 	}
 		
 	/**
@@ -67,7 +68,7 @@ public class Highscore extends JPanel {
 	 * @param zeit ist der Highscore
 	 */
 	
-	public void addSpielerToHighScore(int zeit){
+	/*public void addSpielerToHighScore(int zeit){
 		String name;
 		if(LoginDialog.succeeded==true ){
 			 name = LoginDialog.getUsername();
@@ -93,16 +94,17 @@ public class Highscore extends JPanel {
 			System.out.println("Highscore konnte nicht geschrieben werden");
 		}
 		
-	}
+	}*/
 	/**
 	 * getter für den Highscore
 	 * @author Simon Nietz, Matr_Nr: 5823560
 	 * @return Die Highscore Liste
 	 */
+	/*
 	public LinkedList<HighScoreElement> getHighScore(){
 		return highScore;
 	}
-	
+	*/
 	/**
 	 * paint methode um den Highscore anzuzeigen
 	 * @author Simon Nietz, Matr_Nr: 5823560
@@ -119,18 +121,20 @@ public class Highscore extends JPanel {
 		for(int i = 0; i < 16; i++){
 			for(int j = 0; j < 17; j++){
 				g.drawImage(boden, 32*i,32*j,null);
+				System.out.println("Fenster wird gezeichnet");
 			}
 		}
 		g.drawImage(img, 0, 0, null);
 		g.setColor(Color.WHITE);
 		
-		for (int i = 0; i < 10; i++) {
-			String name = highScore.get(i).name;
-			int zeit = highScore.get(i).zeit;
+		for (int i = 0; i < 5; i++) {
+			if (!highScore.isEmpty()){
+			String m = highScore.remove();
 
 			g.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
-			g.drawString((i + 1) + ".  " + name, 80, 150 + 30 * (i + 1));
-			g.drawString("" + zeit, 400, 150 + 30 * (i + 1));
+			g.drawString( m, 80, 150 + 30 * (i + 1));
+			//g.drawString("" + zeit, 400, 150 + 30 * (i + 1));
+			}
 		}
 	}
 }

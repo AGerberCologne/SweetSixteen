@@ -185,6 +185,12 @@ public class ServerEngine extends Thread
 			speichern(bm.level);
 			server.serverOpen = false;
 			//this.interrupt();
+		} else if (eingehendeNachricht instanceof SetzeHighScoreMessage){
+			SetzeHighScoreMessage shm= (SetzeHighScoreMessage)eingehendeNachricht;
+			this.setHighScore(shm.zeit, shm.name);
+		}else if (eingehendeNachricht instanceof HighScoreAnfrageMessage){
+			System.out.println("HighScore wird bei Methode angefragt");
+			this.leseHighScore();
 		}
 		
 		/*else if (eingehendeNachricht instanceof CheatMessage) {
@@ -543,7 +549,25 @@ public boolean attackiereSpieler(boolean hatSchluessel, Monster m) {
 	 * @author: Ann-Catherine Hartmann, Matrikelnr: 60038514/ Prüfungsnummer: 37658
 	 **/
 	public void leseHighScore(){
-		
+		try {
+			FileReader fr;
+			fr=new FileReader("HighScore");
+			BufferedReader br = new BufferedReader(fr);
+			String zeile;
+			for (int i =0; i<5; i++){
+				
+			zeile =br.readLine();
+			System.out.println("HighScore wird gelesen:"+zeile);
+			HighScoreMessage hm = new HighScoreMessage (zeile);
+			server.gebeWeiterAnClient(hm);
+			zeile=br.readLine();
+			}
+
+			br.close();
+			fr.close();
+
+		}catch( IOException e){}
+
 	}
 	/**
 	 * @author: Ann-Catherine Hartmann, Matrikelnr: 60038514/ Prüfungsnummer: 37658

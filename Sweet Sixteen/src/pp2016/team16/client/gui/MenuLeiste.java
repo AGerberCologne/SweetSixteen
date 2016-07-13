@@ -184,6 +184,11 @@ public class MenuLeiste extends JMenuBar implements ActionListener, WindowListen
 				fenster.zeigeSpielfeld();
 				highscore.setText("Highscore anzeigen");
 			}else{
+				System.out.println("HighScore wird bei Client angefragt");
+				fenster.engine.schickeHighScore();
+				while(!fenster.engine.highscore.isEmpty()){
+					fenster.highscore.highScore.add(fenster.engine.highscore.removeFirst());
+				}
 				fenster.zeigeHighscore();
 				highscore.setText("Spielfeld anzeigen");
 			}

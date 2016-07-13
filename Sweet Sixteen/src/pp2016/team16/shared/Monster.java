@@ -77,34 +77,33 @@ public class Monster extends Figur {
 	}
 
 	/**
+	 * Wurde weitestgehend von alten HindiBones Spiel uebernommen.
 	 * Funktion welche das Monster entsprechend der vorgegebenen Richtung bewegt, sofern die Bewegung
 	 * zulaessig ist und der Bewegungs-Cooldown vorbei ist.
 	 * 
-	 * @author Diese Methoden wurde aus dem alten Spiel uerbernommen
+	 * @author Goekdag, Enes, 5615399
 	 */
 	public void move(boolean zulaessig) {
 	
 		boolean nextWalk = (System.currentTimeMillis() - lastStep) >= cooldownWalk;
-		if (zulaessig) {
-			if (nextWalk) {
-				System.out.println("Getesteter Schritt");
-				switch (dir) {
-				case 0:
-					hoch();
-					break;
-				case 1:
-					rechts();
-					break;
-				case 2:
-					runter();
-					break;
-				case 3:
-					links();
-					break;
-				}
-				nachricht =true;
-				lastStep = System.currentTimeMillis();
+		if (zulaessig && nextWalk) {
+			System.out.println("Getesteter Schritt");
+			switch (dir) {
+			case 0:
+				hoch();
+				break;
+			case 1:
+				rechts();
+				break;
+			case 2:
+				runter();
+				break;
+			case 3:
+				links();
+				break;
 			}
+			nachricht =true;
+			lastStep = System.currentTimeMillis();
 		} else {
 			changeDir();
 			System.out.println("Kein getesteter Schritt");

@@ -182,7 +182,8 @@ public class ServerEngine extends Thread {
 						this.monsterListe.add(new Monster(i, j, 0));
 						break;
 					case 3:
-						map.karte[i][j] = new Schluessel();
+						map.karte[i][j] = new Boden();
+						this.monsterListe.add(new Monster(i, j, 2));
 						break;
 					// Monster, welche erst nach dem Aufheben des Schluessels erscheinen
 					case 8:
@@ -344,7 +345,7 @@ public class ServerEngine extends Thread {
 	 * @throws InterruptedException
 	 */
 	public void monsterBewegung() throws InterruptedException {
-		sleep(1000);
+		//sleep(1000);
 		for (int i = 0; i < monsterListe.size(); i++) {
 			Monster m = monsterListe.get(i);
 			boolean event = spieler.hatSchluessel();
@@ -408,9 +409,9 @@ public class ServerEngine extends Thread {
 			kannAngreifen = ((System.currentTimeMillis() - m.lastAttack) >= m.cooldownAttack);
 		if (spielerImRadius && kannAngreifen) {
 			m.lastAttack = System.currentTimeMillis();
-			spieler.changeHealth(-m.getSchaden());
+			//spieler.changeHealth(-m.getSchaden());
 		}
-		return spielerImRadius;
+		return (spielerImRadius && kannAngreifen);
 	}
 
 	public void monsterChangeHealth(Monster m, int change) {
@@ -421,12 +422,11 @@ public class ServerEngine extends Thread {
 				monsterListe.remove(m);
 				monstertot = true;
 			}
-			/*
-			 * if(m.getTyp() == 2){ map.karte[m.getXPos()][m.getYPos()] = new
-			 * Schluessel(); monsterListe.remove(m);
-			 * 
-			 * }
-			 */
+			if(m.getTyp() == 2){ 
+				map.karte[m.getXPos()][m.getYPos()] = new Schluessel(); 
+				monsterListe.remove(m);
+				monstertot = true;
+			}
 
 		} else
 			monstertot = false;

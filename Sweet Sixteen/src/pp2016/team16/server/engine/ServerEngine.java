@@ -345,7 +345,7 @@ public class ServerEngine extends Thread {
 	 * @throws InterruptedException
 	 */
 	public void monsterBewegung() throws InterruptedException {
-		//sleep(1000);
+		sleep(1000);
 		for (int i = 0; i < monsterListe.size(); i++) {
 			Monster m = monsterListe.get(i);
 			boolean event = spieler.hatSchluessel();

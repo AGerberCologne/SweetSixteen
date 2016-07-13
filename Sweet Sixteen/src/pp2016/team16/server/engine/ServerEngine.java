@@ -130,7 +130,7 @@ public class ServerEngine extends Thread {
 				anfrage.eingeloggt = eingeloggt;
 				anfrage.name = daten.name;
 				anfrage.passwort = daten.passwort;
-				anfrage.levelzaehler = map.levelzaehler;
+				anfrage.levelzaehler = map.levelzaehler-1;
 			}
 			server.gebeWeiterAnClient(anfrage);
 			
@@ -146,7 +146,7 @@ public class ServerEngine extends Thread {
 		} else if (eingehendeNachricht instanceof ChangeLevelMessage) {
 			System.out.println("Level - Anfrage");
 			this.cheatZaehler = 0; //Zuruecksetzen
-			map.levelzaehler = ((ChangeLevelMessage) eingehendeNachricht).levelzaehler;
+			map.levelzaehler = ((ChangeLevelMessage) eingehendeNachricht).levelzaehler+1;
 			map.breite = konstante.WIDTH;
 			map.hoehe = konstante.HEIGHT;
 			// Berechnen des neuen Level
@@ -193,7 +193,7 @@ public class ServerEngine extends Thread {
 					}
 				}
 			}
-			this.speichern(map.levelzaehler);
+			this.speichern(map.levelzaehler-1);
 			//Antwort-Nachricht verschicken
 			ChangeLevelMessage answer = new ChangeLevelMessage();
 			answer.level = map.level;
@@ -393,6 +393,16 @@ public class ServerEngine extends Thread {
 		}
 	}
 
+	/**
+	 * Funktion wurde weitestgehen vom alten HindiBones Spiel uebernommen.
+	 * Ein bestimmtes Monster versucht den Spieler anzugreifen. Sind die Vorraussetzungen fuer einen
+	 * Angriff gegeben, greift das Monster an den Spieler an ansonsten nicht.
+	 * 
+	 * @author Goekdag, Enes, 5615399
+	 * @param hatSchluessel Ob der Spieler bereits den Schluessel hat
+	 * @param m Das Monster welches den Spieler versuchen soll anzugreifen
+	 * @return true, falls der Angriff erfolgt ist, false sonst
+	 */
 	public boolean attackiereSpieler(boolean hatSchluessel, Monster m) {
 		// Ist der Spieler im Radius des Monsters?
 		boolean spielerImRadius = (Math.sqrt(Math.pow(
@@ -414,6 +424,15 @@ public class ServerEngine extends Thread {
 		return (spielerImRadius && kannAngreifen);
 	}
 
+	/**
+	 * Wurde weitestgehen vom alten HindiBones Spiel uebernommen.
+	 * Veraendert die Gesundheit eines bestimmten Monsters und setzt im Falle des Todes entsprechende 
+	 * Objekte in die Spielwelt an deren Stelle.
+	 * 
+	 * @author Goekdag, Enes, 5615399
+	 * @param m Monster, wessen Gesundheit veraendert werden soll
+	 * @param change Die Veraenderung der Gesundheit
+	 */
 	public void monsterChangeHealth(Monster m, int change) {
 		m.changeHealth(change);
 		if (m.getHealth() <= 0) {
@@ -432,6 +451,13 @@ public class ServerEngine extends Thread {
 			monstertot = false;
 	}
 
+	/**
+	 * Wurde weitestgehen vom alten HindiBones Spiel uebernommen.
+	 * 
+	 * @author Goekdag, Enes, 5615399
+	 * @param m Monster dessen naechster Schritt ueberprueft werden soll
+	 * @return Ob die Bewegung zulaessig ist
+	 */
 	boolean zulaessig(Monster m) {
 		if (m.dir == 0 && m.getYPos() - 1 > 0) {
 			return !(map.karte[m.getXPos()][m.getYPos() - 1] instanceof Wand)
@@ -453,8 +479,12 @@ public class ServerEngine extends Thread {
 			return false;
 	}
 
-	/*
-	 * Team16: Sweet sixteen Goekdag, Enes, 5615399
+	/**
+	 * Team16: Sweet sixteen 
+	 * Funktion, welches ein bestimmtes Monster den Spieler jagen laesst.
+	 * 
+	 * @author Goekdag, Enes, 5615399
+	 * @param m Monster welches sich im Jagen-Modus befindet
 	 */
 	public void jagen(Monster m) { // Spieler JAGEN (Angriffszustand)
 		m.astern = new Astern(m.getYPos(), m.getXPos(), spieler.getXPos(),
@@ -488,8 +518,12 @@ public class ServerEngine extends Thread {
 		}
 	}
 
-	/*
-	 * Team16: Sweet sixteen Goekdag, Enes, 5615399
+	/**
+	 * Team16: Sweet sixteen
+	 * Funktion, welches ein bestimmtes Monster vom Spieler weglaufen laesst.
+	 * 
+	 * @author Goekdag, Enes, 5615399
+	 * @param m Monster welches sich im Fluechten-Modus befindet
 	 */
 	public void fluechten(Monster m) { // von Spieler FLUECHTEN
 										// (Defensivzustand)
@@ -524,6 +558,12 @@ public class ServerEngine extends Thread {
 
 	}
 
+	/**
+	 * Funktion, welches ein Monster sich zufaellig bewegen laesst bzw. sich heile laesst.
+	 * 
+	 * @author Goekdag, Enes, 5615399
+	 * @param m Monster im Ruhe-Modus
+	 */
 	public void ruhe(Monster m) {
 		// Heilt im "Ruhe" Zustand
 		if (m.getHealth() < m.getMaxHealth()) {
@@ -534,7 +574,11 @@ public class ServerEngine extends Thread {
 
 // Spieler Methoden
 
-	
+	/**
+	 * Funktion welche den Weg des Spielers zu seinem gewuenschten Ziel berechnet.
+	 * 
+	 * @author Goekdag, Enes, 5615399
+	 */
 	public void berechneWeg() { // Spieler JAGEN (Angriffszustand)
 		astern = new Astern(spieler.getYPos(), spieler.getXPos(),
 				spieler.zielX, spieler.zielY, map.karte);

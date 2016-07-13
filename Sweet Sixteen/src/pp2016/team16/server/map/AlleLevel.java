@@ -283,6 +283,7 @@ public class AlleLevel {
 		setzeTrank();
 		if (levelzahl<3){
 			setzeMonsterTyp1(levelzahl);
+			setzeMonsterTyp2(Math.min(3, levelzahl));
 		}
 		else {
 			setzeMonsterTyp12(3);

@@ -62,7 +62,7 @@ public class ClientEngine extends Thread {
 	}
 
 	/**
-	 * Ueberschreiben der run-Methode des Threads; diese läuft solange wie
+	 * Ueberschreiben der run-Methode des Threads; diese laeuft solange wie
 	 * client nicht beendet ist. Die Methode horcht nach neuen Nachrichten vom
 	 * Server und versucht diese zu bearbeiten.
 	 * 
@@ -449,7 +449,7 @@ public class ClientEngine extends Thread {
 	 * Die Methode verschickt eine Cheat-Anfrage an den Server
 	 * 
 	 * @param i
-	 *            = 1 = leben erhöhen, 2 = bei einem zufälligen Monster wird die
+	 *            = 1 = leben erhoehen, 2 = bei einem zufaelligen Monster wird die
 	 *            hälfte der Leben weg genommen
 	 * @throws Exception
 	 * @author Alina Gerber, 5961246

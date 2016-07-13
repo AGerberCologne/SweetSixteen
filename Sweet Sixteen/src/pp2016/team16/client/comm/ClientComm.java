@@ -28,12 +28,12 @@ public class ClientComm extends Thread {
 	ObjectOutputStream oos = null;
 	Socket client;
 	/**
-	 * @param host unseres Clientsockets. Dieser ist leider nur über diesen String änderbar aufgrund
+	 * @param host unseres Clientsockets. Dieser ist leider nur ueber diesen String aenderbar aufgrund
 	 * unserer Objektstruktur
 	 */
 	public String host = "localhost";
 	/**
-	 * @param Portnummer unseres Servers, ist leider nicht veränderbar über
+	 * @param Portnummer unseres Servers, ist leider nicht veraenderbar ueber
 	 *  main-Methode aufgrund unserer Objektstruktur;
 	 */
 	public int port = 10000;
@@ -87,7 +87,7 @@ public class ClientComm extends Thread {
 
 	}
 	/**
-	 * Das erste Element der Sendeschlange wird entfernt und in den Output
+	 * Das erste Element der Sendeschlange wird entfernt und in den OutputStream geschrieben
 	 * 
 	 * @author Ann-Catherine Hartmann 6038514
 	 */
@@ -104,7 +104,7 @@ public class ClientComm extends Thread {
 
 	}
 	/**
-	 * Die Methode empfängt das nächste Objekt aus dem Inputstream und fügt dies als
+	 * Die Methode empfaengt das naechste Objekt aus dem Inputstream und fuegt dies als
 	 * letztes Element in die Empfangeschlange ein.
 	 * 
 	 * @author Ann-Catherine Hartmann 6038514
@@ -124,8 +124,8 @@ public class ClientComm extends Thread {
 
 	}
 	/**
-	 * hier wird das Objekt übergeben, das an den Server geschickt werden soll. Dieses 
-	 * wird als Letztes in die Sendeschlange eingefügt und die Methode sendeAnServer wird
+	 * hier wird das Objekt uebergeben, das an den Server geschickt werden soll. Dieses 
+	 * wird als Letztes in die Sendeschlange eingefuegt und die Methode sendeAnServer wird
 	 * aufgerufen.
 	 * 
 	 * @author Ann-Catherine Hartmann 6038514
@@ -137,7 +137,7 @@ public class ClientComm extends Thread {
 	}
 	/**
 	 * wenn die Empfangeschlange nicht leer ist, wird das erste Element der Liste 
-	 * zurückgegeben, ansonsten wird null zurückgegeben 
+	 * zurueckgegeben, ansonsten wird null zurueckgegeben 
 	 * 
 	 * @return das erste Nachrichtenobjekt der Empfangeschlange oder null, wenn 
 	 * Empfangeschlange leer ist

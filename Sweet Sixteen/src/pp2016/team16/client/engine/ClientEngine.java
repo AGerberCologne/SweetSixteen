@@ -168,18 +168,23 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 			}
 		} else if (daten instanceof MAngriffMessage){
 			Monster m =monsterListe.get(((MAngriffMessage) daten).monsternummer);
+			spieler.changeHealth(-konstante.BOX/8);
 			m.angriff =true;
 					
 		}else if(daten instanceof MStatusMessage){
-			MStatusMessage msm = (MStatusMessage) daten;
-			System.out.println("Statusmessage kommt an");
-			int j=msm.monsternummer;
-			boolean mtot=msm.tot;
-			Monster m = monsterListe.get(j);
-			if (mtot==true)
-				monsterListe.remove(j);
-			else
-			m.changeHealth(-(konstante.BOX/4));
+				MStatusMessage msm = (MStatusMessage) daten;
+				System.out.println("Statusmessage kommt an");
+				int j=msm.monsternummer;
+				boolean mtot=msm.tot;
+				boolean heilen =msm.heilen;
+				Monster m = monsterListe.get(j);
+				if (mtot==true)
+					monsterListe.remove(j);
+				else if (mtot == false && heilen == false)
+					m.changeHealth(-(konstante.BOX/4));
+				else if (mtot == false && heilen == true)
+					m.changeHealth(konstante.BOX/8);
+			
 			
 		}else if (daten instanceof HighScoreMessage){
 			System.out.println("HighScoreNachricht wird erkannt");
@@ -191,11 +196,20 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 			
 		}
 		  
-		  /*else if (daten instanceof CheatMessage) {
-			int i = ((CheatMessage) daten).i;
-			System.out.println("Der Cheat wurde angenommen & zwar Nr. " + i
-					+ "\n");
-		}*/
+		  else if (daten instanceof CheatMessage) {
+				int i = ((CheatMessage) daten).i;
+				switch (i) {
+				case 1:
+					spieler.changeHealth(konstante.BOX/4);
+					break;
+				case 2:
+					int zufallszahl;
+				    zufallszahl = (int)(Math.random() * monsterListe.size()); 
+				    Monster m =monsterListe.get(zufallszahl);
+				    m.changeHealth(-konstante.BOX/2);
+					break;
+				}
+			}
 	}
 
 
@@ -273,11 +287,14 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 		}
 
 	
-	/*void cheatBenutzen(int i) throws Exception {
-		CheatMessage cheat = new CheatMessage(i);
-		this.datenBeimServerAnfragen(cheat);
-	}
-*/
+	// 1 = leben erhöhen, 2 = bei einem zufälligen Monster wird die hälfte der Leben weg genommen
+		// es können aber pro level nur 2 mal cheats benutzt werden
+		void cheatBenutzen(int i) throws Exception {
+			CheatMessage cheat = new CheatMessage(i);
+			com.bekommeVonClient(cheat);
+		}
+
+			
 	public void angriffMonster(){
 		MBewegungMessage mbm = new MBewegungMessage();
 		com.bekommeVonClient(mbm);

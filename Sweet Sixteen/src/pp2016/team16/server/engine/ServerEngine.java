@@ -28,6 +28,7 @@ public class ServerEngine extends Thread
 	public String spielerpasswort;
 	public int monsternr;
 	public boolean monstertot;
+	public int cheatZaehler;
 
 
 
@@ -94,6 +95,7 @@ public class ServerEngine extends Thread
 			
 		} else if (eingehendeNachricht instanceof ChangeLevelMessage) {
 			System.out.println("Server hat Level-Anfrage erhalten");
+			this.cheatZaehler=0;
 			map.levelzaehler = ((ChangeLevelMessage) eingehendeNachricht).levelzaehler;
 			map.breite = konstante.WIDTH;
 			map.hoehe = konstante.HEIGHT;
@@ -174,9 +176,9 @@ public class ServerEngine extends Thread
 			System.out.println("Angriff angekommen");
 			this.monsterChangeHealth(m,-(konstante.BOX/4));
 			System.out.println("Monstergesundheit");
-			//MStatusMessage msm = new MStatusMessage(monsternr,monstertot);
+			MStatusMessage msm = new MStatusMessage(monsternr,monstertot, false);
 			System.out.println("Schicke Antwort");
-			//server.gebeWeiterAnClient(msm);
+			server.gebeWeiterAnClient(msm);
 			
 		}else if (eingehendeNachricht instanceof MBewegungMessage){
 			monsterBewegung();
@@ -193,25 +195,28 @@ public class ServerEngine extends Thread
 			this.leseHighScore();
 		}
 		
-		/*else if (eingehendeNachricht instanceof CheatMessage) {
+		else if (eingehendeNachricht instanceof CheatMessage) {
+			this.cheatZaehler++;
+			if(this.cheatZaehler <= 2){
 			int i = ((CheatMessage) eingehendeNachricht).i;
 			switch (i) {
 			case 1:
-				System.out.println("Cheat Nummer 1, zB Leben erh�hen");
+				spieler.changeHealth(konstante.BOX/4);
 				break;
 			case 2:
-				System.out.println("Cheat Nummer 2, zB Monster schw�chen");
+				int zufallszahl;
+			    zufallszahl = (int)(Math.random() * monsterListe.size()); 
+			    Monster m =monsterListe.get(zufallszahl);
+			    m.changeHealth(-konstante.BOX/2);
 				break;
-			case 3:
-				System.out.println("Cheat Nummer 3, zB Schusszahl erh�hen");
 			}
 			CheatMessage answer = new CheatMessage(i);
-			nachrichtSchicken(answer);
+			server.gebeWeiterAnClient(answer);}
 		} else // unbekannter message Type
 		{
 			new Exception(
 					"Server hat eine Nachricht erhalten, die nicht verarbeitet werden kann");
-		}*/
+		}
 	}
 
 
@@ -247,6 +252,9 @@ public class ServerEngine extends Thread
 			answer.richtung = m.dir;
 			answer.monsterNummer =i;
 			server.gebeWeiterAnClient(answer);
+			m.changeHealth(konstante.BOX/8);
+			MStatusMessage status = new MStatusMessage(i, false, true);
+			server.gebeWeiterAnClient(status);
 			sleep(100);
 			}
 		}
@@ -265,6 +273,7 @@ public class ServerEngine extends Thread
 			if(this.attackiereSpieler(event, m)){
 				MAngriffMessage angriff = new MAngriffMessage(i);
 				server.gebeWeiterAnClient(angriff);
+				spieler.changeHealth(-konstante.BOX/8);
 			}
 			int box = this.konstante.BOX;
 

@@ -140,8 +140,8 @@ public class ServerEngine extends Thread
 				e.printStackTrace();
 			}
 
-		} else if (eingehendeNachricht instanceof ItemStatusMessage){
-			ItemStatusMessage answer = new ItemStatusMessage();
+		} else if (eingehendeNachricht instanceof LeertasteMessage){
+			LeertasteMessage answer = new LeertasteMessage();
 			// Schluessel aufnehmen
 			if (map.karte[spieler.getXPos()][spieler.getYPos()] instanceof Schluessel) {
 				spieler.nimmSchluessel();
@@ -156,16 +156,29 @@ public class ServerEngine extends Thread
 				answer.art = 0;
 			}
 			// Schluessel benutzen
-			if (map.karte[spieler.getXPos()][spieler.getYPos()] instanceof Tuer) {
+			else if (map.karte[spieler.getXPos()][spieler.getYPos()] instanceof Tuer) {
 				if (!((Tuer) map.karte[spieler.getXPos()][spieler.getYPos()]).istOffen() && spieler.hatSchluessel()) {
 					((Tuer) map.karte[spieler.getXPos()][spieler.getYPos()]).setOffen();
 					// Nach dem Oeffnen der Tuer ist der Schluessel wieder weg
 					spieler.entferneSchluessel();
 					answer.art =2;
 				}
+				else answer.art = 3;
 			}
+			else answer.art = 3;
 			server.gebeWeiterAnClient(answer);
-
+		}else if ( eingehendeNachricht instanceof BTasteMessage){
+			if(spieler.anzahlHeiltraenke>0){
+				int change = spieler.benutzeHeiltrank();
+				// Heilungseffekt wird verbessert, falls neue Monster durch das Aufheben des Schlüssels ausgelöst wurden
+				if (spieler.hatSchluessel())
+					spieler.changeHealth((int)(change*1.5));
+				else
+					spieler.changeHealth((int)(change*0.5));
+				BTasteMessage daten = new BTasteMessage();
+				server.gebeWeiterAnClient(daten);
+			}
+			
 		} else if (eingehendeNachricht instanceof SpeicherMessage){
 			int l = ((SpeicherMessage)eingehendeNachricht).level;
 			this.speichern(l);

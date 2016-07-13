@@ -139,23 +139,23 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 			}
 			
 			
-		} else if (daten instanceof ItemStatusMessage){
+		} else if (daten instanceof LeertasteMessage){
 			// Schluessel aufnehmen
-			if(((ItemStatusMessage) daten).art == 1) {
+			if(((LeertasteMessage) daten).art == 1) {
 				spieler.nimmSchluessel();
 				map.karte[spieler.getXPos()][spieler.getYPos()] = new Boden();
 				this.itemBenutzen = 1;
 
 				spieler.nimmSchluessel();
 			}
-
-			else if (((ItemStatusMessage) daten).art == 0) {
+		
+			else if (((LeertasteMessage) daten).art == 0) {
 				spieler.nimmHeiltrank((Heiltrank) map.karte[spieler.getXPos()][spieler.getYPos()]);		
 				map.karte[spieler.getXPos()][spieler.getYPos()] = new Boden();
-				this.itemBenutzen = 0;
+				this.itemBenutzen = 1;
 			}
 			// Schluessel benutzen
-			if (((ItemStatusMessage) daten).art == 2) {
+			else if (((LeertasteMessage) daten).art == 2) {
 				if (!((Tuer) map.karte[spieler.getXPos()][spieler.getYPos()]).istOffen() && spieler.hatSchluessel()) {
 					((Tuer) map.karte[spieler.getXPos()][spieler.getYPos()]).setOffen();
 					// Nach dem Oeffnen der Tuer ist der Schluessel wieder weg
@@ -166,6 +166,19 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 					else this.itemBenutzen = 3;
 				}
 			}
+			else if (((LeertasteMessage) daten).art == 3){
+				this.itemBenutzen = 1;
+			}
+			
+		}else if ( daten instanceof BTasteMessage){
+				if(spieler.anzahlHeiltraenke>0){
+					int change = spieler.benutzeHeiltrank();
+					// Heilungseffekt wird verbessert, falls neue Monster durch das Aufheben des Schlüssels ausgelöst wurden
+					if (spieler.hatSchluessel())
+						spieler.changeHealth((int)(change*1.5));
+					else
+						spieler.changeHealth((int)(change*0.5));
+				}
 		} else if (daten instanceof MAngriffMessage){
 			Monster m =monsterListe.get(((MAngriffMessage) daten).monsternummer);
 			spieler.changeHealth(-konstante.BOX/8);
@@ -272,12 +285,16 @@ public class ClientEngine extends Thread// entweder extends Thread oder implemen
 // 0, 1 = aufnehmen, 2 = neues level, 3 = spiel beenden
 	public int benutzeItem() throws InterruptedException {
 		itemBenutzen= 4;
-		ItemStatusMessage  anfrage = new ItemStatusMessage();
+		LeertasteMessage  anfrage = new LeertasteMessage();
 		com.bekommeVonClient(anfrage);
 		while(itemBenutzen == 4){
 			sleep(600);
 		}
 		return itemBenutzen;
+	}
+	public void trankBenutzen(){
+		BTasteMessage anfrage = new BTasteMessage();
+		com.bekommeVonClient(anfrage);
 	}
 
 	public void angriffSpieler(){

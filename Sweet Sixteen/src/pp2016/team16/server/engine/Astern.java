@@ -6,8 +6,13 @@ import pp2016.team16.client.gui.HindiBones;
 import pp2016.team16.shared.*;
 
 
-/* Team16: Sweet sixteen
- * Goekdag, Enes, 5615399
+/** Team16: Sweet sixteen
+ * 
+ * Astern berechnet den kuerzesten Weg.
+ * Beim Monster wird der Astern im State JAGEN aufgerufen, um den kuerzesten Weg zum Spieler zu finden.
+ * Beim Spieler wird der Astern aufgerufen um den kuerzesten Weg zum gewaehlten (MAUSKLICK) Ziel zu finden.
+ * 
+ * @author Goekdag, Enes, 5615399
  * 
  * */
 public class Astern extends Thread {
@@ -31,6 +36,15 @@ public class Astern extends Thread {
 	  LinkedList<Wegpunkt> closedList;
 	  private Wegpunkt finish;
 	  
+	  
+	  /** Team16: Sweet sixteen
+	   *
+	   * Konstruktor fuer den Astern.
+	   * Initialisierung aller wichtigen Werte. 
+	   * 
+	   * @author Goekdag, Enes, 5615399
+	   * 
+	   * */
 	  public Astern(int monsterY,int monsterX,int zielX,int zielY, Spielelement[][] karte){
 		  this.karte =karte;
 		  this.monsterX=monsterX;
@@ -67,8 +81,13 @@ public class Astern extends Thread {
 	  }
 	  
 	  
-	
-   //aStern algorithmus
+	  /**
+	   * Hauptfunktion des Astern-Algorithmus. Es wird iterativ der naechstbeste Wegpunkt berechnet,
+	   * bis das gesuchte Ziel erreicht wurde.
+	   * 
+	   * @author Goekdag, Enes, 5615399 
+	   * @return Wegpunkt der bisher berechnete letzte Wegpunkt des berechneten Weges
+	   */
 	  public Wegpunkt aStern() {
 	        
 	    Wegpunkt bestWegpunkt;
@@ -117,9 +136,19 @@ public class Astern extends Thread {
 			positionX.addLast(x);
 			positionY.addLast(y);
 		}
-	  
-	  // �berpr�ft ob das Feld schon untersucht wurde, 
-	  //pr�ft auch ob da das Feld begehbar ist und obs schon in der openlist ist
+	  /**
+	   * Hilfsfunktion um einen neuen Knoten in die openList hinzuzufuegen.
+	   * Es wird ueberprueft, dass der Knoten nicht bereits in der openList oder der closedList ist bzw.
+	   * das der neue Knoten ueberhaupt noch auf der Map ist sowie das er begehbar ist. In diesem Fall
+	   * wird er der openList hinzugefuegt, ansonsten nicht.
+	   * 
+	   * @author Goekdag, Enes, 5615399
+	   * @param x x-Koordinate des neuen Knoten
+	   * @param y y-Koordinate des neuen Knoten
+	   * @param openList
+	   * @param closedList
+	   * @param vorher Vorgaenger-Knoten zum Verweisen im neuem Knoten
+	   */
 	  private void openListAddHelper(int x, int y, LinkedList<Wegpunkt> openList, LinkedList<Wegpunkt> closedList, Wegpunkt vorher){
 		    if (x < 0 || y < 0 || x >= this.ZELLEN || y >= this.ZELLEN) {
 		      //nichts
@@ -134,7 +163,15 @@ public class Astern extends Thread {
 
 	  
 	  
-	  //Sch�tzt den Abstand zum Ziel,wenn keine hindernisse im Weg w�ren
+	  /**
+	   * Hilfsfunktion, die den Abstand eines bestimmten Knoten anhand seiner Koordinaten
+	   * zum Zielknoten schaetzt.
+	   * 
+	   * @author Goekdag, Enes, 5615399
+	   * @param x x-Koordinate des Knoten dessen Entfernung geschaetzt werden soll
+	   * @param y y-Koordinate des Knoten dessen Entfernung geschaetzt werden soll
+	   * @return Die geschaetze Entfernung
+	   */
 	  private int abstandSchaetzen(int x, int y) {                                      //SCHAETZFUNKTION des A*-Algo
 		    int dx = x - this.zielX;
 		    if (dx < 0) {
@@ -148,7 +185,15 @@ public class Astern extends Thread {
 		    
 		    return dx + dy;
 		  }
-//sucht das f�r uns beste Element aus der Liste
+
+	  /**
+	   * Hilfsfunktion, die nachschaut welcher Knoten in der openList den (geschaetzt) geringsten Abstand
+	   * zum Zielknoten hat und die Position des jeweiligen Knoten in der Liste zurueckgibt.
+	   * 
+	   * @author Goekdag, Enes, 5615399
+	   * @param list Die closedList
+	   * @return Die Position des besten Eintrags in der closedList
+	   */
 	  private int getFirstBestListEntry(LinkedList<Wegpunkt> list) {
 		    int best = list.get(0).getGesamtkosten();
 		    
@@ -167,6 +212,15 @@ public class Astern extends Thread {
 		    return 0;
 		  }
 	  
+	  /**
+	   * Hilfsfunktion die nachschaut ob ein bestimmter Wegpunkt in der Liste ist.
+	   * 
+	   * @author Goekdag, Enes, 5615399
+	   * @param x x-Koordinate des Wegpunktes
+	   * @param y y-Koordinate des Wegpunktes
+	   * @param list Liste in der der Wegpunkt gesucht werden soll
+	   * @return true falls der Wegpunkt in der Liste ist, sonst false
+	   */
 	  private boolean isPointInList(int x, int y, LinkedList<Wegpunkt> list) {
 		    for (int i = 0; i < list.size(); i++) {
 		      if (list.get(i).x == x && list.get(i).y == y) {
@@ -177,19 +231,32 @@ public class Astern extends Thread {
 		    return false;
 		  }
 	  
-	  //resettet alles
+	  /**
+	   * Setzt alles zurueck auf Anfang.
+	   * 
+	   * @author Goekdag, Enes, 5615399
+	   */
 	  public void reset() {
 	    openList = new LinkedList<Wegpunkt>();
 	    openList.add(new Wegpunkt(this.monsterX, this.monsterY, 1, this.abstandSchaetzen(this.monsterX, this.monsterY), null));
 	    closedList = new LinkedList<Wegpunkt>();
 	    this.finish = null;
 	  }
+	  
+	  /**
+	   * Funktion, die die iterative Berechnung des Weges mit dem Astern startet und am Ende den berechneten
+	   * ersten Schritt fuer die Figur (entlang des berechneten Weges) zurueck gibt.
+	   * 
+	   * @return Wegpunkt des berechneten Weges, auf den die Figur als naechstes gehen soll.
+	   */
 	  public Wegpunkt starten() {
 		  Wegpunkt wegpunkt=null ;
 		  while (this.suche) {
               wegpunkt = null;
 		    if (this.finish != null) {
 		      	wegpunkt = this.finish;
+		      	// Haben den kompletten Weg berechnet
+		      	// Gehen den Weg nun zurueck zum Spieler/Monster bis zum ersten Feld auf das die Figur gehen muss.
 		      	if(wegpunkt.vorgaenger!=null) {
 		      		while(wegpunkt.vorgaenger.vorgaenger != null) {
 		      			wegpunkt = wegpunkt.vorgaenger;

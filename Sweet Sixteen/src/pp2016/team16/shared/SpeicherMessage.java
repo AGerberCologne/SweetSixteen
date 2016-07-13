@@ -22,7 +22,7 @@ public class SpeicherMessage extends MessageObject implements Serializable {
 	 * 
 	 * @param level
 	 *            damit wird das aktuelle Level des Spielers an den Server
-	 *            übergeben
+	 *            uebergeben
 	 * @author Alina Gerber 5961246
 	 */
 	public SpeicherMessage(int level) {

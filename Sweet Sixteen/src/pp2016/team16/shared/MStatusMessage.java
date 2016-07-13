@@ -2,7 +2,7 @@ package pp2016.team16.shared;
 
 /**
  * Diese Nachricht wird vom Server verschickt, wenn sich die Lebenshoehe eines
- * Monsters ändert(positiv oder negativ), oder das Monster stirbt
+ * Monsters aendert(positiv oder negativ), oder das Monster stirbt
  * 
  * @author Alina Gerber, 5960246
  *

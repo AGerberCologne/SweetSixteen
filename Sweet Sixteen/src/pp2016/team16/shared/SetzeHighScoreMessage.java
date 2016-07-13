@@ -24,7 +24,7 @@ public class SetzeHighScoreMessage extends MessageObject implements
 
 	/**
 	 * Fordert beim Server an, dass die Zeit und der Name des Spielers in die
-	 * HighScore-Datei eingefügt werden
+	 * HighScore-Datei eingefuegt werden
 	 * 
 	 * @param name
 	 *            des Spielers

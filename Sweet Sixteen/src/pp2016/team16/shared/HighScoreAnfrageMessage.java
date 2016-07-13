@@ -14,7 +14,7 @@ public class HighScoreAnfrageMessage extends MessageObject implements
 		Serializable {
 
 	/**
-	 * zufällig generierte SerialVersionUID
+	 * zufaellig generierte SerialVersionUID
 	 */
 	private static final long serialVersionUID = 1886887843848160471L;
 

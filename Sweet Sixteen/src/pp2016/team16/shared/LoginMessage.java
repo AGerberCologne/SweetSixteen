@@ -10,7 +10,7 @@ package pp2016.team16.shared;
 
 public class LoginMessage extends MessageObject {
 	/**
-	 * zufällig generierte serialVersionUID
+	 * zufaellig generierte serialVersionUID
 	 */
 	private static final long serialVersionUID = -8224722058770817482L;
 	public String name;

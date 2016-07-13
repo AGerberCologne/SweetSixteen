@@ -11,7 +11,7 @@ package pp2016.team16.shared;
 
 public class LoginAnswerMessage extends MessageObject {
 	/**
-	 * zufällig generierte serialVersionUID
+	 * zufaellig generierte serialVersionUID
 	 */
 	private static final long serialVersionUID = -4890513527491085157L;
 	/**
@@ -23,15 +23,15 @@ public class LoginAnswerMessage extends MessageObject {
 	 */
 	public int levelzaehler;
 	/**
-	 * gibt den Namen des Spielers zurück
+	 * gibt den Namen des Spielers zurueck
 	 */
 	public String name;
 	/**
-	 * Gibt das passwort des Spielers zurück
+	 * Gibt das passwort des Spielers zurueck
 	 */
 	public String passwort;
 	/**
-	 * gibt true zurück, wenn anmelden oder einloggen funktioniert haben, wenn
+	 * gibt true zurueck, wenn anmelden oder einloggen funktioniert haben, wenn
 	 * Name und/oder Passwort falsch waren beim einloggen oder der Name (und das
 	 * Passwort) schon vergeben sind, ist der Wert false
 	 */

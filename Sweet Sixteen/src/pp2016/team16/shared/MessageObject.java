@@ -13,7 +13,7 @@ public class MessageObject implements Serializable // Datenstruktur
 {
 
 	/**
-	 * zufällig generierte SerialVersionUID
+	 * zufaellig generierte SerialVersionUID
 	 */
 	private static final long serialVersionUID = 4971782962320406464L;
 

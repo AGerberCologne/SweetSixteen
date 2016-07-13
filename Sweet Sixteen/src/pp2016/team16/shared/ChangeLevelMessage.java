@@ -2,7 +2,7 @@ package pp2016.team16.shared;
 
 /**
  * Diese Nachricht wird erstellt, wenn ein Level geladen werden soll, sei es
- * durch neues Spiel starten, anmelden oder passieren der Tür. Diese
+ * durch neues Spiel starten, anmelden oder passieren der Tuer. Diese
  * Nachrichtenart bekommt der Client dann auch vom Server zurück, nur mit
  * aktualisierten Daten.
  * 
@@ -13,11 +13,11 @@ package pp2016.team16.shared;
 public class ChangeLevelMessage extends MessageObject {
 
 	/**
-	 * zufällig generiete serialVersionUID
+	 * zufaellig generiete serialVersionUID
 	 */
 	private static final long serialVersionUID = 7268833034090983192L;
 	/**
-	 * level wird als String übergeben
+	 * level wird als String uebergeben
 	 */
 	public int[][] level = new int[21][21];
 	/**

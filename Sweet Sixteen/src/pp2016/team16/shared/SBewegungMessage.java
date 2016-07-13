@@ -1,7 +1,7 @@
 package pp2016.team16.shared;
 
 /**
- * Diese Nachricht wird an Server verschickt, wenn deer Spieler einer
+ * Diese Nachricht wird an Server verschickt, wenn der Spieler einer
  * Bewegungsanfrage verschickt und wird an den Client zurueck geschickt mit der
  * naechsten neuen Position
  * 

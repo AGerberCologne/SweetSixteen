@@ -2,7 +2,7 @@ package pp2016.team16.shared;
 
 /**
  * Message, die versendet wird, wenn man einen Cheat machen will. Diese wird an
- * den Client zurück gesendet, wenn die durch die Messaeg ausgelöste Aktion
+ * den Client zurueck gesendet, wenn die durch die Message ausgelueste Aktion
  * erfolgreich war im Server.
  * 
  * @author Alina Gerber 5961246
@@ -10,7 +10,7 @@ package pp2016.team16.shared;
  */
 public class CheatMessage extends MessageObject {
 	/**
-	 * zufällig generierte serialVersionUID
+	 * zufaellig generierte serialVersionUID
 	 */
 	private static final long serialVersionUID = 7139911893023813591L;
 	public int i;
@@ -18,8 +18,8 @@ public class CheatMessage extends MessageObject {
 	/**
 	 * 
 	 * @param i
-	 *            Art des Cheats: 1 = Leben erhöhen, 2= zufälliges Monster
-	 *            schwächen
+	 *            Art des Cheats: 1 = Leben erhoehen, 2= zufaelliges Monster
+	 *            schwaechen
 	 */
 	public CheatMessage(int i) {
 		this.i = i;

@@ -1,27 +1,29 @@
 package pp2016.team16.server.map;
-
 /**
-* @author <Noll , Markus , 5812500 > */
+* <Die Klasse "AlleLevel" beinhaltet mehrere Methoden zur Erstellung eines Levels bzw. des Labyrinths. 
+* Die Methode erzeugeLabyrinth ist eine rekursive Methode, die auf die Methode floodfill(r, c) zugreift. Diese Methode
+* erzeugt mit HIlfe des FloodFill Allgorithmus in ein zweidimensionales Array ein Labyrinth. Anschliessend setzen einzelne Methoden
+* die Startposition des Spielers, die Zielposition der Ausgangstuer, Startpositionen fuer unterschiedliche Monstertpen, sowie 
+* Platierungspositionen fuer Heiltranke in das zuvor erzeugte Labyrinth. 
+* Eine letzte Methode fasst alle zuvor erlaeuterten Methoden in eine zusammen. >
+* @author <Noll, Markus, 5812500 > */
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
 import pp2016.team16.shared.Spielelement;
+/**
+* <Block Attribute>* */
+	
+	/**
+	*4 Attribute
+	* @author <Noll , Markus , 5812500 > */
 public class AlleLevel {
 	public Spielelement [][] level2;
 	public int hoehe, breite; // deklariere oeffentliche Variabeln hoehe und breite
 	public  int[][] level; // deklariere zweidimensionales Array level
 
-	
-/**
-* <Zweidimensionales Array stellt die Grundlage des jeweiligen Levels dar >
-* @author <Noll , Markus , 5812500 > */
-	public AlleLevel(int hoehe, int breite) { // Konstruktor
-		this.hoehe = hoehe; // initialisiere hoehe und breite
-		this.breite = breite;
-		level = new int[hoehe][breite]; // weise hoehe und breite dem Array zu
-	}
 
 /**
 * <Block Methoden>* */
@@ -75,7 +77,7 @@ public class AlleLevel {
 
 	/**
 	* <Methode floodFill() beinhaltet eine Form des FloodFill Algorithmus. Gestartet wird an der zuvor zufaellig bestimmten Stelle
-	* (r,c). Zufaellig bewegt sich der Algorithmus in eine der vier moeglichen Richtungen. Dabei wird zunächst geprüft ob die uebernachste
+	* (r,c). Zufaellig bewegt sich der Algorithmus in eine der vier moeglichen Richtungen. Dabei wird zunaechst geprueft ob die uebernachste
 	* Position in der jeweiligen Richtung noch im Bereich des zu befuellenden Arrays liegt. Dabei wird festgelegt, dass die aeusserste Zeile
 	* und Spalte, nicht mehr zum "legalen" Bereich gehoert. Durch das zufaellige benutzen der cases wird ein Labyrinth erzeugt  >
 	* @author <Noll , Markus , 5812500 > */
@@ -166,7 +168,7 @@ public class AlleLevel {
 		
 	}
 	/**
-	* <Methode setzeStart() setzt zufaellig eine Startposition in unsere obere Aussenwand.  >
+	* <Methode setzeStart() setzt zufaellig eine Startposition in unsere Aussenwand.  >
 	* @author <Noll , Markus , 5812500 > */
 	public int[][] setzeStart() {
 
@@ -181,7 +183,7 @@ public class AlleLevel {
 		return level;
 	}
 	/**
-	* <Methode setzeExit() setzt zufaellig eine Zielposition in unsere untere Aussenwand.  >
+	* <Methode setzeExit() setzt zufaellig eine Zielposition in unsere Aussenwand.  >
 	* @author <Noll , Markus , 5812500 > */
 	public int[][] setzeExit() {
 
@@ -195,7 +197,7 @@ public class AlleLevel {
 		return level;
 	}
 	/**
-	* <Methode setzeMonster() setzt zufaellig Monster des Typs 1 in das erzeugte Labyrinth.
+	* <Methode setzeMonsterTyp1() setzt zufaellig Monster des Typs 1 in das erzeugte Labyrinth.
 	* Auch hier wird zunaechst ueberprueft, ob die zufaellig gewaehlte Position begehbar ist.  >
 	* @author <Noll , Markus , 5812500 > */
 	public int[][] setzeMonsterTyp1(int maxMonster) {
@@ -210,6 +212,10 @@ public class AlleLevel {
 		}
 		return level;
 	}
+	/**
+	* <Methode setzeMonsterTyp2() setzt zufaellig Monster des Typs 1 in das erzeugte Labyrinth.
+	* Auch hier wird zunaechst ueberprueft, ob die zufaellig gewaehlte Position begehbar ist.  >
+	* @author <Noll , Markus , 5812500 > */
 	public int[][] setzeMonsterTyp2(int maxMonster) {
 		int zaehler2 = 0;
 		while (zaehler2 < maxMonster - 2) {
@@ -223,7 +229,7 @@ public class AlleLevel {
 		return level;
 	}
 	/**
-	* <Methode setzeMonster11() setzt zufaellig Monster des Typs 1 in das erzeugte Labyrinth.
+	* <Methode setzeMonsterTyp12() setzt zufaellig Monster des Typs 1 in das erzeugte Labyrinth (Ab Level 3).
 	* Auch hier wird zunaechst ueberprueft, ob die zufaellig gewaehlte Position begehbar ist.  >
 	* @author <Noll , Markus , 5812500 > */
 	
@@ -255,11 +261,7 @@ public class AlleLevel {
 		}
 		return level;
 	}
-	/**
-	* <Methode setzeMonster2k() setzt zufaellig vier Monster in das erzeugte Labyrinth.
-	* Auch hier wird zunaechst ueberprueft, ob die zufaellig gewaehlte Position begehbar ist.  >
-	* @author <Noll , Markus , 5812500 > */
-	
+		
 	/**
 	* <Methode zeichneLevel() zeigt den eigentlichen Test der Komponente als Code. Man sieht, dass das
 	* Labyrinth richtig mit FloodFill erzeugt und per Zufall mit Items und Monstern besetzt wird.  >
@@ -300,7 +302,15 @@ public class AlleLevel {
 		return level;
 	}
 	
-	
+	/**
+	 * < Block Konstruktor >
+	* <Zweidimensionales Array stellt die Grundlage des jeweiligen Levels dar >
+	* @author <Noll , Markus , 5812500 > */
+		public AlleLevel(int hoehe, int breite) { // Konstruktor
+			this.hoehe = hoehe; // initialisiere hoehe und breite
+			this.breite = breite;
+			level = new int[hoehe][breite]; // weise hoehe und breite dem Array zu
+		}
 	
 	
 }

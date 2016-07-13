@@ -11,7 +11,7 @@ import pp2016.team16.server.map.AlleLevel;
 /**
  * 
  * @author Alina Gerber 5961246
- * @author Enes Gödak 5615399
+ * @author Enes Goekdag 5615399
  * @author Ann-Catherine Hartmann 6038514
  *
  */
@@ -25,20 +25,17 @@ public class ServerEngine extends Thread {
 	public Konstanten konstante = new Konstanten();
 
 	/**
-	 * enthält den Namen des aktuell eingeloggten Spielers
+	 * enthaelt den Namen des aktuell eingeloggten Spielers
 	 */
 
 	public String spielername;
 	/**
-	 * enthält das Passwort des aktuell eingeloggten Spielers
+	 * enthaelt das Passwort des aktuell eingeloggten Spielers
 	 */
 	public String spielerpasswort;
 
 	public int monsternr;
 
-	/**
-	 * @param
-	 */
 	public boolean eingeloggt;
 	/**
 	 * @param enthaelt
@@ -59,7 +56,7 @@ public class ServerEngine extends Thread {
 
 	/**
 	 * Der Konstruktor initialisiert die serverseitige Kommunikation und startet
-	 * den Thread. Die Serverengine enthält die "Spielmatrix".
+	 * den Thread. Die Serverengine enthaelt die "Spielmatrix".
 	 * 
 	 * @author Alina Gerber, 5961246
 	 * 
@@ -72,7 +69,7 @@ public class ServerEngine extends Thread {
 	}
 
 	/**
-	 * Ueberschreiben der run-Methode des Threads; diese läuft solange wie
+	 * Ueberschreiben der run-Methode des Threads; diese laeuft solange wie
 	 * server nicht beendet ist. Die Methode horcht nach neuen Nachrichten vom
 	 * Client und versucht diese zu bearbeiten. Außerdem sendet sie periodisch
 	 * die Monsterbwegungen.
@@ -203,7 +200,7 @@ public class ServerEngine extends Thread {
 			answer.levelzaehler = map.levelzaehler;
 			server.gebeWeiterAnClient(answer);
 
-			// Fall : Spieler möchte sich bewegen
+			// Fall : Spieler moechte sich bewegen
 		} else if (eingehendeNachricht instanceof SBewegungMessage) {
 			System.out.println("Spieler-Bewegungs - Anfrage");
 			SBewegungMessage daten = (SBewegungMessage) eingehendeNachricht;
@@ -262,7 +259,7 @@ public class ServerEngine extends Thread {
 			if (spieler.anzahlHeiltraenke > 0) {
 				int change = spieler.benutzeHeiltrank();
 				// Heilungseffekt wird verbessert, falls neue Monster durch das
-				// Aufheben des Schlüssels ausgelöst wurden
+				// Aufheben des Schluessels ausgelöst wurden
 				if (spieler.hatSchluessel())
 					spieler.changeHealth((int) (change * 1.5));
 				else
@@ -283,7 +280,7 @@ public class ServerEngine extends Thread {
 			System.out.println("Spieler-Angriff");
 			Monster m = angriffsMonster();
 			if (m != null) {
-				this.monsterChangeHealth(m, -(konstante.BOX / 4));
+				this.monsterAendereLeben(m, -(konstante.BOX / 4));
 				MStatusMessage anfrage = new MStatusMessage(monsternr,
 						monstertot, false);
 				// Antwort-Nachricht verschicken
@@ -448,7 +445,7 @@ public class ServerEngine extends Thread {
 	 * @param change
 	 *            Die Veraenderung der Gesundheit
 	 */
-	public void monsterChangeHealth(Monster m, int change) {
+	public void monsterAendereLeben(Monster m, int change) {
 		m.changeHealth(change);
 		if (m.getHealth() <= 0) {
 			if (m.getTyp() == 0 || m.getTyp() == 1) {
@@ -612,7 +609,7 @@ public class ServerEngine extends Thread {
 
 	/**
 	 * Die Methode geht die beiden Listen der x-Position und y-Position durch
-	 * und übergibt diese an den Client. Außerdem wird nach jedem
+	 * und uebergibt diese an den Client. Außerdem wird nach jedem
 	 * Positionswechsel des Spielers die MonsterBewegung einmal aufgerufen
 	 * 
 	 * @throws InterruptedException
@@ -673,10 +670,10 @@ public class ServerEngine extends Thread {
 	}
 
 	/**
-	 * übergibt die Anmeldeart, name und passwort und schaut je nach Anmeldeart,
-	 * ob es den Namen (und das Passwort) schon gibt, wenn nicht, dann füge den
+	 * uebergibt die Anmeldeart, name und passwort und schaut je nach Anmeldeart,
+	 * ob es den Namen (und das Passwort) schon gibt, wenn nicht, dann fuege den
 	 * Namen hinzu oder ob der Name und das Passwort in der Textdatei stehen und
-	 * gibt an den Cliet zurück, dass die Anmeldung geklappt hat
+	 * gibt an den Client zurueck, dass die Anmeldung geklappt hat
 	 * 
 	 * @param i
 	 *            steht für Anmeldeart 1= neu anmelden 2=einloggen
@@ -685,8 +682,7 @@ public class ServerEngine extends Thread {
 	 * @param passwort
 	 *            , das eingegeben wurde ins Loginfenster
 	 * 
-	 * @author: Ann-Catherine Hartmann, Matrikelnr: 60038514/ Prüfungsnummer:
-	 *          37658
+	 * @author: Ann-Catherine Hartmann 6038514
 	 **/
 	public void logIn(int i, String name, String passwort) {
 		String abgleich = name + " " + passwort; // Abzugleichender String
@@ -696,12 +692,12 @@ public class ServerEngine extends Thread {
 										// auf true gesetzt wird, wenn es den
 										// ausgesuchten Namen schon gibt
 		if (i == 1) { // Neuanmeldung
-			try {// Prüfung, ob es Name oder Name und Passwort schon gibt
+			try {// Pruefung, ob es Name oder Name und Passwort schon gibt
 				FileReader fr;
 				fr = new FileReader("Spielerdaten");
 				BufferedReader br = new BufferedReader(fr);
 				String zeile = br.readLine();
-				while ((zeile = br.readLine()) != null) {// während die Datei
+				while ((zeile = br.readLine()) != null) {// waehrend die Datei
 															// noch einen Inhalt
 															// hat
 					if (zeile.equals(abgleich) || zeile.startsWith(name + "")) {// falls
@@ -731,7 +727,7 @@ public class ServerEngine extends Thread {
 				String initiallevel = "Level 1";// setze das Level auf 1
 				FileWriter fw;
 				try {
-					// hinzufügen des Spielers ans Ende der Spielerdatendatei
+					// hinzufuegen des Spielers ans Ende der Spielerdatendatei
 					fw = new FileWriter("Spielerdaten", true);
 					BufferedWriter bw = new BufferedWriter(fw);
 					bw.newLine();
@@ -793,7 +789,7 @@ public class ServerEngine extends Thread {
 	 * diesen in eine Nachricht und gibt diese über die Kommunikation an den
 	 * Client weiter
 	 * 
-	 * @author: Ann-Catherine Hartmann, Matrikelnr: 6038514
+	 * @author: Ann-Catherine Hartmann 6038514
 	 * 
 	 **/
 	public void leseHighScore() {
@@ -834,7 +830,7 @@ public class ServerEngine extends Thread {
 	 **/
 	public void setHighScore(int zeit, String name) {
 		String z = "Zeit: " + String.valueOf(zeit) + "   Name des Spielers: "
-				+ name; // einzufügender String
+				+ name; // einzufuegender String
 		try {
 
 			File original = new File("HighScore");// Originaldatei
@@ -855,14 +851,14 @@ public class ServerEngine extends Thread {
 			while ((zeile = br.readLine()) != null) {
 				// wenn die zeile im Original nicht leer ist, dann...
 				if (zeile.equals("") == false) {
-					// Zähler gleich 6, da die Zahl für die Zeit an der 6.Stelle
-					// der Zeile anfängt
+					// Zaehler gleich 6, da die Zahl für die Zeit an der 6.Stelle
+					// der Zeile anfaengt
 					int i = 6;
 					char k = zeile.charAt(i);// bekomme das Zeichen an der
 												// Stelle i
-					i++;// erhöhe i um 1
+					i++;// erhoehe i um 1
 					String h = String.valueOf(k);//
-					while (((int) (k = zeile.charAt(i))) != 32) {// Während das
+					while (((int) (k = zeile.charAt(i))) != 32) {// Waehrend das
 																	// gelesene
 																	// Zeichen
 																	// an der
@@ -874,27 +870,27 @@ public class ServerEngine extends Thread {
 																	// ASCI-Code
 																	// = 32),
 																	// dann..
-						h = h + k;// füge zu h den char k
-						i++;// erhöhe i um 1
+						h = h + k;// fuege zu h den char k
+						i++;// erhoehe i um 1
 					}
 					Integer l = Integer.valueOf(h);// Integerwert von dem String
 													// h, nachdem alle Zahlen in
 													// der Zeile gelesen wurden
-					if (l > zeit) {// falls die aktuell gelesene Zeit größer ist
+					if (l > zeit) {// falls die aktuell gelesene Zeit groeßer ist
 									// als die zeit unseres Spielers
 						bw.write(z);// schreibe die Werte (Name und Zeit, die im
 									// String s gespeichert sind) des aktuellen
 									// Spielers in die Hilfsdatei
-						bw.newLine();// gehe in die nächste Zeile in der
+						bw.newLine();// gehe in die naechste Zeile in der
 										// Hilfsdatei
-						bw.newLine();// gehe in die nächste Zeile (damit wird
+						bw.newLine();// gehe in die naechste Zeile (damit wird
 										// eine leere Zeile erzeugt) in der
 										// Hilfsdatei
 					}
 				}
 				bw.write(zeile);// Schreibe den aktuell ausgelesenen Wert in die
 								// Hilfsdatei
-				bw.newLine();// geh in die nächste Zeile in der Hilfsdatei
+				bw.newLine();// geh in die naechste Zeile in der Hilfsdatei
 			}
 
 			bw.flush();// flusht den BufferedWriter
@@ -903,7 +899,7 @@ public class ServerEngine extends Thread {
 			bw.close();
 			br.close();
 			fr.close();
-			original.delete();// lösche die Originaldatei
+			original.delete();// loesche die Originaldatei
 			kopie.renameTo(original);// nenne die Hilfsdatei so wie die
 										// Originaldatei
 
@@ -914,7 +910,7 @@ public class ServerEngine extends Thread {
 	}
 
 	/**
-	 * speichert das aktuelle Level, wenn der Spieler auf Beenden drückt
+	 * speichert das aktuelle Level, wenn der Spieler auf Beenden drueckt
 	 * 
 	 * @param levelNr
 	 *            ist das aktualle Level, in dem sich der Spieler befindet
@@ -926,11 +922,11 @@ public class ServerEngine extends Thread {
 	}
 
 	/**
-	 * Dieser Methode wird das aktuell vom eingeloggten Spieler übergeben und
+	 * Dieser Methode wird das aktuell vom eingeloggten Spieler uebergeben und
 	 * dann dieses Level neu abgespeichert anstatt dem, auf dem der Spieler
 	 * davor war.
 	 * 
-	 * @author: Ann-Catherine Hartmann, Matrikelnr: 6038514
+	 * @author: Ann-Catherine Hartmann 6038514
 	 **/
 	public void speichern(int levelNr) {
 		// String zum abgleichen wird aus Name und Passwort erstellt
@@ -958,26 +954,26 @@ public class ServerEngine extends Thread {
 														// BufferedWriters
 			String zeile;// Zwischenspeicher für die gelesenen Strings vom
 							// BufferdReader
-			while ((zeile = br.readLine()) != null) {// Während das Dokument
+			while ((zeile = br.readLine()) != null) {// Waehrend das Dokument
 														// noch nicht ganz
 														// durchgegangen ist,
 														// tue..
 				if (zeile.equals(abgleich)) {// teste, ob der name und das
 												// passwort mit der gelesenen
-												// Zeile übereinstimmen
-					bw.write(zeile);// Wenn diese übereinstimmen, dann schreibe
+												// Zeile uebereinstimmen
+					bw.write(zeile);// Wenn diese uebereinstimmen, dann schreibe
 									// die Zeile in die Hilfsdatei
-					bw.newLine();// Gehe in die nächste Zeile in der Hilfsdatei
+					bw.newLine();// Gehe in die naechste Zeile in der Hilfsdatei
 									// eine Zeile weiter
 					bw.write(neuesLevel);// Schreibe das neue Level in diese
 											// Zeile
-					bw.newLine();// Gehe in die nächste Zeile in derHilfsdatei
-					br.readLine();// Lese die nächste Zeile (=Zeile mit altem
+					bw.newLine();// Gehe in die naechste Zeile in der Hilfsdatei
+					br.readLine();// Lese die naechste Zeile (=Zeile mit altem
 									// Level)
-					zeile = br.readLine();// Lese die nächste Zeile des
+					zeile = br.readLine();// Lese die naechste Zeile des
 											// Originals
 				}
-				bw.write(zeile);// füge die zuletzt gelesene Zeile in die
+				bw.write(zeile);// fuege die zuletzt gelesene Zeile in die
 								// Hilfsdatei
 				bw.newLine();// gehe eine Zeile weiter in der Hilfsdatei
 			}
@@ -988,7 +984,7 @@ public class ServerEngine extends Thread {
 			bw.close();
 			br.close();
 			fr.close();
-			original.delete();// lösche das Original
+			original.delete();// loesche das Original
 			kopie.renameTo(original);// nenne die Hilfsdatei wie das Original
 
 		} catch (IOException e) {

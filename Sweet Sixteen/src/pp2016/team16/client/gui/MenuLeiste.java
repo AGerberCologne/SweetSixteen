@@ -13,9 +13,8 @@ import javax.swing.JOptionPane;
 import pp2016.team16.shared.Map;
 
 /**
- * Klasse für die Menueleiste die oben angezeigt wird
+ * <Klasse für die Menueleiste die oben angezeigt wird>
  * @author Simon Nietz, Matr_Nr: 5823560
- *
  */
 
 public class MenuLeiste extends JMenuBar implements ActionListener, WindowListener {
@@ -25,12 +24,13 @@ public class MenuLeiste extends JMenuBar implements ActionListener, WindowListen
 	private MiniMap mini;
 	private Chat cha;
 	public Map map;
+	// Boolean fuer abfragen
 	private boolean anzeigen = false;
 	private boolean chea = false;
 	private boolean high = false;
 	private boolean chatanzeige = false;
 	
-	// die einzelnen Menuepunkte
+	// Die einzelnen Menuepunkte
     private JMenu spiel;
     private JMenu anzeige;
 	private JMenu hilfe;
@@ -51,15 +51,13 @@ public class MenuLeiste extends JMenuBar implements ActionListener, WindowListen
  //   private JMenuItem einloggen;
     private JMenuItem chatanzeigen;
     private JMenuItem chatverstecken;
-    /**
-     * 
-     */
     
     private HindiBones fenster;
     
     /**
-     * @author Simon Nietz, Matr_Nr: 5823560
+     * <Die MenuLeist des Typs JMenuBar wird erzeugt>
      * @param fenster fenster von der Anwendung
+     * @author Simon Nietz, Matr_Nr: 5823560
      */
     
 	public MenuLeiste(HindiBones fenster){
@@ -83,10 +81,10 @@ public class MenuLeiste extends JMenuBar implements ActionListener, WindowListen
         minimapverstecken = new JMenuItem("Minimap verstecken");
         speicher = new JMenuItem("Speichern");
         cheats = new JMenuItem("Cheats");
-   //     einloggen = new JMenuItem("Login");
         chatanzeigen = new JMenuItem("Chat anzeigen");
         chatverstecken = new JMenuItem("Chat schließen");
         
+        // Fuege jedem Unterpunkt einen ActionListener hinzu
         neuesSpiel.addActionListener(this);
         logout.addActionListener(this);
         highscore.addActionListener(this);
@@ -98,12 +96,11 @@ public class MenuLeiste extends JMenuBar implements ActionListener, WindowListen
         minimapverstecken.addActionListener(this);
         speicher.addActionListener(this);
         cheats.addActionListener(this);
-  //      einloggen.addActionListener(this);
         chatanzeigen.addActionListener(this);
         chatverstecken.addActionListener(this);
         
+        // Fuege die JMenu und die JMenuItem hinzu
         spiel.add(neuesSpiel);
-  //      spiel.add(einloggen);
         spiel.add(logout);
         spiel.add(speicher);
         spiel.add(beenden);
@@ -121,8 +118,12 @@ public class MenuLeiste extends JMenuBar implements ActionListener, WindowListen
         this.add(hilfe);
         this.add(minimap);
         this.add(chat);
-        // Aktionen die aufgerufen werden, falls draufgeklickt wird
 	}
+	
+	/**
+	 * <WindowListener fuer das schließen des Spielfenster>
+	 * @author Simon Nietz, Matr_Nr: 5823560
+	 */
 	public void windowClosing(WindowEvent e) {
 		fenster.engine.beende(fenster.engine.map.levelzaehler);
 	}
@@ -133,22 +134,23 @@ public class MenuLeiste extends JMenuBar implements ActionListener, WindowListen
 	public void windowActivated(WindowEvent arg0) {}
 	public void windowClosed(WindowEvent arg0) {}
 	
+	/**
+	 * <ActionListener fuer die einzelnen JMenuItem wird implementiert>
+	 * @author Simon Nietz, Matr_Nr: 5823560
+	 */
 	public void actionPerformed(ActionEvent e){
+		// Bei dem JMenuItem neuesSpiel wird ein neues Level geladen
 		if(e.getSource() == neuesSpiel){
 			// Popup schwierigkeit wird gelöscht Message
 			//Methode von Client zum loeschen der Daten
 			try {
 				fenster.engine.changeLevel();
 			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
 			}
 			fenster.startZeit=System.currentTimeMillis();
-			//fenster.spielZuruecksetzen();
-			//fenster.zeigeSpielfeld();
-			
+		
 		}else if(e.getSource() == speicher){
-			//System.out.println(map.levelzaehler);
+			// Speichern des aktuellen Levels
 			fenster.engine.speichereLevel(fenster.engine.map.levelzaehler);
 			JOptionPane.showMessageDialog(null,
                     "Erfolgreich gespeichert!.",
@@ -156,6 +158,7 @@ public class MenuLeiste extends JMenuBar implements ActionListener, WindowListen
                     JOptionPane.INFORMATION_MESSAGE);
 		
 		}else if(e.getSource() == cheats){
+			// Anzeige des Bildes fuer die Cheats
 			if(chea==true){
 				chea = false;
 				cheats.setText("Cheats");
@@ -168,21 +171,25 @@ public class MenuLeiste extends JMenuBar implements ActionListener, WindowListen
 			chea=true;
 			}
 		}else if(e.getSource() == chatanzeigen && chatanzeige == false){
+			// Anzeige des Chatfenster
 			System.out.println("Chat angekommen");
 			chatanzeige=true;
 			cha = new Chat(fenster);
 		}else if(e.getSource() == chatverstecken && chatanzeige==true){
+			// Schlließen des Chatfensters
 			chatanzeige=false;
 			cha.jFrame.dispose();
 		
 		}else if(e.getSource() == logout){
-		//	fenster.engine.logout(fenster.engine.map.levelzaehler);
+			// Bei dem logout wird das Level gespeichert und die Methode zeigeLogin() 
+			// zum erneuten login aufgerufen
 			try {
 				fenster.engine.logout(fenster.engine.map.levelzaehler);
 				fenster.zeigeLogin();
 			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
+			// Falls der neue Login erfolgreich ist
 			if(LoginDialog.isSucceded()){
 				try {
 					fenster.engine.changeLevel();
@@ -192,18 +199,10 @@ public class MenuLeiste extends JMenuBar implements ActionListener, WindowListen
 				}
 			}
 			
-		}//else if(e.getSource() == einloggen){
-		//	if(LoginDialog.test2 == true){
-		//		JOptionPane.showMessageDialog(null,
-          //              "Du bist schon eingeloggt",
-            //            "Anmeldung",
-              //          JOptionPane.INFORMATION_MESSAGE);
-		//	}else {
-		//		fenster.zeigeLogin();
-		//	} 
-			
+		}			
 			
 		else if(e.getSource() == highscore){
+			// Anzeige des Highscores
 			if(fenster.highscoreAngezeigt){
 				fenster.zeigeSpielfeld();
 				highscore.setText("Highscore anzeigen");
@@ -219,6 +218,8 @@ public class MenuLeiste extends JMenuBar implements ActionListener, WindowListen
 			}
 			
 		}else if(e.getSource() == karteaufdecken){
+			// Abfrage, ob die Karte schon aufgedeckt ist oder nicht
+			// Dadurch jeweils eine Option zum aufdecken oder verdecken
 			if(fenster.nebelAn){
 				fenster.nebelAn = false;
 				karteaufdecken.setText("Karte verdecken");
@@ -227,12 +228,13 @@ public class MenuLeiste extends JMenuBar implements ActionListener, WindowListen
 				karteaufdecken.setText("Karte aufdecken");
 			}		
 		}else if(e.getSource() == beenden){
-			
+			// Sicheres Beenden des Spiels
 			fenster.engine.beende(fenster.engine.map.levelzaehler); 
 			fenster.dispose();
 			System.exit(0);
 
 		}else if(e.getSource() == steuerung){
+			// Anzeige der Steuerung
 			if(high==true){
 				high = false;
 				steuerung.setText("Steuerung");
@@ -247,22 +249,18 @@ public class MenuLeiste extends JMenuBar implements ActionListener, WindowListen
 			
 			}
 		}else if(e.getSource() == minimapzeigen && anzeigen==false){
+			//Anzeigen der Minimap
 			anzeigen=true;
 			mini=new MiniMap(fenster);
 				
 			}else if(e.getSource() == minimapverstecken && anzeigen==true){
+			//Schließen der Minimap
 			anzeigen=false;
 			mini.jFrame.dispose();
 		}
 	}
 	
-	/**
-	 * @author Simon Nietz, Matr_Nr: 5823560
-	 * @return der Highscore wird geladen
-	 */
-	public JMenuItem getHighscore(){
-		return highscore;
-	}
+	
 	
 	
 	

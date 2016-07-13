@@ -19,20 +19,18 @@ import pp2016.team16.shared.Tuer;
 import pp2016.team16.shared.Wand;
 
 /**
- * Klasse für die erzeugung der Minimap
+ * <Die Klasse erzeugt die Minimap mithilfe eines JPanels>
  * @author Simon Nietz, Matr_Nr: 5823560
- *
  */
 public class MiniMap extends JPanel{	
 	
 	private HindiBones fenster;
-	//erstelle JFrame für die Minimap	
+	//Erstelle JFrame für die Minimap	
 	JFrame jFrame = new JFrame();
-		
+	
+	//Lade die Bilder
 	private Image boden, wand, tuerOffen, tuerZu, schluessel, heiltrank;
-	
 	private Image scaledBoden, scaledWand, scaledTuerOffen, scaledTuerZu, scaledSchluessel, scaledHeiltrank;
-	
 	private static final long serialVersionUID = 1L;
 	
 	/**
@@ -52,15 +50,15 @@ public class MiniMap extends JPanel{
 		this.setBackground(Color.BLACK);
 		jFrame.setResizable(false); // Die Groeße soll nicht veraendert werden
 		jFrame.add(this);
-		jFrame.setVisible(true); // sichtbar machen
-		fenster.toFront();	// setze das Spielfenster in den Focus
+		jFrame.setVisible(true); // Sichtbar machen
+		fenster.toFront();	// Setze das Spielfenster in den Focus
 
 		
 		
 	}
 	
 	/**
-	 * Paint Methode zeichnet wie die Methode bei der Spielflaeche die Karte
+	 * <Paint Methode zeichnet die Spielflaeche, aber mit den verkleinerten Bildern>
 	 * @author Simon Nietz, Matr_Nr: 5823560
 	 */
 	
@@ -88,7 +86,7 @@ public class MiniMap extends JPanel{
 		}
 		
 		
-		//super.paint(g);
+		// Das SpielElemnt Array wird durchlaufen und die Bileder werden gezeichnet
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
 		for (int i = 0; i < fenster.WIDTH; i++) {

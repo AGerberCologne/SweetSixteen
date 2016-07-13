@@ -5,7 +5,7 @@ package pp2016.team16.shared;
  * Antwort für den Client vom Server, wenn sich jemand neu anmelden/einloggen
  * wollte
  * 
- * @author Alina Gerber 5961246
+ * @author Gerber, Alina, 5961246
  *
  */
 

@@ -4,7 +4,7 @@ package pp2016.team16.shared;
  * Diese Nachricht wird vom Server verschickt, wenn sich die Lebenshoehe eines
  * Monsters aendert(positiv oder negativ), oder das Monster stirbt
  * 
- * @author Alina Gerber, 5960246
+ * @author Gerber, Alina, 5961246
  *
  */
 public class MStatusMessage extends MessageObject {
@@ -24,7 +24,7 @@ public class MStatusMessage extends MessageObject {
 	 * @param heilen
 	 *            , boolean , um zu ueberpruefen ob das monster geheilt werden
 	 *            soll
-	 * @author Alina Gerber, 5961246
+	 * @author Gerber, Alina, 5961246
 	 */
 	public MStatusMessage(int monsternummer, boolean tot, boolean heilen) {
 		this.monsternummer = monsternummer;

@@ -11,7 +11,7 @@ import pp2016.team16.shared.*;
 /**
  * Handelt die Kommunikation zwischen der Server- und Clientengine auf der Clientseite
  * 
- * @author: Ann-Catherine Hartmann, Matrikelnr: 60038514
+ * @author: Hartmann,Ann-Catherine, 6038514
  **/
 
 
@@ -46,7 +46,7 @@ public class ClientComm extends Thread {
 	 * den ObjectInput-und ObjectOutputStream und flusht den OutputStream.
 	 * Zuletzt wird die run-Methde mit start() aufgerufen
 	 * 
-	 * @author Ann-Catherine Hartmann 6038514
+	 * @author Hartmann,Ann-Catherine, 6038514
 	 */
 	public ClientComm() {
 		try {
@@ -66,7 +66,7 @@ public class ClientComm extends Thread {
 	 * die Methode eine IchBinDaNachricht periodisch und fragt an, ob etwas vom
 	 * Server geschickt wurde
 	 * 
-	 * @author Ann-Catherine Hartmann 6038514
+	 * @author Hartmann, Ann-Catherine, 6038514
 	 */
 
 	public void run() {
@@ -89,7 +89,7 @@ public class ClientComm extends Thread {
 	/**
 	 * Das erste Element der Sendeschlange wird entfernt und in den OutputStream geschrieben
 	 * 
-	 * @author Ann-Catherine Hartmann 6038514
+	 * @author Hartmann,Ann-Catherine, 6038514
 	 */
 	public void sendeAnServer() {
 
@@ -107,7 +107,7 @@ public class ClientComm extends Thread {
 	 * Die Methode empfaengt das naechste Objekt aus dem Inputstream und fuegt dies als
 	 * letztes Element in die Empfangeschlange ein.
 	 * 
-	 * @author Ann-Catherine Hartmann 6038514
+	 * @author Hartmann,Ann-Catherine, 6038514
 	 */
 	public void empfangeVomServer() {
 
@@ -128,7 +128,7 @@ public class ClientComm extends Thread {
 	 * wird als Letztes in die Sendeschlange eingefuegt und die Methode sendeAnServer wird
 	 * aufgerufen.
 	 * 
-	 * @author Ann-Catherine Hartmann 6038514
+	 * @author Hartmann,Ann-Catherine, 6038514
 	 */
 	public void bekommeVonClient(MessageObject anfrage) {
 		sendeAnServer.addLast(anfrage);
@@ -143,7 +143,7 @@ public class ClientComm extends Thread {
 	 * Empfangeschlange leer ist
 	 * 
 	 * 
-	 * @author Ann-Catherine Hartmann 6038514
+	 * @author Hartmann,Ann-Catherine, 6038514
 	 *
 	 */
 	public MessageObject gebeWeiterAnClient() {
@@ -161,7 +161,7 @@ public class ClientComm extends Thread {
 	 * Klasse und aus der der Cientengine beendet wird. Zudem wird der Input-, Output- , 
 	 * Objectinput-, Objectputstream und das Socket geschlossen
 	 * 
-	 * @author Ann-Catherine Hartmann 6038514  
+	 * @author Hartmann, Ann-Catherine, 6038514  
 	 *
 	 */
 
@@ -185,7 +185,7 @@ public class ClientComm extends Thread {
 	/**
 	 * schickt eine Nachricht des Typs IchBinDa an den Server
 	 * 
-	 * @author Ann-Catherine Hartmann 6038514
+	 * @author Hartmann,Ann-Catherine, 6038514
 	 */
 	public void schickeIchBinDaNachricht() {
 		IchBinDa ibd = new IchBinDa();

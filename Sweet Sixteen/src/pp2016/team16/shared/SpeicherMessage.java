@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Diese Message wird gesendet, wenn der Spieler auf speichern() gegangen ist
  * 
- * @author Alina Gerber 5961246
+ * @author Gerber, Alina, 5961246
  *
  */
 public class SpeicherMessage extends MessageObject implements Serializable {
@@ -23,7 +23,7 @@ public class SpeicherMessage extends MessageObject implements Serializable {
 	 * @param level
 	 *            damit wird das aktuelle Level des Spielers an den Server
 	 *            uebergeben
-	 * @author Alina Gerber 5961246
+	 * @author Gerber, Alina, 5961246
 	 */
 	public SpeicherMessage(int level) {
 		this.level = level;

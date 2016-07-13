@@ -5,7 +5,7 @@ package pp2016.team16.shared;
  * Bewegungsanfrage verschickt und wird an den Client zurueck geschickt mit der
  * naechsten neuen Position
  * 
- * @author Alina Gerber, 5961246
+ * @author Gerber, Alina, 5961246
  *
  */
 public class SBewegungMessage extends MessageObject {

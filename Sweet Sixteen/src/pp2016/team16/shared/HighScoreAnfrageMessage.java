@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Message wird gesendet an den Server, wenn der HighScore angezeigt werden
  * soll. Die Message ist leer.
  * 
- * @author Ann-Catherine Hartmann 6038514
+ * @author Hartmann, Ann-Catherine, 6038514
  *
  */
 

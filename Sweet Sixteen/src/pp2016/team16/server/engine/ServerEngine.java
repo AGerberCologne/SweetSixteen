@@ -58,7 +58,7 @@ public class ServerEngine extends Thread {
 	 * Der Konstruktor initialisiert die serverseitige Kommunikation und startet
 	 * den Thread. Die Serverengine enthaelt die "Spielmatrix".
 	 * 
-	 * @author Alina Gerber, 5961246
+	 * @author Gerber, Alina, 5961246
 	 * 
 	 */
 	public ServerEngine() {
@@ -74,7 +74,7 @@ public class ServerEngine extends Thread {
 	 * Client und versucht diese zu bearbeiten. Außerdem sendet sie periodisch
 	 * die Monsterbwegungen.
 	 * 
-	 * @author Alina Gerber, 5961246
+	 * @author ,Gerber, Alina, 5961246
 	 */
 	public void run() {
 		while (server.serverOpen) {
@@ -107,7 +107,7 @@ public class ServerEngine extends Thread {
 	/**
 	 * Diese Methode beinhaltet das Verarbeiten von Nachrichten vom Client.
 	 * 
-	 * @author Alina Gerber, 5961246
+	 * @author Gerber, Alina, 5961246
 	 *
 	 */
 	void nachrichtenVerarbeiten(MessageObject eingehendeNachricht)
@@ -346,7 +346,7 @@ public class ServerEngine extends Thread {
 	 * wird nur verschcikt, wenn m.nachricht = true ist, also der Schritt im
 	 * Server auch wirklich gemacht wurde.
 	 * 
-	 * @author Alina Gerber, 5961246
+	 * @author Gerber, Alina, 5961246
 	 * @throws InterruptedException
 	 */
 	public void monsterBewegung() throws InterruptedException {
@@ -614,7 +614,7 @@ public class ServerEngine extends Thread {
 	 * 
 	 * @throws InterruptedException
 	 * 
-	 * @author Alina Gerber, 5961246
+	 * @author Gerber, Alina, 5961246
 	 */
 	public void spielermacheSchritt() throws InterruptedException {
 		long jetzt = System.currentTimeMillis();
@@ -682,7 +682,7 @@ public class ServerEngine extends Thread {
 	 * @param passwort
 	 *            , das eingegeben wurde ins Loginfenster
 	 * 
-	 * @author: Ann-Catherine Hartmann 6038514
+	 * @author: Hartmann, Ann-Catherine, 6038514
 	 **/
 	public void logIn(int i, String name, String passwort) {
 		String abgleich = name + " " + passwort; // Abzugleichender String
@@ -789,7 +789,7 @@ public class ServerEngine extends Thread {
 	 * diesen in eine Nachricht und gibt diese über die Kommunikation an den
 	 * Client weiter
 	 * 
-	 * @author: Ann-Catherine Hartmann 6038514
+	 * @author: Hartmann, Ann-Catherine, 6038514
 	 * 
 	 **/
 	public void leseHighScore() {
@@ -826,7 +826,7 @@ public class ServerEngine extends Thread {
 	 * Fügt das Ergebnis des Spielers und dessen Namen sortiert nach Zeit in die
 	 * Highscoretextdatei ein,
 	 * 
-	 * @author: Ann-Catherine Hartmann 6038514
+	 * @author: Hartmann, Ann-Catherine, 6038514
 	 **/
 	public void setHighScore(int zeit, String name) {
 		String z = "Zeit: " + String.valueOf(zeit) + "   Name des Spielers: "
@@ -914,7 +914,7 @@ public class ServerEngine extends Thread {
 	 * 
 	 * @param levelNr
 	 *            ist das aktualle Level, in dem sich der Spieler befindet
-	 * @author: Ann-Catherine Hartmann, 6038514
+	 * @author: Hartmann, Ann-Catherine, 6038514
 	 **/
 	public void abmelden(int levelNr) {
 		this.speichern(levelNr);
@@ -926,7 +926,7 @@ public class ServerEngine extends Thread {
 	 * dann dieses Level neu abgespeichert anstatt dem, auf dem der Spieler
 	 * davor war.
 	 * 
-	 * @author: Ann-Catherine Hartmann 6038514
+	 * @author: Hartmann,Ann-Catherine, 6038514
 	 **/
 	public void speichern(int levelNr) {
 		// String zum abgleichen wird aus Name und Passwort erstellt

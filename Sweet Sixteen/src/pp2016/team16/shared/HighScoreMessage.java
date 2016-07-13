@@ -7,7 +7,7 @@ import java.io.Serializable;
  * Plaetze im Highscore als String zeile gespeichert wurden. Diese werden
  * absteigend gelesen im Server.
  * 
- * @author Ann-Catherine Hartmann 6038514
+ * @author Hartmann, Ann-Catherine, 6038514
  *
  */
 
@@ -26,6 +26,8 @@ public class HighScoreMessage extends MessageObject implements Serializable {
 	 * @param zeile
 	 *            uebergibt einen String bestehend aus Namen und Zeit eines der
 	 *            besten 5 Spieler, die 5 Plaetze werden nacheineander geschickt
+	 *            
+	 *  @author Hartmann, Ann-CAtherine, 6038514
 	 */
 	public HighScoreMessage(String zeile) {
 		this.zeile = zeile;

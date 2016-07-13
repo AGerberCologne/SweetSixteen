@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Message wird an Server gesendet, wenn man auf beenden geht
  * 
- * @author Alina Gerber 5961246
+ * @author Gerber, Alina, 5961246
  *
  */
 
@@ -26,7 +26,7 @@ public class BeendeMessage extends MessageObject implements Serializable {
 	 *            übergibt das aktuelle Level auf dem sich der Spieler befindet
 	 *            damit das Level noch gespeichert wird, bevor der Server
 	 *            schliesst
-	 * @author Alina Gerber 5961246
+	 * @author Gerber, Alina, 5961246
 	 */
 	public BeendeMessage(int level) {
 		this.level = level;

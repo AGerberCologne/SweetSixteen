@@ -4,7 +4,7 @@ package pp2016.team16.shared;
  * Diese Nachricht wird vom Server verschickt, wenn das Monster sich beweget hat
  * und diese Information an den Client uebertragen werden soll
  * 
- * @author Alina Gerber , 5961246
+ * @author Gerber, Alina, 5961246
  *
  */
 public class MBewegungMessage extends MessageObject {

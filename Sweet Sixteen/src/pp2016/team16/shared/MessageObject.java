@@ -6,7 +6,7 @@ import java.io.*;
  * Oberklasse, von der alle Nachrichtentypen erben und die benutzt wird zum
  * Senden zw. Server und Client
  * 
- * @author Alina Gerber 5961246
+ * @author Gerber, Alina, 5961246
  *
  */
 public class MessageObject implements Serializable // Datenstruktur

@@ -7,7 +7,7 @@ package pp2016.team16.shared;
  * aktualisierten Daten.
  * 
  * 
- * @author Alina Gerber
+ * @author Gerber, Alina, 5961246
  *
  */
 public class ChangeLevelMessage extends MessageObject {

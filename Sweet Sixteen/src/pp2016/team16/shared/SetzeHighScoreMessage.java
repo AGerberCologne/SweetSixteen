@@ -8,7 +8,7 @@ import java.io.Serializable;
  * erfolgreich gemeistert hat und im Server wird der Spieler dann in die
  * HighScore-Textdatei eingetragen mit seiner Zeit
  * 
- * @author Alina Gerber 5961246
+ * @author Gerber, Alina, 5961246
  *
  */
 public class SetzeHighScoreMessage extends MessageObject implements
@@ -30,6 +30,8 @@ public class SetzeHighScoreMessage extends MessageObject implements
 	 *            des Spielers
 	 * @param zeit
 	 *            des Spielers, die er brauchte für die 5 Level
+	 *            
+	 * @author Gerber, Alina, 5961246
 	 */
 
 	public SetzeHighScoreMessage(String name, int zeit) {

@@ -10,7 +10,7 @@ import pp2016.team16.shared.Heiltrank;
 /**
  * In der Klasse werden die "Spielmatrix" verwaltet:
  * 
- * @author Alina Gerber, 5961246
+ * @author Gerber, Alina, 5961246
  */
 public class ClientEngine extends Thread {
 	public ClientComm client;
@@ -43,16 +43,13 @@ public class ClientEngine extends Thread {
 	 *            Spiel wird beende 4 = warte auf Server-Antwort
 	 */
 	public int itemBenutzen = 4;
-	/**
-	 * @param
-	 */
 	public boolean gespeichert = false;
 
 	/**
 	 * Der Konstruktor initialisiert die clientseitige Kommunikation und startet
 	 * den Thread. ClientEngine enthält die "Spielmatrix".
 	 * 
-	 * @author Alina Gerber, 5961246
+	 * @author Gerber,Alina, 5961246
 	 */
 	public ClientEngine() {
 		System.out.println("Starte Client");
@@ -66,7 +63,7 @@ public class ClientEngine extends Thread {
 	 * client nicht beendet ist. Die Methode horcht nach neuen Nachrichten vom
 	 * Server und versucht diese zu bearbeiten.
 	 * 
-	 * @author Alina Gerber, 5961246
+	 * @author Gerber, Alina, 5961246
 	 */
 	public void run() {
 		while (client.clientOpen) {
@@ -99,7 +96,7 @@ public class ClientEngine extends Thread {
 	 *            eingehende Nachricht
 	 * @throws Exception
 	 * 
-	 * @author Alina Gerber, 5961246
+	 * @author Gerber, Alina, 5961246
 	 */
 	void nachrichtVerarbeiten(MessageObject eingehendeNachricht)
 			throws Exception {
@@ -314,7 +311,7 @@ public class ClientEngine extends Thread {
 	 * @return gibt zurueck ob der login erfolgreich war
 	 * @throws InterruptedException
 	 * 
-	 * @author Alina Gerber, 5961246
+	 * @author Gerber, Alina, 5961246
 	 */
 	public boolean login(int i, String n, String p) throws InterruptedException {
 		LoginMessage anfrage = new LoginMessage(i, n, p);
@@ -333,7 +330,7 @@ public class ClientEngine extends Thread {
 	 * @param level
 	 *            gibt an in welchem Level sich der Spieler gerade befindet
 	 * @throws Exception
-	 * @author Alina Gerber, 5961246
+	 * @author Gerber, Alina, 5961246
 	 */
 	public void logout(int level) throws Exception {
 		LogoutMessage anfrage = new LogoutMessage(level);
@@ -345,7 +342,7 @@ public class ClientEngine extends Thread {
 	 * 
 	 * @param level
 	 *            gibt an in welchem Level sich der Spieler gerade befindet
-	 * @author Alina Gerber , 5961246
+	 * @author Gerber, Alina, 5961246
 	 */
 	public void beende(int level) {
 		BeendeMessage bm = new BeendeMessage(level);
@@ -362,7 +359,7 @@ public class ClientEngine extends Thread {
 	 * @param y
 	 *            ist die y-Koordinate der ZielPosition
 	 * @throws InterruptedException
-	 * @author Alina Gerber, 5961246
+	 * @author Gerber, Alina, 5961246
 	 */
 	public void wegAnfragen(int x, int y) throws InterruptedException {
 		System.out.println("Der Spieler moechte sich bewegen");
@@ -387,7 +384,7 @@ public class ClientEngine extends Thread {
 	 * @return gibt das erhaltene Level in Form von Spielelement[][] zurueck
 	 * @throws Exception
 	 * 
-	 * @author Alina Gerber , 5961246
+	 * @author Gerber, Alina, 5961246
 	 */
 	public Spielelement[][] changeLevel() throws Exception {
 		System.out.println("Der Client fragt ein neues Level an");
@@ -412,7 +409,7 @@ public class ClientEngine extends Thread {
 	 *         das Spiel wird beendet
 	 * @throws InterruptedException
 	 * 
-	 * @author Alina Gerber, 5961246
+	 * @author Gerber, Alina, 5961246
 	 */
 	public int benutzeItem() throws InterruptedException {
 		itemBenutzen = 4;
@@ -427,7 +424,7 @@ public class ClientEngine extends Thread {
 	/**
 	 * Die Methode wird aufgerufen, wenn ein Trank benutzt werden soll
 	 * 
-	 * @author Alina Gerber, 5961246
+	 * @author Gerber, Alina, 5961246
 	 */
 	public void trankBenutzen() {
 		BTasteMessage anfrage = new BTasteMessage();
@@ -437,7 +434,7 @@ public class ClientEngine extends Thread {
 	/**
 	 * Die Methode verschickt eine Angriff- Nachricht des Spielers
 	 * 
-	 * @author Alina Gerber , 5961246
+	 * @author Gerber, Alina, 5961246
 	 */
 	public void angriffSpieler() {
 		SAngriffMessage anfrage = new SAngriffMessage();
@@ -452,7 +449,7 @@ public class ClientEngine extends Thread {
 	 *            = 1 = leben erhoehen, 2 = bei einem zufaelligen Monster wird die
 	 *            hälfte der Leben weg genommen
 	 * @throws Exception
-	 * @author Alina Gerber, 5961246
+	 * @author Gerber, Alina, 5961246
 	 */
 	public void cheatBenutzen(int i) throws Exception {
 		CheatMessage anfrage = new CheatMessage(i);
@@ -464,7 +461,7 @@ public class ClientEngine extends Thread {
 	 * 
 	 * @param levelhoehe
 	 *            die gespeichert werden soll
-	 * @Alina Gerber , 5961246
+	 * @author Gerber, Alina, 5961246
 	 */
 	public void speichereLevel(int level) {
 		SpeicherMessage anfrage = new SpeicherMessage(level);
@@ -475,7 +472,7 @@ public class ClientEngine extends Thread {
 	/**
 	 * Die Methode verschickt eine Highscore-Anfrage an den Server
 	 * 
-	 * @author Ann-Catherine Hartmann, Matrikelnr: 60038514
+	 * @author Hartmann, Ann-Catherine, 6038514
 	 */
 	public void schickeHighScore() {
 		HighScoreAnfrageMessage anfrage = new HighScoreAnfrageMessage();
@@ -495,7 +492,7 @@ public class ClientEngine extends Thread {
 	 *            gibt den Namen des Spielers an
 	 * @param zeit
 	 *            gibt die benoetigte Zeit an
-	 * @author Ann-Catherine Hartmann, Matrikelnr: 60038514
+	 * @author Hartmann, Ann-Catherine, 6038514
 	 */
 	public void fuegeZuHighScorehinzu(String name, int zeit) {
 		SetzeHighScoreMessage anfrage = new SetzeHighScoreMessage(name, zeit);

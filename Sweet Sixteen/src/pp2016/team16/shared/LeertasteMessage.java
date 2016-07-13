@@ -6,7 +6,7 @@ package pp2016.team16.shared;
  * Schluessel benutzt. War die daraus ausgeloeste Aktion im Server erfolgreich,
  * wird eine Nahricht des gleichen Messagtypen wieder zurueckgeschickt
  * 
- * @author Alina Gerber 5961246
+ * @author Gerber, Alina, 5961246
  *
  */
 public class LeertasteMessage extends MessageObject {

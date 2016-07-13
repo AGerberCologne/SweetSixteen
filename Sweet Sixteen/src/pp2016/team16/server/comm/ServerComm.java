@@ -37,7 +37,7 @@ public class ServerComm extends Thread {
 	 * über die Methode verarbeiteNachricht(). Zudem wird run() mit Hilfe von this.start() 
 	 * aufgerufen.
 	 * 
-	 * @author Ann-Catherine Hartmann 6038514
+	 * @author Hartmann,Ann-Catherine, 6038514
 	 */
 	public ServerComm() {
 		try {
@@ -55,7 +55,7 @@ public class ServerComm extends Thread {
 	 * serverOpen vom der ServerEngine auf false gesetzt wird, wird die Methode schliessen() aufge-
 	 * rufen.
 	 * 
-	 * @author Ann-Catherine Hartmann 6038514
+	 * @author Hartmann,Ann-Catherine, 6038514
 	 */
 	public void run() {
 		try {
@@ -64,14 +64,14 @@ public class ServerComm extends Thread {
 			ost.flush();
 			in = new ObjectInputStream(s.getInputStream());
 		} catch (IOException e) {
-			 e.printStackTrace();
+			 
 		}
 		while (serverOpen) {
 			verarbeiteNachricht();
 			try {
 				sleep(50);
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				
 			}
 			
 		}
@@ -83,7 +83,7 @@ public class ServerComm extends Thread {
 	 * Ausgabe von "Ich bin da", damit man sieht, dass die Methode funktioniert. Wenn dies nicht 
 	 * der Fall ist, dass wird das Objekt in die Empfangeschlange eingefügt. 
 	 * 
-	 * @author Ann-Catherine Hartmann 6038514
+	 * @author Hartmann,Ann-Catherine 6038514
 	 */
 	public void verarbeiteNachricht() {
 		try {
@@ -98,7 +98,7 @@ public class ServerComm extends Thread {
 				empfangeVomClient.addLast(n);
 			}
 		} catch (IOException | ClassNotFoundException e) {
-			 e.printStackTrace();
+			 
 			
 		}
 
@@ -109,7 +109,7 @@ public class ServerComm extends Thread {
 	 * 
 	 * @return die erste Message der Empfangeschlange oder null, wenn es kein Element in
 	 * der LinkedList gibt 
-	 * @author Ann-Catherine Hartmann 6038514
+	 * @author Hartmann,Ann-Catherine, 6038514
 	 */
 	public MessageObject gebeWeiterAnServer() {
 		if (empfangeVomClient.isEmpty() == false) {
@@ -124,7 +124,7 @@ public class ServerComm extends Thread {
 	 * die Methode sendeAnClient() auf. 
 	 * 
 	 * @param servermessage ist die Message, die der Server an den Client schicken will
-	 * @author Ann-Catherine Hartmann 6038514
+	 * @author Hartmann,Ann-Catherine, 6038514
 	 */
 	public void gebeWeiterAnClient(MessageObject servermessage) {
 		sendeAnClient.addLast(servermessage);
@@ -135,7 +135,7 @@ public class ServerComm extends Thread {
 	 * Sollte dies nicht mehr funktionieren, weil der Client geschlossen wird, wird serverOpen auf 
 	 * false gesetzt, damit sich alles schliesst
 	 * 
-	 * @author Ann-Catherine Hartmann 6038514
+	 * @author Hartmann,Ann-Catherine 6038514
 	 */
 	public void sendeAnClient() {
 		try {
@@ -152,7 +152,7 @@ public class ServerComm extends Thread {
 	 * Diese Methode schließt den Objectinput-, Objectoutputstream, das Serversocket und das
 	 * Socket.
 	 * 
-	 * @author Ann-Catherine Hartmann 6038514
+	 * @author Hartmann,Ann-Catherine, 6038514
 	 */
 	public void schliesse() {
 		try {

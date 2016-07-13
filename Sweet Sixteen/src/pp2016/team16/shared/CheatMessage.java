@@ -5,7 +5,7 @@ package pp2016.team16.shared;
  * den Client zurueck gesendet, wenn die durch die Message ausgelueste Aktion
  * erfolgreich war im Server.
  * 
- * @author Alina Gerber 5961246
+ * @author Gerber, Alina, 5961246
  *
  */
 public class CheatMessage extends MessageObject {

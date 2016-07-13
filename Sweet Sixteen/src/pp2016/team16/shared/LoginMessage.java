@@ -4,7 +4,7 @@ package pp2016.team16.shared;
  * Diese Message wird gesendet an den Server, wenn man seine Daten im
  * Loginfenster eingegeben und abgesendet hat
  * 
- * @author Alina Gerber 5961246
+ * @author Gerber, Alina, 5961246
  *
  */
 
@@ -27,7 +27,7 @@ public class LoginMessage extends MessageObject {
 	 *            Eingabe des Spielers in Feld Name
 	 * @param passwort
 	 *            Eingabe des Spielers in Feld Passwort
-	 * @author Alina Gerber 5961246
+	 * @author Gerber, Alina, 5961246
 	 */
 	public LoginMessage(int artVonAnmeldung, String name, String passwort) {
 		this.name = name;

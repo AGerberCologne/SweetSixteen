@@ -1,7 +1,7 @@
 package pp2016.team16.shared;
  /**
-  * 
-  * @author Ann-Catherine Hartmann 6038514
+  * Die Message zum Ich bin Da senden.
+  * @author Hartmann, Ann-Catherine  6038514
   *
   */
 public class IchBinDa extends MessageObject{
@@ -13,7 +13,7 @@ public class IchBinDa extends MessageObject{
 	/**
 	 *	Dies ist der Messagetyp für die periodische Ichbinda-Nachricht und hat keinen Inhalt
 	 * 
-	 * @author Ann-Catherine Hartmann 6038514
+	 * @author Hartmann, Ann-Catherine, 6038514
 	 */
 	public IchBinDa(){
 		

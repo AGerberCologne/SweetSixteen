@@ -32,7 +32,7 @@ public class HindiBones extends JFrame implements KeyListener, MouseListener {
 	public ClientEngine engine = new ClientEngine();
 	public static JFrame frame;
 
-	private boolean spielerInHighscore = false;
+	public boolean spielerInHighscore = false;
 	public boolean highscoreAngezeigt = false;
 	public boolean nebelAn = true;
 	public boolean spielende = false;

@@ -148,6 +148,10 @@ public class MenuLeiste extends JMenuBar implements ActionListener, WindowListen
 			} catch (Exception e1) {
 			}
 			fenster.startZeit=System.currentTimeMillis();
+			fenster.spielende = false;
+			fenster.verloren = false;
+			fenster.nebelAn = true;
+			fenster.spielerInHighscore = false;
 		
 		}else if(e.getSource() == speicher){
 			// Speichern des aktuellen Levels

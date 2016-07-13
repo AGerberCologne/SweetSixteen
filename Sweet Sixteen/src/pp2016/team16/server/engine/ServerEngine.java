@@ -174,11 +174,12 @@ public class ServerEngine extends Thread
 		}else if (eingehendeNachricht instanceof SAngriffMessage){
 			Monster m = angriffsMonster();
 			System.out.println("Angriff angekommen");
+			if(m != null){
 			this.monsterChangeHealth(m,-(konstante.BOX/4));
 			System.out.println("Monstergesundheit");
 			MStatusMessage msm = new MStatusMessage(monsternr,monstertot, false);
 			System.out.println("Schicke Antwort");
-			server.gebeWeiterAnClient(msm);
+			server.gebeWeiterAnClient(msm);}
 			
 		}else if (eingehendeNachricht instanceof MBewegungMessage){
 			monsterBewegung();
